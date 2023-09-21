@@ -29,15 +29,20 @@ class HomeFragment : Fragment() {
 
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.tabla -> {
+                R.id.tablaPrix -> {
                     Navigation.findNavController(binding.root)
-                        .navigate(R.id.tablaProductoFragment)
+                        .navigate(R.id.tablaPrixFragment)
+                    true
+                }
 
+                R.id.tablaCoca -> {
+                    Navigation.findNavController(binding.root).navigate(R.id.TablaCocaFragment)
                     true
                 }
 
 
                 else -> {
+
                     false
                 }
             }

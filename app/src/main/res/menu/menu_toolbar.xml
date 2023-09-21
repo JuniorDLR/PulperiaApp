@@ -4,7 +4,11 @@
 
 
     <item
-        android:id="@+id/tabla"
-        android:title="Tabla"
+        android:id="@+id/tablaPrix"
+        android:title="Prix Cola"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/tablaCoca"
+        android:title="Coca cola"
         app:showAsAction="collapseActionView" />
 </menu>

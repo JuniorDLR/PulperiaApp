@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pulperiaapp.R
 
-
-class TablaProductoFragment : Fragment() {
+class AgregarPrixFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -16,8 +15,7 @@ class TablaProductoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tabla_producto, container, false)
+        return inflater.inflate(R.layout.fragment_agregar_prix, container, false)
     }
-
 
 }

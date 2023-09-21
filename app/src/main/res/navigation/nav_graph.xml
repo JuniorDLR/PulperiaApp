@@ -18,10 +18,13 @@
         android:id="@+id/homeFragment"
         android:name="com.example.pulperiaapp.ui.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_tablaProductoFragment"
-            app:destination="@id/tablaProductoFragment" />
+            app:destination="@id/TablaCocaFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_tablaPrixFragment"
+            app:destination="@id/tablaPrixFragment" />
     </fragment>
     <fragment
         android:id="@+id/ventasFragment"
@@ -57,17 +60,40 @@
         android:label="fragment_ventas_producto"
         tools:layout="@layout/fragment_ventas_producto" />
     <fragment
-        android:id="@+id/tablaProductoFragment"
-        android:name="com.example.pulperiaapp.ui.view.TablaProductoFragment"
+        android:id="@+id/TablaCocaFragment"
+        android:name="com.example.pulperiaapp.ui.view.TablaCocaFragment"
         android:label="fragment_tabla_producto"
-        tools:layout="@layout/fragment_tabla_producto" />
+        tools:layout="@layout/fragment_tabla_coca" >
+        <action
+            android:id="@+id/action_TablaCocaFragment_to_agregarCocaFragment"
+            app:destination="@id/agregarCocaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/datosInventarioFragment"
         android:name="com.example.pulperiaapp.ui.view.DatosInventarioFragment"
         android:label="fragment_datos_inventario"
-        tools:layout="@layout/fragment_datos_inventario" >
+        tools:layout="@layout/fragment_datos_inventario">
         <action
             android:id="@+id/action_datosInventarioFragment_to_inventarioFragment"
             app:destination="@id/inventarioFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/tablaPrixFragment"
+        android:name="com.example.pulperiaapp.ui.view.TablaPrixFragment"
+        android:label="fragment_tabla_prix"
+        tools:layout="@layout/fragment_tabla_prix" >
+        <action
+            android:id="@+id/action_tablaPrixFragment_to_agregarPrixFragment"
+            app:destination="@id/agregarPrixFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agregarCocaFragment"
+        android:name="com.example.pulperiaapp.ui.view.AgregarCocaFragment"
+        android:label="fragment_agregar_coca"
+        tools:layout="@layout/fragment_agregar_coca" />
+    <fragment
+        android:id="@+id/agregarPrixFragment"
+        android:name="com.example.pulperiaapp.ui.view.AgregarPrixFragment"
+        android:label="fragment_agregar_prix"
+        tools:layout="@layout/fragment_agregar_prix" />
 </navigation>

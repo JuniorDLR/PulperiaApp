@@ -12,7 +12,6 @@ data class InventarioEntity(
     @ColumnInfo("id") val id: Int = 0,
     @ColumnInfo("fecha_entrega") val fechaEntrega: Data,
     @ColumnInfo("nombre_producto") val nombreProdcuto: String,
-    @ColumnInfo("cantidad") val cantidad: Int,
     @ColumnInfo("pago_total") val pagoTotal: Double,
     @ColumnInfo("imagen") val imagen: Bitmap
 )
