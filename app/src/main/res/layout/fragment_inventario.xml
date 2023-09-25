@@ -8,44 +8,52 @@
     tools:context=".ui.view.InventarioFragment">
 
 
-    <RelativeLayout
+    <com.google.android.material.textfield.TextInputLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
 
+        android:layout_margin="10dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:layout_width="320dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvAddInventario"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="10dp">
+            android:hint="Ingrese un nombre de inventario"
+            android:inputType="text">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tvAddInventario"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese un nombre de inventario"
-                android:inputType="text">
+        </com.google.android.material.textfield.TextInputEditText>
 
-            </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
 
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvPagoInventario"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:hint="Ingrese el total a pagar"
+            android:inputType="numberDecimal">
 
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:text="0/2"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-    </RelativeLayout>
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:text="0/2"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
 
     <androidx.viewpager2.widget.ViewPager2
 

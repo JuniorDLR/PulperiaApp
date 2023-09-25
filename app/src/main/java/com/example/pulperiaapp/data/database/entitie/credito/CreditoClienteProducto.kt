@@ -10,19 +10,19 @@ data class CreditoClienteProducto(
     @Embedded val creditoEntity: CreditoEntity,
 
     @Relation(
-        parentColumn = "id_cliente",
+        parentColumn = "cliente_id",
         entityColumn = "id"
     )
     val cliente: ClienteEntity,
     @Relation(
-        parentColumn = "id_producto",
+        parentColumn = "producto_prix_id",
         entityColumn = "id",
         entity = PrecioPrixEntity::class
     )
     val precioPrix: PrecioPrixEntity?,
 
     @Relation(
-        parentColumn = "id_producto",
+        parentColumn = "producto_coca_id",
         entityColumn = "id",
         entity = PrecioCocaEntity::class
     )

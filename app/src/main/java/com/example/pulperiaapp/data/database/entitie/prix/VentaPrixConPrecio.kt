@@ -10,7 +10,7 @@ data class VentaPrixConPrecio(
     //se usa para incluir la información de la venta Prix Cola
     @Embedded val ventaPrix: VentaPrixEntity,
     @Relation(
-        parentColumn = "id_producto",
+        parentColumn = "producto_prix_id",
         entityColumn = "id"
     )
     val precioPrix: PrecioPrixEntity
