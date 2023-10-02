@@ -5,8 +5,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.pulperiaapp.data.database.entitie.coca.PrecioCocaEntity
+import com.example.pulperiaapp.data.database.entitie.coca.VentaCocaConPrecio
 import com.example.pulperiaapp.data.database.entitie.coca.VentaCocaEntity
 
 @Dao
@@ -31,14 +33,14 @@ interface CocaDao {
     //precio
 
 
-    @Query("SELECT * FROM tbl_precio_coca ORDER BY id")
+    @Query("SELECT * FROM tbl_precio_coca")
     suspend fun obtenerPrecioCoca(): List<PrecioCocaEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarPrecioCoca(precioCoca: PrecioCocaEntity)
 
-    @Update
-    suspend fun editarPrecioCoca(precioCoca: PrecioCocaEntity)
+    @Query("UPDATE tbl_precio_coca SET precio=:precio WHERE id =:id")
+    suspend fun editarPrecioCoca(id: Int, precio: Double)
 
     @Query("DELETE  FROM  tbl_precio_coca WHERE id =:id")
     suspend fun eliminarPrecioCoca(id: Int)

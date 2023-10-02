@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view
+package com.example.pulperiaapp.ui.view.credito
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,7 +18,7 @@ class CreditoFragment : Fragment() {
     ): View? {
         binding = FragmentCreditoBinding.inflate(layoutInflater)
 
-        binding.btnAgregarAmoroso.setOnClickListener {
+        binding.btnAgregarCliente.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.amorosoFragment)
         }
 

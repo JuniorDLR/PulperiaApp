@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view
+package com.example.pulperiaapp.ui.view.venta
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,15 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pulperiaapp.R
 
-class AmorosoFragment : Fragment() {
-
+class VentasProductoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_amoroso, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_ventas_producto, container, false)
     }
 
 

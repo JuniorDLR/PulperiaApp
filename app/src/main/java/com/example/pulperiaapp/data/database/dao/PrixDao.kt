@@ -14,32 +14,32 @@ import com.example.pulperiaapp.data.database.entitie.prix.VentaPrixEntity
 interface PrixDao {
 
 
-   //venta
+    //venta
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertatVentaPrix(ventaPrix: VentaPrixEntity)
 
-    @Query("SELECT  * FROM tbl_venta_coca ORDER BY id")
-    suspend fun obtenerVentaCoca():List<VentaCocaEntity>
+    @Query("SELECT  * FROM tbl_venta_prix ORDER BY id")
+    suspend fun obtenerVentapPrix(): List<VentaPrixEntity>
 
     @Update
-    suspend fun editarVentaCoca(ventaCoca:VentaCocaEntity)
+    suspend fun editarVentaPrix(prixEntity: VentaPrixEntity)
 
     @Delete
-    suspend fun eliminarVentaCoca(ventaCoca: VentaCocaEntity)
+    suspend fun eliminarVentaPrix(prixEntity: VentaPrixEntity)
 
 
     //Precio
 
 
-    @Query("SELECT * FROM tbl_precio_prix ORDER BY id")
+    @Query("SELECT * FROM tbl_precio_prix ")
     suspend fun obtenerPrecioPrix(): List<PrecioPrixEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarPrecioPrix(precioPrix: PrecioPrixEntity)
 
-    @Update
-    suspend fun editarPrecioPrix(precioPrix: PrecioPrixEntity)
+    @Query("UPDATE tbl_precio_prix SET precio =:precio WHERE id =:id")
+    suspend fun editarPrecioPrix(precio: Double, id: Int)
 
     @Query("DELETE  FROM  tbl_precio_prix WHERE id =:id")
     suspend fun eliminarPrecioPrix(id: Int)

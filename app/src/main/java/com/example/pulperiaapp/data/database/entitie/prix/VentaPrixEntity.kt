@@ -9,7 +9,7 @@ import java.util.Date
 data class VentaPrixEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id") val id: Int = 0,
-    @ColumnInfo("fecha_venta") val fecha: Date,
+    @ColumnInfo("fecha_venta") val fecha: String,
     @ColumnInfo("cantidad_vendida") val cantidad: Int,
     @ColumnInfo("producto_prix_id") val id_producto: Long, // Clave foránea que se relaciona con Producto
     @ColumnInfo("precio_unitario") val precio_unitario: Double,

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/fondo"
     android:orientation="vertical"
-    tools:context=".ui.view.LoginFragment">
+    tools:context=".ui.view.principal.LoginFragment">
 
 
     <ImageView
@@ -23,6 +23,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvUser"
+            tools:text="JuniorDLR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ingrese su usuario">
@@ -42,6 +43,7 @@
             android:id="@+id/tvPw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:text="jajajjajajjajaja"
             android:hint="Ingrese su contraseña"
             android:inputType="textPassword">
 

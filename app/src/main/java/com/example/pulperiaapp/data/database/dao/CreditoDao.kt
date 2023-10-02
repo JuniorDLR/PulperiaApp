@@ -19,19 +19,21 @@ interface CreditoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarCredito(credito: CreditoEntity)
 
-    @Query("SELECT * FROM tbl_cliente")
-    suspend fun obtenerNombreCliente():List<CreditoClienteProducto>
 
-    @Transaction
-    @Query("SELECT * FROM tbl_precio_coca")
-    suspend fun obtenerProductoCoca(): List<VentaCocaConPrecio>
+    @Query("SELECT nombre FROM tbl_cliente")
+    suspend fun obtenerNombreCliente(): List<String>
 
-    @Transaction
-    @Query("SELECT * FROM tbl_precio_prix")
-    suspend fun obtenerProdcutoPrix(): List<VentaPrixConPrecio>
 
-    @Query("SELECT * FROM tbl_credito WHERE id = :id_cliente")
-    suspend fun mostrarPorClienteId(id_cliente: Int): CreditoEntity
+    @Query("SELECT precio FROM tbl_precio_coca")
+    suspend fun obtenerPrecioCoca(): List<Double>
+
+
+    @Query("SELECT precio FROM tbl_precio_prix")
+    suspend fun obtenerPrecioPrix(): List<Double>
+
+
+    @Query("SELECT nombre FROM tbl_cliente ")
+    suspend fun mostrarPorCliente(): List<String>
 
     @Query("UPDATE tbl_credito SET estado_pago =:nuevoEstado WHERE id =:id")
     suspend fun estadoPago(nuevoEstado: Boolean, id: Int)

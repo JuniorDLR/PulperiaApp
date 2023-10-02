@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view
+package com.example.pulperiaapp.ui.view.principal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

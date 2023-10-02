@@ -24,5 +24,24 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun providerDao(db: Database) = db.getPulperiaDao()
+    fun providerCliente(db: Database) = db.getClienteDao()
+
+
+    @Provides
+    @Singleton
+    fun providerCoca(db: Database) = db.getCocaDao()
+
+
+    @Provides
+    @Singleton
+    fun providerCreditoDao(db: Database) = db.creditoDao()
+
+    @Provides
+    @Singleton
+    fun providerInventario(db: Database) = db.invetarioDao()
+
+
+    @Provides
+    @Singleton
+    fun providerPrix(db: Database) = db.prixDao()
 }

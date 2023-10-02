@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view
+package com.example.pulperiaapp.ui.view.principal
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +10,10 @@ import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentLoginBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding

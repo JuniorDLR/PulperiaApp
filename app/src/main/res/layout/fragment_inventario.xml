@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/fondo"
     android:orientation="vertical"
-    tools:context=".ui.view.InventarioFragment">
+    tools:context=".ui.view.inventario.InventarioFragment">
 
 
     <com.google.android.material.textfield.TextInputLayout

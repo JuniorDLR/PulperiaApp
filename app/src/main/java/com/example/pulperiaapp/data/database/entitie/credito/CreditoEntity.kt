@@ -9,7 +9,7 @@ import java.util.Date
 data class CreditoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id") val id: Int = 0,
-    @ColumnInfo("fecha") val fecha: Date,
+    @ColumnInfo("fecha") val fecha: String,
     @ColumnInfo("cliente_id") val idCliente: Int,//clave foranea
     @ColumnInfo("producto_prix_id") val idProductoPrix: Int, //clave foranea
     @ColumnInfo("producto_coca_id") val idProductoCoca: Int, //clave foranea

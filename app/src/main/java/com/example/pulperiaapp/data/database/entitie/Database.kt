@@ -16,15 +16,9 @@ import com.example.pulperiaapp.data.database.entitie.prix.PrecioPrixEntity
 import com.example.pulperiaapp.data.database.entitie.prix.VentaPrixEntity
 
 @Database(
-    entities = [
-        ClienteEntity::class,
-        PrecioCocaEntity::class,
-        VentaCocaEntity::class,
-        CreditoEntity::class,
-        InventarioEntity::class,
-        PrecioPrixEntity::class,
-        VentaPrixEntity::class],
-    version = 1
+    entities = [ClienteEntity::class, PrecioCocaEntity::class, VentaCocaEntity::class, CreditoEntity::class, InventarioEntity::class, PrecioPrixEntity::class, VentaPrixEntity::class],
+    version = 1,
+    exportSchema = false
 )
 abstract class Database : RoomDatabase() {
 
