@@ -10,5 +10,6 @@ data class PrecioPrixEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id") val id: Int = 0,
-    @ColumnInfo("Producto") val producto: String,
-    @ColumnInfo("precio") val precio: Double)
+    @ColumnInfo("producto") val producto: String,
+    @ColumnInfo("precio") val precio: Double
+)

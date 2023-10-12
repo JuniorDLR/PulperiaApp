@@ -5,4 +5,10 @@
     <string name="id">id</string>
     <string name="producto">Producto</string>
     <string name="precio">Precio</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="editar">Editar</string>
+    <string name="ingrese_un_id">Ingrese un id</string>
+    <string name="ingrese_un_precio">Ingrese un precio</string>
+    <string name="agregarprix">agregarPrix</string>
+    <string name="agregar">agregar</string>
 </resources>

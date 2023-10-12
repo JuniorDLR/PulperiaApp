@@ -44,4 +44,8 @@ object RoomModule {
     @Provides
     @Singleton
     fun providerPrix(db: Database) = db.prixDao()
+
+    @Provides
+    @Singleton
+    fun providerVenta(db: Database) = db.venta()
 }

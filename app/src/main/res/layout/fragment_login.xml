@@ -17,16 +17,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvUser"
-            tools:text="JuniorDLR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese su usuario">
+            android:hint="Ingrese su usuario"
+            tools:text="JuniorDLR">
 
         </com.google.android.material.textfield.TextInputEditText>
 
@@ -43,9 +42,9 @@
             android:id="@+id/tvPw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="jajajjajajjajaja"
             android:hint="Ingrese su contraseña"
-            android:inputType="textPassword">
+            android:inputType="textPassword"
+            tools:text="jajajjajajjajaja">
 
         </com.google.android.material.textfield.TextInputEditText>
 
@@ -60,7 +59,7 @@
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/boton"
         android:text="Iniciar Sesíon"
-        android:textColor="@color/black"
+        android:textColor="@color/letra"
         android:textSize="30sp" />
 
 </LinearLayout>

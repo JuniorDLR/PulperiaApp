@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,86 +11,177 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="30dp"
+        tools:ignore="UselessParent">
 
-        android:orientation="horizontal">
 
-        <Spinner
-            android:layout_width="180dp"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:layout_width="180dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
-            android:layout_marginLeft="33dp" />
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:text="Prix cola"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spPrix"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnGuardarPrix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/boton"
+                android:text="Agregar"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:text="Coca cola"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spCoca"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnGuardarCoca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/boton"
+                android:text="Agregar"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp">
+        android:layout_height="320dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnDisminuir"
-            android:layout_width="90dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/boton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!-- Títulos de las columnas -->
+            <TableRow
+                android:id="@+id/trProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
 
+                <!-- Nombre del producto -->
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="Producto"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvResultadoMoroso"
-            android:layout_width="160dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnAumentar"
-            app:layout_constraintStart_toEndOf="@id/btnDisminuir"
-            app:layout_constraintTop_toTopOf="parent" />
+                <!-- Cantidad -->
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="Cantidad"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnAumentar"
-            android:layout_width="90dp"
-            android:layout_height="200dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/boton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                <!-- Total -->
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="Precio"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Tabla de datos -->
+            <TableLayout
+                android:id="@+id/tlProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:stretchColumns="*">
+                <!-- Aquí se agregarán las filas de datos dinámicamente -->
+            </TableLayout>
 
+            <!-- Fila para mostrar el total -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:id="@+id/tvTotalLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Total"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotalAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.00"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
-        android:id="@+id/btnGuardar"
+        android:id="@+id/btnGuardarVenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/boton"
-        android:text="Guardar"
-        android:textSize="30sp" />
+        android:text="Guardar venta"
+        android:textSize="18sp" />
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_margin="10dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvConfirmacion"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
+

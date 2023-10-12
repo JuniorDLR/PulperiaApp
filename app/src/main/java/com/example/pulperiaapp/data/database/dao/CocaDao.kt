@@ -1,37 +1,16 @@
 package com.example.pulperiaapp.data.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.Update
 import com.example.pulperiaapp.data.database.entitie.coca.PrecioCocaEntity
-import com.example.pulperiaapp.data.database.entitie.coca.VentaCocaConPrecio
-import com.example.pulperiaapp.data.database.entitie.coca.VentaCocaEntity
 
 @Dao
 interface CocaDao {
 
-    //venta
-
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertarVentaCoca(ventaCoca: VentaCocaEntity)
-
-    @Query("SELECT * FROM tbl_venta_coca ORDER BY id")
-    suspend fun obtenerVentaCoca(): List<VentaCocaEntity>
-
-    @Delete
-    suspend fun eliminarVentaCoca(ventaCoca: VentaCocaEntity)
-
-    @Update
-    suspend fun editarVentaCoca(ventaCoca: VentaCocaEntity)
-
 
     //precio
-
 
     @Query("SELECT * FROM tbl_precio_coca")
     suspend fun obtenerPrecioCoca(): List<PrecioCocaEntity>

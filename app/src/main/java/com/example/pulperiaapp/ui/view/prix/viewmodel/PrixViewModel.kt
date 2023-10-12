@@ -13,7 +13,9 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PrixViewModel @Inject constructor(private val useCasePrix: UseCasePrix) : ViewModel() {
+class PrixViewModel @Inject constructor(
+    private val useCasePrix: UseCasePrix
+) : ViewModel() {
 
 
     private val _prixModel = MutableLiveData<List<TablaPrix>>()
