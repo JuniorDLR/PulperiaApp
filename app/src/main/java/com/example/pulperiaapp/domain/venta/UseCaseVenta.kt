@@ -3,6 +3,7 @@ package com.example.pulperiaapp.domain.venta
 import com.example.pulperiaapp.data.Repository.VentaRepositorio
 
 import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 import javax.inject.Inject
 

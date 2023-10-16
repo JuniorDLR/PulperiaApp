@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
 
 import com.example.pulperiaapp.domain.venta.UseCaseVenta
-import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

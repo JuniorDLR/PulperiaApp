@@ -3,7 +3,7 @@ package com.example.pulperiaapp.data.database.entitie.venta
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 
 @Entity("tbl_venta_prix_coca")

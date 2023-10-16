@@ -120,7 +120,7 @@ class TablaPrixFragment : Fragment() {
         val idEditar = binding.tvIdEditarPrix.text.toString()
         val precioEditar = binding.tvPrecioEditarPrix.text.toString()
 
-        if (idEditar.isEmpty() && precioEditar.isEmpty()) {
+        if (idEditar == "" && precioEditar == "") {
             Toast.makeText(requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG)
                 .show()
 

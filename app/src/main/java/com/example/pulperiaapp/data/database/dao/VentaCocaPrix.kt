@@ -8,7 +8,7 @@ import androidx.room.Query
 
 import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
 
-import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 @Dao
 interface VentaCocaPrix {

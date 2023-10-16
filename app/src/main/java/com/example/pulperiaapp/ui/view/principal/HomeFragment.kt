@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.principal
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toolbar
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentHomeBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
 
@@ -40,6 +44,12 @@ class HomeFragment : Fragment() {
                     true
                 }
 
+                R.id.tablaCliente -> {
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.registrarClienteFragment)
+                    true
+                }
+
 
                 else -> {
 
@@ -51,6 +61,31 @@ class HomeFragment : Fragment() {
 
         return binding.root
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val calback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            cerrarSesion()
+        }
+        calback.isEnabled = true
+    }
+
+    private fun cerrarSesion() {
+        val alert = AlertDialog.Builder(requireContext())
+            .setTitle("ADVERTENCIA")
+            .setMessage("¿Estas seguro que desea cerrar sesion?")
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
+                    false
+                val navController = Navigation.findNavController(binding.root)
+                navController.popBackStack()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        alert.show()
     }
 
 }

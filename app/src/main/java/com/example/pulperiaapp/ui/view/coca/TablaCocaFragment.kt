@@ -153,12 +153,12 @@ class TablaCocaFragment : Fragment() {
 
 
         if (id == "" && precio == "") {
-            Toast.makeText(
-                requireContext(),
-                "Los campos no pueden quedar vacios",
-                Toast.LENGTH_LONG
-            )
-                .show()
+            AlertDialog.Builder(requireContext())
+                .setTitle("ADVERTENCIA")
+                .setMessage("Los campos no pueden quedar vacios")
+                .setPositiveButton("Continuar") { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
         } else {
             val idInt = id.toInt()
             val precioDouble = precio.toDouble()

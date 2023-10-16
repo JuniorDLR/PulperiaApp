@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ItemVentaBinding
-import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import java.text.SimpleDateFormat
 import kotlin.collections.List
 import java.util.Date

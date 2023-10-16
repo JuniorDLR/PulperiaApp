@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.prix
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +37,12 @@ class AgregarPrixFragment : Fragment() {
         val precio = binding.tvAgregarPrecioP.text.toString()
 
         if (producto == "" && precio == "") {
-            Toast.makeText(requireContext(), "Los campos estan vaciones", Toast.LENGTH_LONG).show()
+            AlertDialog.Builder(requireContext())
+                .setTitle("ADVERTENCIA")
+                .setMessage("Los campos no pueden quedar vacios")
+                .setPositiveButton("Continuar") { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
         } else {
             val precioDouble = precio.toDouble()
             val precioPrixEntity = PrecioPrixEntity(0, producto, precioDouble)

@@ -6,37 +6,70 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentCreditoBinding
+import com.example.pulperiaapp.ui.view.credito.adapter.AdapterAmoroso
+import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class CreditoFragment : Fragment() {
 
+    private val amorosoModel: CreditoViewModel by viewModels()
     private lateinit var binding: FragmentCreditoBinding
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AdapterAmoroso
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCreditoBinding.inflate(layoutInflater, container, false)
+        initComponent()
+        amorosoModel.obtenerCredito()
+        amorosoModel.amorosoModel.observe(viewLifecycleOwner) { lista ->
+            adapter.setLista(lista)
 
-
-
-
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnAgregarCliente.setOnClickListener {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_creditoFragment_to_registrarClienteFragment)
-            Log.e("BOTON PULSADO", "CLIENTE")
-        }
 
         binding.btnRegistrarMoroso.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.action_creditoFragment_to_amorosoFragment)
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_creditoFragment_to_amorosoFragment)
         }
+        binding.shAmoroso.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return true
+
+            }
+
+        })
+    }
+
+    private fun initComponent() {
+        recyclerView = binding.rvAmoroso
+        val managuer = LinearLayoutManager(requireContext())
+        managuer.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = managuer
+        adapter = AdapterAmoroso()
+        recyclerView.adapter = adapter
+
     }
 
 }

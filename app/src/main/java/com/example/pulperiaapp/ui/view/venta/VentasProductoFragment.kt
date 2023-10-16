@@ -19,7 +19,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
 import com.example.pulperiaapp.data.database.entitie.venta.toDomain
 import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
-import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -11,4 +11,11 @@
         android:id="@+id/tablaCoca"
         android:title="Coca cola"
         app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/tablaCliente"
+        android:title="Amoroso"
+        app:showAsAction="collapseActionView"
+
+        />
 </menu>

@@ -1,6 +1,7 @@
 package com.example.pulperiaapp.ui.view.coca
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,10 +36,15 @@ class AgregarCocaFragment : Fragment() {
 
         binding = FragmentAgregarCocaBinding.inflate(inflater, container, false)
 
+
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnAgregarCoca.setOnClickListener { agregarProductoCoca() }
-
-
-        return binding.root// Inflate the layout for this fragment
     }
 
     private fun agregarProductoCoca() {
@@ -47,7 +53,12 @@ class AgregarCocaFragment : Fragment() {
         val precio = binding.tvAgregarPrecio.text.toString()
 
         if (producto == "" && precio == "") {
-            Toast.makeText(requireContext(), "Los campos estan vaciones", Toast.LENGTH_LONG).show()
+            AlertDialog.Builder(requireContext())
+                .setTitle("ADVERTENCIA")
+                .setMessage("Los campos no pueden quedar vaciones")
+                .setPositiveButton("Continuar") { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
         } else {
             val precioDouble = precio.toDouble()
             val precioCocaEntity = PrecioCocaEntity(0, producto = producto, precio = precioDouble)

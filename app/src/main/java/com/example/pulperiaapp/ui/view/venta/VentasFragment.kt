@@ -62,7 +62,7 @@ class VentasFragment : Fragment() {
     }
 
 
-    fun initComponent() {
+    private fun initComponent() {
         recyclerView = binding.rvVentas
         val linear = LinearLayoutManager(requireContext())
         linear.orientation = LinearLayoutManager.VERTICAL
