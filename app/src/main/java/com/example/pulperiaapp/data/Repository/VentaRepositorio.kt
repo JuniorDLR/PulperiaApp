@@ -1,7 +1,7 @@
 package com.example.pulperiaapp.data.Repository
 
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
-import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
+import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import javax.inject.Inject

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.view.prix.AgregarPrixFragment">
 
-
-    <TextView
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="LOGO PRIX"
-        android:textAlignment="center"
-        android:textSize="40sp" />
+        android:background="@color/fondo"
+        app:title="Producto Prix"
+        app:titleTextColor="@color/white" />
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -26,7 +27,7 @@
             android:id="@+id/tvProducoAgregarP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese un producto"
+            android:hint="@string/ingrese_un_producto"
             android:inputType="text">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -43,7 +44,7 @@
             android:id="@+id/tvAgregarPrecioP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese un precio"
+            android:hint="@string/ingrese_un_precio"
             android:inputType="numberDecimal">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -53,12 +54,12 @@
 
     <Button
         android:id="@+id/btnAgregarPrix"
-        android:layout_width="170dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@color/boton"
-        android:text="Agregar producto"
-        android:textSize="15sp"
+        android:backgroundTint="@color/fondo"
+        android:text="@string/agregar_producto"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
 </LinearLayout>

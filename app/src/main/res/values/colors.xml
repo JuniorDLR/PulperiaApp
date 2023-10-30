@@ -2,10 +2,13 @@
 <resources>
     <color name="black">#000000</color>
     <color name="letra">#FFFFFFFF</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="fondo">#bbc5cc</color>
-    <color name="boton">#0464c8</color>
+    <color name="white">#ffffff</color>
+
+    <color name="buscador">#D9D9D9</color>
+    <color name="fondo">#275457</color>
+    <color name="boton">#192933</color>
     <color name="item">#22A0AF</color>
+    <color name="itemContraseña">#b1dbdd</color>
 
 
 </resources>

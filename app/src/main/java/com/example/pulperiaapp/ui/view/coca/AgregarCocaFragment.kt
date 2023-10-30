@@ -1,24 +1,15 @@
 package com.example.pulperiaapp.ui.view.coca
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import com.example.pulperiaapp.R
-import com.example.pulperiaapp.data.database.entitie.coca.PrecioCocaEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarCocaBinding
-import com.example.pulperiaapp.domain.coca.TablaCoca
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +23,7 @@ class AgregarCocaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentAgregarCocaBinding.inflate(inflater, container, false)
 

@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.pulperiaapp.R
-import com.example.pulperiaapp.data.database.entitie.cliente.ClienteEntity
+import com.example.pulperiaapp.data.database.entitie.ClienteEntity
 import com.example.pulperiaapp.databinding.FragmentRegistrarClienteBinding
 import com.example.pulperiaapp.ui.view.credito.viewmodel.ClienteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.coroutines.suspendCoroutine
 
 @AndroidEntryPoint
 class RegistrarClienteFragment : Fragment() {
@@ -25,7 +23,7 @@ class RegistrarClienteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRegistrarClienteBinding.inflate(inflater, container, false)
 
 

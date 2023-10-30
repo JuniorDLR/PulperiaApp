@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.pulperiaapp.data.database.entitie.prix.PrecioPrixEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 
 @Dao
 interface PrixDao {

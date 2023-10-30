@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.pulperiaapp.data.database.entitie.coca.PrecioCocaEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 
 @Dao
 interface CocaDao {

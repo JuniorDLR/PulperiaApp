@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.view.cliente.RegistrarClienteFragment">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        app:title="Registrando amoroso"
+        app:titleTextColor="@color/white" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -18,7 +25,7 @@
             android:id="@+id/tvCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese un nombre"
+            android:hint="@string/ingrese_un_nombre"
             android:inputType="text">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -30,9 +37,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@color/boton"
-        android:text="Registrar cliente"
-        android:textSize="25sp">
+        android:backgroundTint="@color/fondo"
+        android:text="@string/registrar"
+        android:textSize="20sp">
 
     </Button>
 

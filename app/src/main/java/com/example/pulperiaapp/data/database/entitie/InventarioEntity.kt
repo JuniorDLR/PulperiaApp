@@ -1,11 +1,9 @@
-package com.example.pulperiaapp.data.database.entitie.inventario
+package com.example.pulperiaapp.data.database.entitie
 
-import android.graphics.Bitmap
-import android.provider.ContactsContract.RawContacts.Data
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity("tbl_inventario")
 data class InventarioEntity(

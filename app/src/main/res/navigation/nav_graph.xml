@@ -41,9 +41,6 @@
         android:label="fragment_credito"
         tools:layout="@layout/fragment_credito">
         <action
-            android:id="@+id/action_creditoFragment_to_registrarClienteFragment"
-            app:destination="@id/registrarClienteFragment" />
-        <action
             android:id="@+id/action_creditoFragment_to_amorosoFragment"
             app:destination="@id/amorosoFragment" />
     </fragment>

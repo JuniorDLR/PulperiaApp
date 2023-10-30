@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pulperiaapp.data.database.entitie.coca.PrecioCocaEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 import com.example.pulperiaapp.domain.coca.TablaCoca
 import com.example.pulperiaapp.domain.coca.UseCaseTablaCoca
 import dagger.hilt.android.lifecycle.HiltViewModel

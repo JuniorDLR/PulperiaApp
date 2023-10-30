@@ -1,8 +1,7 @@
 package com.example.pulperiaapp.domain.prix
 
-import android.util.Log
 import com.example.pulperiaapp.data.Repository.TablaPrixRepsitory
-import com.example.pulperiaapp.data.database.entitie.prix.PrecioPrixEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import javax.inject.Inject
 
 class UseCasePrix @Inject constructor(private val tablaPrixRepsitory: TablaPrixRepsitory) {

@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.venta
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,8 +17,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pulperiaapp.R
-import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
-import com.example.pulperiaapp.data.database.entitie.venta.toDomain
+import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
+import com.example.pulperiaapp.data.database.entitie.toDomain
 import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
@@ -38,7 +39,7 @@ class VentasProductoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentVentasProductoBinding.inflate(inflater, container, false)
         initComponent()
@@ -64,7 +65,7 @@ class VentasProductoFragment : Fragment() {
     }
 
     private fun guardarProducto() {
-        var totalVenta: Double = 0.0
+        var totalVenta = 0.0
         val productosVendidos = mutableListOf<String>()
         val prodcutoCantidad = mutableListOf<String>()
 
@@ -75,7 +76,6 @@ class VentasProductoFragment : Fragment() {
             prodcutoCantidad.add(venta.value.first.toString())
         }
 
-        // Crea una instancia de VentaPrixCocaDetalle con la lista de productos vendidos
         val ventaConProductos = VentaPrixCocaDetalle(
             VentaPrixCoca(
                 0,
@@ -212,7 +212,7 @@ class VentasProductoFragment : Fragment() {
 
     fun guardarVenta(productoSeleccionado: String, precioProducto: Double) {
         if (productosSeleccionados.containsKey(productoSeleccionado)) {
-            val (cantidadExistente, precioExistente) = productosSeleccionados[productoSeleccionado]!!
+            val (cantidadExistente) = productosSeleccionados[productoSeleccionado]!!
             val nuevaCantidad = cantidadExistente + 1
             val nuevoPrecio =
                 nuevaCantidad * precioProducto
@@ -225,13 +225,12 @@ class VentasProductoFragment : Fragment() {
     }
 
 
+    @SuppressLint("InflateParams")
     private fun actualizarTabla() {
         tableLayout.removeAllViews()
 
-
-        var precioTotal: Double = 0.0
+        var precioTotal = 0.0
         for ((producto, info) in productosSeleccionados) {
-
             val cantidad = info.first
             val precio = info.second
 
@@ -241,22 +240,35 @@ class VentasProductoFragment : Fragment() {
             val productoView = tableRow.findViewById<TextView>(R.id.tvIdR)
             productoView.text = producto
 
-
             val cantidadView = tableRow.findViewById<TextView>(R.id.tvProductoR)
             cantidadView.text = cantidad.toString()
-
 
             val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
             precioView.text = precio.toString()
 
+
+
+            productoView.setOnClickListener {
+                if (cantidad > 1) {
+                    val newCantidad = cantidad - 1
+                    val newPrecio = newCantidad * precio / cantidad
+                    productosSeleccionados[producto] = Pair(newCantidad, newPrecio)
+                    actualizarTabla()
+
+
+                } else {
+                    productosSeleccionados.remove(producto)
+                    actualizarTabla()
+                }
+            }
+
+
+
             tableLayout.addView(tableRow)
             precioTotal += precio
-
-
         }
+
         binding.tvTotalAmount.text = precioTotal.toString()
-
-
     }
 
 

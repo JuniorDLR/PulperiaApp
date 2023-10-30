@@ -1,7 +1,7 @@
 package com.example.pulperiaapp.ui.view.venta.viewmodel
 
 import androidx.room.Embedded
-import com.example.pulperiaapp.data.database.entitie.venta.VentaPrixCoca
+import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 
 data class VentaPrixCocaDetalle(

@@ -1,7 +1,7 @@
 package com.example.pulperiaapp.ui.view.credito.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.pulperiaapp.data.database.entitie.cliente.ClienteEntity
+import com.example.pulperiaapp.data.database.entitie.ClienteEntity
 import com.example.pulperiaapp.domain.amoroso.UseCaseCliente
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

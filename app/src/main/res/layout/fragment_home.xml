@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo"
+    android:background="@color/white"
     tools:context=".ui.view.principal.HomeFragment">
 
 
-    <include
-        layout="@layout/app_toolbar"/>
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="Bienvenido a la aplicacion pulperia total"
-        android:textAlignment="center"
-        android:textSize="35sp"
-        android:textStyle="bold" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/fondo"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:title="Menu principal"
+        app:titleTextColor="@color/white" />
 
 
 </FrameLayout>

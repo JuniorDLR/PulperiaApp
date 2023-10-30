@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.domain.prix
 
-import com.example.pulperiaapp.data.database.entitie.prix.PrecioPrixEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 
 data class TablaPrix(val id: Int, val producto: String, val precio: Double)
 

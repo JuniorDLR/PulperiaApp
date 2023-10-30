@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:text="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
@@ -11,76 +11,33 @@
 
 
     <LinearLayout
-        android:id="@+id/btnEstado"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:orientation="vertical">
 
 
-        <LinearLayout
-            android:id="@+id/llTexView"
+        <TextView
+            android:id="@+id/tvCliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/tvCliente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cliente"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvListProducto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="18sp"
-                text:text="Prix 2l - 2" />
-
-
-        </LinearLayout>
+            android:text="@string/cliente"
+            android:textSize="18sp" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tvPrecioTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total:"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="18sp"
-                text:text="30.0" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estado:"
+                android:text="@string/estado"
                 android:textSize="18sp" />
 
             <ImageView
@@ -89,25 +46,8 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:contentDescription="Estado"
+                android:contentDescription="@string/estado"
                 android:src="@drawable/cancelado" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" 20-05-21"
-                android:textSize="18sp" />
 
 
         </LinearLayout>

@@ -1,14 +1,14 @@
 package com.example.pulperiaapp.domain.amoroso
 
 
-import com.example.pulperiaapp.data.database.entitie.credito.CreditoEntity
+import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 
 data class VentaAmorosoDetalle(
     val cliente: String,
     val producto: List<String>,
     val cantidad: List<String>,
     val precio_total: Double,
-    val fecha: Long,
+    val fecha: String,
     var estado_pago: Boolean
 )
 

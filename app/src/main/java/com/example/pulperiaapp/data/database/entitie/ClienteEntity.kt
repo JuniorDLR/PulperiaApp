@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.data.database.entitie.cliente
+package com.example.pulperiaapp.data.database.entitie
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

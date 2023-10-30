@@ -48,4 +48,9 @@ object RoomModule {
     @Provides
     @Singleton
     fun providerVenta(db: Database) = db.venta()
+
+    @Provides
+    @Singleton
+    fun providerBigCola(db: Database) = db.getBigColca()
+
 }

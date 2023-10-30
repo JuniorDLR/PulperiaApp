@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.view.venta.VentasFragment">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        app:title="Ventas"
+        app:titleTextColor="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,14 +26,14 @@
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@color/white" />
+            android:background="@color/buscador" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAgregarVenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:backgroundTint="@color/boton"
+            android:backgroundTint="@color/fondo"
             android:src="@drawable/baseline_add_24" />
 
     </LinearLayout>

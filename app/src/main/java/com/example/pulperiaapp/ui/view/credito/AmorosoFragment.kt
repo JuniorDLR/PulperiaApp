@@ -1,8 +1,8 @@
 package com.example.pulperiaapp.ui.view.credito
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +16,15 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pulperiaapp.R
-import com.example.pulperiaapp.data.database.entitie.credito.CreditoEntity
+import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 import com.example.pulperiaapp.databinding.FragmentAmorosoBinding
 import com.example.pulperiaapp.ui.view.credito.viewmodel.ClienteViewModel
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class AmorosoFragment : Fragment() {
@@ -35,11 +38,12 @@ class AmorosoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentAmorosoBinding.inflate(inflater, container, false)
         tableLayout = binding.tlProducto
         tableRow = binding.trProducto
+
         return binding.root
     }
 
@@ -60,48 +64,52 @@ class AmorosoFragment : Fragment() {
         binding.btnGuardarAmoroso.setOnClickListener {
             guardarVentaAmoroso()
         }
+
     }
 
     private fun guardarVentaAmoroso() {
+        var precioTotal = 0.0
+        val fechaFormateada =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         val amoroso = binding.atvMoroso.text.toString()
-        val prodcutoVendida = mutableListOf<String>()
-        val prodcutoCantidad = mutableListOf<String>()
+        val amorosoEntities = mutableListOf<CreditoEntity>()
+        if (amoroso.isNotEmpty()) {
 
-        if (!amoroso.isEmpty()) {
 
-            for ((prodcuto, info) in productoSeleccionados) {
-
-                val cantidad = info.first
-                val precio = info.second
-                prodcutoVendida.add(prodcuto)
-                prodcutoCantidad.add(cantidad.toString())
+            for ((producto, info) in productoSeleccionados) {
+                val cantidad = info.first.toString()
+                precioTotal += info.second
 
                 val amorosoEntity = CreditoEntity(
                     0,
                     amoroso,
-                    prodcutoVendida.joinToString(" , "),
-                    prodcutoCantidad.joinToString(" , "),
-                    precio,
-                    System.currentTimeMillis(),
+                    producto,
+                    cantidad,
+                    precioTotal,
+                    fechaFormateada,
                     false
                 )
-                creditoViewModel.insertarCredito(amorosoEntity)
+
+                amorosoEntities.add(amorosoEntity)
             }
+
+            // Insertar los créditos en el ViewModel
+            creditoViewModel.insertarCredito(amorosoEntities)
 
             requireActivity().supportFragmentManager.popBackStack()
             Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)
                 .show()
         } else {
-
-            AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
+            AlertDialog.Builder(requireContext())
+                .setTitle("ADVERTENCIA")
                 .setMessage("Debes de ingresar un amoroso")
                 .setPositiveButton("Continuar") { dialog, _ ->
                     dialog.dismiss()
-                }.show()
+                }
+                .show()
         }
-
-
     }
+
 
     private fun cocaItem() {
         lifecycleScope.launch {
@@ -203,7 +211,7 @@ class AmorosoFragment : Fragment() {
     private fun guardarVenta(productoSeleccionado: String, obtenerPrecio: Double) {
 
         if (productoSeleccionados.containsKey(productoSeleccionado)) {
-            val (cantidad, precio) = productoSeleccionados[productoSeleccionado]!!
+            val (cantidad) = productoSeleccionados[productoSeleccionado]!!
             val nuevaCantidad = cantidad + 1
             val nuevoPrecio = nuevaCantidad * obtenerPrecio
             productoSeleccionados[productoSeleccionado] = Pair(nuevaCantidad, nuevoPrecio)
@@ -218,9 +226,10 @@ class AmorosoFragment : Fragment() {
 
     }
 
+    @SuppressLint("InflateParams")
     private fun actualizarTabla() {
         tableLayout.removeAllViews()
-        var precioTotal: Double = 0.0
+        var precioTotal = 0.0
 
         for ((producto, info) in productoSeleccionados) {
             tableRow = LayoutInflater.from(requireContext())

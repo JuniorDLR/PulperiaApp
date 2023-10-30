@@ -1,13 +1,14 @@
 package com.example.pulperiaapp.ui.view.credito
 
 import android.os.Bundle
-import android.util.Log
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.SearchView
+import android.widget.Toast
+
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CreditoFragment : Fragment() {
 
     private val amorosoModel: CreditoViewModel by viewModels()
+
     private lateinit var binding: FragmentCreditoBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterAmoroso
@@ -32,18 +34,20 @@ class CreditoFragment : Fragment() {
     ): View {
         binding = FragmentCreditoBinding.inflate(layoutInflater, container, false)
         initComponent()
-        amorosoModel.obtenerCredito()
-        amorosoModel.amorosoModel.observe(viewLifecycleOwner) { lista ->
-            adapter.setLista(lista)
 
+        amorosoModel.groupedAmorosoModel.observe(viewLifecycleOwner) { lista ->
+
+            adapter.setLista(lista)
         }
+
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        amorosoModel.actualizarDatos()
         binding.btnRegistrarMoroso.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_creditoFragment_to_amorosoFragment)
@@ -67,9 +71,18 @@ class CreditoFragment : Fragment() {
         val managuer = LinearLayoutManager(requireContext())
         managuer.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = managuer
-        adapter = AdapterAmoroso()
+        adapter = AdapterAmoroso(
+            onClickUpdate = { cliente -> actualizarPago(cliente) }, requireContext()
+        )
         recyclerView.adapter = adapter
 
     }
+
+    private fun actualizarPago(cliente: String) {
+        amorosoModel.actualizarEstado(true, cliente)
+        Toast.makeText(requireContext(), "El cliente ya pago", Toast.LENGTH_LONG).show()
+
+    }
+
 
 }

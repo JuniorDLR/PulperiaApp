@@ -1,8 +1,7 @@
 package com.example.pulperiaapp.data.Repository
 
-import android.util.Log
 import com.example.pulperiaapp.data.database.dao.PrixDao
-import com.example.pulperiaapp.data.database.entitie.prix.PrecioPrixEntity
+import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import com.example.pulperiaapp.domain.prix.TablaPrix
 import com.example.pulperiaapp.domain.prix.toDomain
 import javax.inject.Inject

@@ -1,8 +1,7 @@
 package com.example.pulperiaapp.data.Repository
 
-import androidx.room.util.query
 import com.example.pulperiaapp.data.database.dao.ClienteDao
-import com.example.pulperiaapp.data.database.entitie.cliente.ClienteEntity
+import com.example.pulperiaapp.data.database.entitie.ClienteEntity
 import javax.inject.Inject
 
 class ClienteRepositorio @Inject constructor(
