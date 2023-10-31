@@ -1,184 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    android:orientation="vertical"
     tools:context=".ui.view.coca.TablaCocaFragment">
 
-  <androidx.appcompat.widget.Toolbar
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/fondo"
-      app:title="Tabla coca"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-      app:titleTextColor="@color/white"
-
-      />
-
-    <LinearLayout
-        android:id="@+id/LinearProductoCoca"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <SearchView
-            android:id="@+id/svTablaProductoCoca"
-            android:layout_width="325dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/buscador" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnAgregarProductoCoca"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            app:rippleColor="@color/white"
-            android:backgroundTint="@color/fondo"
-            android:contentDescription="@string/agregarprix"
-            android:src="@drawable/baseline_add_24"
-            tools:targetApi="lollipop" />
-
-    </LinearLayout>
-
     <ScrollView
-        android:id="@+id/svTablaCoca"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_height="wrap_content">
 
 
-        <TableLayout
-            android:id="@+id/tbCoca"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*">
+            android:orientation="vertical">
 
-            <TableRow
-                android:id="@+id/trCoca"
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                tools:ignore="UselessParent">
+                android:background="@color/fondo"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:title="Tabla coca"
 
+                app:titleTextColor="@color/white"
 
-                <TextView
-                    android:id="@+id/tvIdCoca"
-                    android:layout_width="0dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/LinearProductoCoca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <SearchView
+                    android:id="@+id/svTablaProductoCoca"
+                    android:layout_width="325dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/header_shape"
-                    android:gravity="center"
-                    android:text="@string/id"
+                    android:layout_margin="10dp"
+                    android:background="@color/buscador" />
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnAgregarProductoCoca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/fondo"
+                    android:contentDescription="@string/agregarprix"
+                    android:src="@drawable/baseline_add_24"
+                    app:rippleColor="@color/white"
+                    tools:targetApi="lollipop" />
+
+            </LinearLayout>
+
+
+            <TableLayout
+                android:id="@+id/tbCoca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:id="@+id/trCoca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+
+                    tools:ignore="UselessParent">
+
+
+                    <TextView
+                        android:id="@+id/tvIdCoca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/id"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvProductoCoca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/producto"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPrecioCoca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/precio"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+
+            </TableLayout>
+
+
+            <ScrollView
+                android:id="@+id/svTablaCoca"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:layout_marginHorizontal="10dp">
+                <!-- Tabla de datos -->
+                <TableLayout
+                    android:id="@+id/tlProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+                    <!-- Aquí se agregarán las filas de datos dinámicamente -->
+                </TableLayout>
+
+
+            </ScrollView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvIdEditarCoca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ingrese_un_id"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    tools:text="4">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvPrecioEditarCoca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ingrese_un_precio"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/black"
+                    tools:text="320.0">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnEditarProductoCoca"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/fondo"
+                    android:text="@string/editar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:targetApi="lollipop" />
 
-                <TextView
-                    android:id="@+id/tvProductoCoca"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/btnElimimarProductoCoca"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/header_shape"
-                    android:gravity="center"
-                    android:text="@string/producto"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/fondo"
+                    android:text="@string/eliminar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvPrecioCoca"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/header_shape"
-                    android:gravity="center"
-                    android:text="@string/precio"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </TableRow>
-        </TableLayout>
-
+                    android:textStyle="bold"
+                    tools:targetApi="lollipop" />
+            </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tvIdEditarCoca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/ingrese_un_id"
-            android:inputType="number"
-            android:textColor="@color/white">
-
-        </com.google.android.material.textfield.TextInputEditText>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tvPrecioEditarCoca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/ingrese_un_precio"
-            android:inputType="numberDecimal">
-
-        </com.google.android.material.textfield.TextInputEditText>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnEditarProductoCoca"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/fondo"
-            android:text="@string/editar"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:targetApi="lollipop" />
-
-        <Button
-            android:id="@+id/btnElimimarProductoCoca"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/fondo"
-            android:text="@string/eliminar"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:targetApi="lollipop" />
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="10dp"
-    android:background="@color/white"
+    android:backgroundTint="@color/itemView"
     app:cardCornerRadius="16dp">
 
     <LinearLayout
@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Producto vendido:"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -34,6 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 text:text="Prix 2l" />
 
@@ -53,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total:"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -61,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 text:text="30.0" />
 
@@ -75,6 +79,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/white"
                 android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

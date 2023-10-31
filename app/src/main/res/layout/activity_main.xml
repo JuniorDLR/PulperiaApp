@@ -21,11 +21,14 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/NavigationBottom"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:background="@color/fondo"
-        app:itemIconTint="@color/buscador"
+        app:itemBackground="@drawable/selector_item_icon_tint"
+        app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

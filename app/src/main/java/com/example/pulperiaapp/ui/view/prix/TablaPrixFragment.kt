@@ -13,6 +13,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
@@ -37,7 +38,12 @@ class TablaPrixFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTablaPrixBinding.inflate(inflater, container, false)
-
+        binding.btnAgregarProductoPrix.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
         prixViewModel.obtenerPrixTabla()
         prixViewModel.prixModel.observe(viewLifecycleOwner) { lists ->
             mostrarTabla(lists)
@@ -64,7 +70,7 @@ class TablaPrixFragment : Fragment() {
         binding.btnEliminarProductoPrix.setOnClickListener {
             eliminarProducto()
         }
-        tableLayout = binding.tlPrix
+        tableLayout = binding.tlProducto
         searchView = binding.svTablaProductoPrix
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -136,28 +142,7 @@ class TablaPrixFragment : Fragment() {
     @SuppressLint("SetTextI18n", "InflateParams")
     private fun mostrarTabla(lists: List<TablaPrix>) {
 
-        val tableLoyout = binding.tlPrix
-        tableLoyout.removeAllViews()
-
-
-        val header =
-            LayoutInflater.from(requireContext()).inflate(R.layout.tabla_row_item, null) as TableRow
-
-        val headerId = header.findViewById<TextView>(R.id.tvIdR)
-        headerId.text = "ID"
-        headerId.setTypeface(null, Typeface.BOLD)
-
-        val headerProducto = header.findViewById<TextView>(R.id.tvProductoR)
-        headerProducto.text = "Producto"
-        headerProducto.setTypeface(null, Typeface.BOLD)
-
-        val headerPrecio = header.findViewById<TextView>(R.id.tvPrecioR)
-        headerPrecio.text = "Precio"
-        headerPrecio.setTypeface(null, Typeface.BOLD)
-
-
-        tableLoyout.addView(header)
-
+        tableLayout.removeAllViews()
         for (row in lists) {
             val tableRow = LayoutInflater.from(requireContext())
                 .inflate(R.layout.tabla_row_item, null) as TableRow
@@ -173,7 +158,7 @@ class TablaPrixFragment : Fragment() {
             precio.text = row.precio.toString()
 
 
-            tableLoyout.addView(tableRow)
+            tableLayout.addView(tableRow)
         }
     }
 

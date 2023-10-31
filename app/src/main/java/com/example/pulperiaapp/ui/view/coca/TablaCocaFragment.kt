@@ -15,6 +15,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
@@ -42,6 +43,12 @@ class TablaCocaFragment : Fragment() {
 
         binding = FragmentTablaCocaBinding.inflate(inflater, container, false)
         cocaViewModel.obtenerCocaTabla()
+        binding.btnAgregarProductoCoca.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
         cocaViewModel.cocaViewModel.observe(viewLifecycleOwner) { lists ->
             mostrarTabla(lists)
         }
@@ -65,7 +72,7 @@ class TablaCocaFragment : Fragment() {
         }
 
         searchView = binding.svTablaProductoCoca
-        tableLayout = binding.tbCoca
+        tableLayout = binding.tlProducto
 
         binding.svTablaProductoCoca.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -152,7 +159,7 @@ class TablaCocaFragment : Fragment() {
         val precio = binding.tvPrecioEditarCoca.text.toString()
 
 
-        if (id == "" && precio == "") {
+        if (id.isNotEmpty() && precio.isNotEmpty()) {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
                 .setMessage("Los campos no pueden quedar vacios")
@@ -174,35 +181,13 @@ class TablaCocaFragment : Fragment() {
     }
 
 
-    @SuppressLint("SetTextI18n", "InflateParams")
     private fun mostrarTabla(lists: List<TablaCoca>) {
 
-        val tableLayout = binding.tbCoca
         tableLayout.removeAllViews() // Limpiar la tabla antes de agregar nuevas filas
-
-        val header =
-            LayoutInflater.from(requireContext()).inflate(R.layout.tabla_row_item, null) as TableRow
-
-        val headerId = header.findViewById<TextView>(R.id.tvIdR)
-        headerId.text = "ID"
-        headerId.setTypeface(null, Typeface.BOLD)
-
-        val headerProducto = header.findViewById<TextView>(R.id.tvProductoR)
-        headerProducto.text = "Producto"
-        headerProducto.setTypeface(null, Typeface.BOLD)
-
-
-        val headerPrecio = header.findViewById<TextView>(R.id.tvPrecioR)
-        headerPrecio.text = "Precio"
-        headerPrecio.setTypeface(null, Typeface.BOLD)
-
-
-        tableLayout.addView(header)
 
         for (row in lists) {
             val tableRow = LayoutInflater.from(requireContext())
                 .inflate(R.layout.tabla_row_item, null) as TableRow
-
 
             val id = tableRow.findViewById<TextView>(R.id.tvIdR)
             id.text = row.id.toString()

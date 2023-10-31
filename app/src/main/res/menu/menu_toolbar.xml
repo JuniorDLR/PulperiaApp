@@ -13,9 +13,14 @@
         app:showAsAction="collapseActionView" />
 
     <item
+        android:id="@+id/tablaBigCola"
+        android:title="Big cola"
+        app:showAsAction="collapseActionView" />
+
+    <item
         android:id="@+id/tablaCliente"
         android:title="Amoroso"
-        app:showAsAction="collapseActionView"
+        app:showAsAction="collapseActionView" />
 
-        />
+
 </menu>

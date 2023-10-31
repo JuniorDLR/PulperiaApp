@@ -8,6 +8,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         navView.isVisible = false
+
+
+
+
 
 
 

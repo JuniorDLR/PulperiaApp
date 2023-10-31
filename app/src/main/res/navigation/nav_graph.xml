@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_seguridadFragment"
+            app:destination="@id/seguridadFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -25,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_tablaPrixFragment"
             app:destination="@id/tablaPrixFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_tablaBigColaFragment"
+            app:destination="@id/tablaBigColaFragment" />
     </fragment>
     <fragment
         android:id="@+id/ventasFragment"
@@ -101,4 +107,23 @@
         android:name="com.example.pulperiaapp.ui.view.cliente.RegistrarClienteFragment"
         android:label="fragment_registrar_cliente"
         tools:layout="@layout/fragment_registrar_cliente" />
+    <fragment
+        android:id="@+id/tablaBigColaFragment"
+        android:name="com.example.pulperiaapp.ui.view.bigcola.TablaBigColaFragment"
+        android:label="fragment_tabla_big_cola"
+        tools:layout="@layout/fragment_tabla_big_cola" >
+        <action
+            android:id="@+id/action_tablaBigColaFragment_to_agregandoBigFragment"
+            app:destination="@id/agregandoBigFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/agregandoBigFragment"
+        android:name="com.example.pulperiaapp.ui.view.bigcola.AgregandoBigFragment"
+        android:label="fragment_agregando_big"
+        tools:layout="@layout/fragment_agregando_big" />
+    <fragment
+        android:id="@+id/seguridadFragment"
+        android:name="com.example.pulperiaapp.ui.view.principal.SeguridadFragment"
+        android:label="fragment_seguridad"
+        tools:layout="@layout/fragment_seguridad" />
 </navigation>

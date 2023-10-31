@@ -2,21 +2,21 @@
     <string name="app_name">PulperiaApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="id">id</string>
-    <string name="producto">Producto</string>
-    <string name="precio">Precio</string>
+    <string name="id">ID</string>
+    <string name="producto">PRODUCTO</string>
+    <string name="precio">PRECIO</string>
     <string name="eliminar">Eliminar</string>
     <string name="editar">Editar</string>
     <string name="ingrese_un_id">Ingrese un id</string>
     <string name="ingrese_un_precio">Ingrese un precio</string>
     <string name="agregarprix">agregarPrix</string>
-    <string name="agregar">agregar</string>
+    <string name="agregar">Agregar</string>
     <string name="creditos">Creditos</string>
     <string name="inventario">Inventario</string>
     <string name="ventas">Ventas</string>
     <string name="home">Home</string>
-    <string name="estado">Estado</string>
-    <string name="cliente">Cliente</string>
+    <string name="estado">Estado -> </string>
+    <string name="cliente">Cliente -> </string>
     <string name="nombre_del_cliente">Nombre del Cliente</string>
     <string name="total_400_0">Total: 400.0</string>
     <string name="prix_cola_2l_2">Prix cola 2l - 2</string>
@@ -37,8 +37,10 @@
     <string name="guardar">Guardar</string>
     <string name="prix_cola">Prix cola</string>
     <string name="coca_cola">Coca cola</string>
-    <string name="cantidad">Cantidad</string>
-    <string name="total">total</string>
+    <string name="cantidad">CANTIDAD</string>
+    <string name="total">Total</string>
     <string name="_0_00">0.00</string>
     <string name="guardar_venta">Guardar venta</string>
+    <string name="junaxerdev">App desarrollada por JunaxerDev</string>
+    <string name="ingresa_tus_credenciales">Ingresa tus credenciales</string>
 </resources>

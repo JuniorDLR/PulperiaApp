@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.view.prix.TablaPrixFragment">
-
+    tools:context=".ui.view.bigcola.TablaBigColaFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,17 +19,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/fondo"
-                app:title="Tabla prix"
-                app:titleTextColor="@color/white" />
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:title="Tabla Big cola"
+
+                app:titleTextColor="@color/white"
+
+                />
 
             <LinearLayout
-                android:id="@+id/LinearProductoPrix"
+                android:id="@+id/LinearProductoBig"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <SearchView
-                    android:id="@+id/svTablaProductoPrix"
+                    android:id="@+id/svTablaProductoBig"
                     android:layout_width="325dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -39,27 +41,28 @@
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btnAgregarProductoPrix"
+                    android:id="@+id/btnAgregarProductoBig"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/fondo"
-                    android:contentDescription="@string/agregar"
+                    android:contentDescription="@string/agregarprix"
                     android:src="@drawable/baseline_add_24"
+                    app:rippleColor="@color/white"
                     tools:targetApi="lollipop" />
 
             </LinearLayout>
 
 
             <TableLayout
-                android:id="@+id/tlPrix"
+                android:id="@+id/tbBig"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:stretchColumns="*">
 
                 <TableRow
-                    android:id="@+id/trPrix"
+                    android:id="@+id/trBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -68,7 +71,7 @@
 
 
                     <TextView
-                        android:id="@+id/tvIdPrix"
+                        android:id="@+id/tvIdBig"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -80,7 +83,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvProductoPrix"
+                        android:id="@+id/tvProductoBig"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -92,7 +95,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvPrecioPrix"
+                        android:id="@+id/tvPrecioBig"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -105,25 +108,26 @@
 
                 </TableRow>
 
+
             </TableLayout>
 
+
             <ScrollView
-                android:id="@+id/svTablaPrix"
+                android:id="@+id/svTablaBig"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="330dp"
                 android:layout_marginHorizontal="10dp">
 
-                <!-- Tabla de datos -->
                 <TableLayout
-                    android:id="@+id/tlProducto"
+                    android:id="@+id/tlProductoBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="*">
-                    <!-- Aquí se agregarán las filas de datos dinámicamente -->
+
                 </TableLayout>
 
-            </ScrollView>
 
+            </ScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -131,7 +135,7 @@
                 android:layout_margin="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvIdEditarPrix"
+                    android:id="@+id/tvIdEditarBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/ingrese_un_id"
@@ -150,7 +154,7 @@
                 android:layout_margin="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvPrecioEditarPrix"
+                    android:id="@+id/tvPrecioEditarBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/ingrese_un_precio"
@@ -166,12 +170,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
                 <Button
-                    android:id="@+id/btnEditarProductoPrix"
+                    android:id="@+id/btnEditarProductoBig"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
@@ -185,25 +189,21 @@
                     android:textStyle="bold"
                     tools:targetApi="lollipop" />
 
-
                 <Button
-                    android:id="@+id/btnEliminarProductoPrix"
+                    android:id="@+id/btnElimimarProductoBig"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:backgroundTint="@color/fondo"
                     android:text="@string/eliminar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:targetApi="lollipop" />
-
             </LinearLayout>
-
-
         </LinearLayout>
+
     </ScrollView>
+
 </FrameLayout>

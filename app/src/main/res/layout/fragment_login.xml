@@ -12,14 +12,14 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:src="@drawable/logo"
-        android:contentDescription="@string/logo" />
+        android:layout_marginTop="40dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo" />
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="350dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         app:cardCornerRadius="16dp">
@@ -30,6 +30,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingresa_tus_credenciales"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp"
+                android:gravity="center_horizontal" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -73,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/fondo"
                 android:text="@string/iniciar_ses_on"
                 android:textColor="@color/letra"
@@ -81,6 +90,7 @@
 
 
             <TextView
+                android:id="@+id/tvRestablecer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -95,6 +105,21 @@
 
     </androidx.cardview.widget.CardView>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:text="@string/junaxerdev"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:src="@drawable/hacker" />
 
 </LinearLayout>
 

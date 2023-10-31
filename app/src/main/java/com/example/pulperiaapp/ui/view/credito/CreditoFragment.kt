@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -48,6 +49,12 @@ class CreditoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         amorosoModel.actualizarDatos()
+        binding.btnRegistrarMoroso.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
         binding.btnRegistrarMoroso.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_creditoFragment_to_amorosoFragment)

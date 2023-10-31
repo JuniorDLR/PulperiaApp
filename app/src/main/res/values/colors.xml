@@ -6,9 +6,11 @@
 
     <color name="buscador">#D9D9D9</color>
     <color name="fondo">#275457</color>
+    <color name="itemView">#3D6467</color>
     <color name="boton">#192933</color>
     <color name="item">#22A0AF</color>
     <color name="itemContraseña">#b1dbdd</color>
+    <color name="colorStatusBar">#275457</color>
 
 
 </resources>
