@@ -4,6 +4,7 @@ import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
+import java.time.Duration
 import javax.inject.Inject
 
 class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaPrix) {
@@ -28,11 +29,19 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
 
     }
 
+    suspend fun obtenerProdcutoBig():List<String>{
+        return ventaCocaPrix.obtenerProdcutoBig()
+    }
+
     suspend fun obtenerPrecioPrix(producto: String): Double {
         return ventaCocaPrix.obtenerPrecioPrix(producto)
     }
 
     suspend fun obtenerPrecioCoca(producto: String): Double {
         return ventaCocaPrix.obtenerPrecioCoca(producto)
+    }
+
+    suspend fun obtenerPrecioBig(producto: String):Double{
+        return ventaCocaPrix.obtenerPrecioBig(producto)
     }
 }

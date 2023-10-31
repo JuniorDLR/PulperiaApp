@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TableLayout
@@ -22,6 +23,8 @@ import com.example.pulperiaapp.data.database.entitie.toDomain
 import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,9 +33,9 @@ class VentasProductoFragment : Fragment() {
 
     private lateinit var binding: FragmentVentasProductoBinding
     private val ventaModel: VentaViewModel by viewModels()
-    private lateinit var spinnerPrix: Spinner
-    private lateinit var spinnerCoca: Spinner
+    private lateinit var spinnerProducto: Spinner
     private lateinit var tableRow: TableRow
+    private lateinit var chipGroup: ChipGroup
     private lateinit var tableLayout: TableLayout
     private val productosSeleccionados = mutableMapOf<String, Pair<Int, Double>>()
 
@@ -48,8 +51,8 @@ class VentasProductoFragment : Fragment() {
     }
 
     private fun initComponent() {
-        spinnerPrix = binding.spPrix
-        spinnerCoca = binding.spCoca
+        chipGroup = binding.chLista
+        spinnerProducto = binding.spProductos
         tableLayout = binding.tlProducto
         tableRow = binding.trProducto
     }
@@ -57,9 +60,74 @@ class VentasProductoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ventaPrix()
-        ventaCoca()
+        chipGroup.setOnCheckedStateChangeListener { group, checkId ->
+            for (idList in checkId) {
+                val selected = group.findViewById(idList) as Chip
+                when (selected.tag) {
+                    "Prixcola" -> ventaPrix()
+                    "BigCola" -> ventaBigCola()
+                    "Coca" -> ventaCoca()
+                    else -> {
+                        false
+                    }
+                }
+            }
+
+        }
         binding.btnGuardarVenta.setOnClickListener { guardarProducto() }
+
+
+    }
+
+    private fun ventaBigCola() {
+        lifecycleScope.launch {
+            val spinner = binding.spProductos
+            val lista = ventaModel.obtenerProductoBig()
+            val listaConcatenada = listOf("Lista Big cola") + lista
+
+            val adapter =
+                ArrayAdapter<String>(
+                    requireContext(),
+                    R.layout.simple_spinner_item,
+                    listaConcatenada
+                )
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    id: Long
+                ) {
+
+                    val productoSeleccionado = listaConcatenada[position]
+                    binding.btnGuardarProducto.setOnClickListener {
+                        if (position == 0 && productoSeleccionado == "Lista Big cola") {
+                            Toast.makeText(
+                                requireContext(),
+                                "Debe seleccionar un producto",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            lifecycleScope.launch {
+                                val precio = ventaModel.obtenerPrecioBig(productoSeleccionado)
+                                guardarVenta(productoSeleccionado, precio)
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        }
 
 
     }
@@ -95,19 +163,17 @@ class VentasProductoFragment : Fragment() {
 
     private fun ventaPrix() {
         lifecycleScope.launch {
-            val spinnerPrix = binding.spPrix
+            val spinnerPrix = binding.spProductos
             val listaString = ventaModel.obtenerProdcutoPrix()
-            val opcion = listOf("Seleccione un producto") + listaString
+            val opcion = listOf("Lista prix") + listaString
 
-            //se utiliza para asociar una matriz de datos (en este caso, listaString)
             val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, opcion)
 
-            //establecer el diseño que se utilizará para mostrar las opciones cuando el Spinner se despliegue como una lista.
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             spinnerPrix.adapter = adapter
 
 
-            spinnerPrix.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            spinnerPrix.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     p0: AdapterView<*>?,
                     p1: View?,
@@ -115,10 +181,10 @@ class VentasProductoFragment : Fragment() {
                     id: Long
                 ) {
                     val productoSeleccionado = opcion[position]
-                    binding.btnGuardarPrix.setOnClickListener {
+                    binding.btnGuardarProducto.setOnClickListener {
 
-                        if (position == 0 && productoSeleccionado == "Seleccione un producto") {
-                            Log.d("Seleccion", "Producto seleccionado: $productoSeleccionado")
+                        if (position == 0 && productoSeleccionado == "Lista prix") {
+
                             Toast.makeText(
                                 requireContext(),
                                 "Debe seleccionar un producto",
@@ -126,10 +192,8 @@ class VentasProductoFragment : Fragment() {
                             ).show()
 
                         } else {
-                            Log.e("Error", "Índice fuera de los límites: $position")
+
                             lifecycleScope.launch {
-
-
                                 val precioProducto =
                                     ventaModel.obtenerPrecioPrix(productoSeleccionado)
                                 guardarVenta(productoSeleccionado, precioProducto)
@@ -155,18 +219,18 @@ class VentasProductoFragment : Fragment() {
 
 
         lifecycleScope.launch {
-            val spinnerCoca = binding.spCoca
+            val spinnerCoca = binding.spProductos
             val listaString = ventaModel.obtenerProductoCoca()
 
-            val opcion = listOf("Seleccione un producto") + listaString
+            val opcion = listOf("Lista Coca") + listaString
 
-            //se utiliza para asociar una matriz de datos (en este caso, listaString)
+
             val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, opcion)
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             spinnerCoca.adapter = adapter
 
 
-            spinnerCoca.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            spinnerCoca.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     itemSelected: AdapterView<*>?,
                     p1: View?,
@@ -174,17 +238,17 @@ class VentasProductoFragment : Fragment() {
                     id: Long
                 ) {
                     val productoSeleccionado = opcion[position]
-                    binding.btnGuardarCoca.setOnClickListener {
+                    binding.btnGuardarProducto.setOnClickListener {
 
-                        if (position == 0 && productoSeleccionado == "Seleccione un producto") {
-                            Log.d("Seleccion", "Producto seleccionado: $productoSeleccionado")
+                        if (position == 0 && productoSeleccionado == "Lista Coca") {
+
                             Toast.makeText(
                                 requireContext(),
                                 "Debe seleccionar un producto",
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            Log.e("Error", "Índice fuera de los límites: $position")
+
                             lifecycleScope.launch {
                                 val precioProducto =
                                     ventaModel.obtenerPrecioCoca(productoSeleccionado)

@@ -47,11 +47,19 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerProdcutoCoca()
     }
 
+    suspend fun obtenerProductoBig():List<String>{
+        return useCaseVenta.obtenerProductoBig()
+    }
+
     suspend fun obtenerPrecioPrix(producto: String): Double {
         return useCaseVenta.obtenerPrecioPrix(producto)
     }
 
     suspend fun obtenerPrecioCoca(producto: String): Double {
         return useCaseVenta.obtenerPrecioCoca(producto)
+    }
+
+    suspend fun obtenerPrecioBig(producto: String):Double{
+        return useCaseVenta.obtenerPrecioBig(producto)
     }
 }

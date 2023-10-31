@@ -18,182 +18,195 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="UselessParent">
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chLista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="30dp"
-            android:orientation="vertical">
+            app:singleSelection="true">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chPrix"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/fondo"
-                android:gravity="center_horizontal"
-                android:text="@string/prix_cola"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:tag="Prixcola"
+                android:text="Prix cola"
+                android:textSize="20sp" />
 
-            <Spinner
-                android:id="@+id/spPrix"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnGuardarPrix"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chBigCola"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/fondo"
-                android:text="@string/agregar"
-                android:textSize="18sp" />
+                android:tag="BigCola"
+                android:text="Big cola"
+                android:textSize="20sp" />
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="30dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chCoca"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/fondo"
-                android:gravity="center_horizontal"
-                android:text="@string/coca_cola"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spCoca"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content" />
+                android:tag="Coca"
+                android:text="Coca cola"
+                android:textSize="20sp" />
+        </com.google.android.material.chip.ChipGroup>
 
-            <Button
-                android:id="@+id/btnGuardarCoca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/fondo"
-                android:text="@string/agregar"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
 
-        <TableRow
-            android:id="@+id/trProducto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvProductName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/header_shape"
-                android:gravity="center"
-                android:text="@string/producto"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="30dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvQuantity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/header_shape"
-                android:gravity="center"
-                android:text="@string/cantidad"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Total -->
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/header_shape"
-                android:gravity="center"
-                android:text="@string/precio"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableLayout
-                android:id="@+id/tlProducto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*">
+                android:layout_marginBottom="10dp"
+                android:background="@color/fondo"
+                android:gravity="center_horizontal"
+                android:text="Seleccione un producto"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            </TableLayout>
-        </ScrollView>
+            <Spinner
+                android:id="@+id/spProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <TableRow
+            <Button
+                android:id="@+id/btnGuardarProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/fondo"
+                android:text="@string/agregar"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTotalLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Total"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvTotalAmount"
-                android:layout_width="0dp"
+            <TableRow
+                android:id="@+id/trProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="@string/producto"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="@string/cantidad"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Total -->
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/header_shape"
+                    android:gravity="center"
+                    android:text="@string/precio"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableLayout
+                    android:id="@+id/tlProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+                </TableLayout>
+            </ScrollView>
+
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/_0_00"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </TableRow>
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:id="@+id/tvTotalLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Total"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotalAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/_0_00"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnGuardarVenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/fondo"
+            android:text="@string/guardar_venta"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/btnGuardarVenta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/fondo"
-        android:text="@string/guardar_venta"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
 </LinearLayout>
-

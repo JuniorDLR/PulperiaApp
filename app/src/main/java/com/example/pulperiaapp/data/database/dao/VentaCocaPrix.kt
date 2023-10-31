@@ -29,6 +29,9 @@ interface VentaCocaPrix {
     @Query("SELECT producto FROM tbl_precio_coca")
     suspend fun obtenerProdcutoCoca(): List<String>
 
+    @Query("SELECT producto FROM tbl_bigcola")
+    suspend fun obtenerProdcutoBig(): List<String>
+
 
     @Query("DELETE  FROM  tbl_venta_prix_coca WHERE id =:id")
     suspend fun eliminarVenta(id: Int)
@@ -39,5 +42,8 @@ interface VentaCocaPrix {
 
     @Query("SELECT precio FROM tbl_precio_coca WHERE producto =:producto")
     suspend fun obtenerPrecioCoca(producto: String): Double
+
+    @Query("SELECT precio FROM tbl_bigcola WHERE producto=:producto")
+    suspend fun obtenerPrecioBig(producto: String): Double
 
 }
