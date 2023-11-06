@@ -3,7 +3,7 @@ package com.example.pulperiaapp.data.database.entitie
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
+
 
 @Entity("tbl_credito")
 data class CreditoEntity(

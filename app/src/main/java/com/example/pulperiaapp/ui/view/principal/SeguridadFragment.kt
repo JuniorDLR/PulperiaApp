@@ -15,20 +15,18 @@ import okhttp3.Credentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-
-
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class SeguridadFragment : Fragment() {
 
     private lateinit var binding: FragmentSeguridadBinding
-    val ACCOUT_SID = "AC46e1a1bbd6f3469febf91b832c3ba345"
-    val AUTH_TOKEN = "716674ce9d5f9820993ba0ec7a01c6d4"
-    val TWILIO_NUMBER = "+16099576794"
+    private val ACCOUT_SID = "AC46e1a1bbd6f3469febf91b832c3ba345"
+    private val AUTH_TOKEN = "716674ce9d5f9820993ba0ec7a01c6d4"
+    private val TWILIO_NUMBER = "+16099576794"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSeguridadBinding.inflate(inflater, container, false)
 
         binding.btnEnviarCodigo.setOnClickListener {
@@ -46,7 +44,7 @@ class SeguridadFragment : Fragment() {
         val mensaje = "Codigo de verificacion por JunaxerDev:$codigo"
 
         val mediaType = "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull()
-        val requestBody = RequestBody.create(mediaType, "To=$numero&From=$TWILIO_NUMBER&Body=$mensaje")
+        val requestBody = "To=$numero&From=$TWILIO_NUMBER&Body=$mensaje".toRequestBody(mediaType)
 
         val request = Request.Builder()
             .url("https://api.twilio.com/2010-04-01/Accounts/$ACCOUT_SID/Messages.json")

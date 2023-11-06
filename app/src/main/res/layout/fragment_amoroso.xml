@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,98 +34,99 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        tools:ignore="UselessParent">
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chLista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            app:singleSelection="true">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chPrix"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/fondo"
-                android:gravity="center_horizontal"
+                android:tag="Prixcola"
                 android:text="@string/prix_cola"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
-            <Spinner
-                android:id="@+id/spPrix"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnGuardarPrix"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chBigCola"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/fondo"
-                android:text="@string/agregar"
-                android:textSize="18sp" />
+                android:tag="BigCola"
+                android:text="@string/big_cola"
+                android:textSize="20sp" />
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chCoca"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/fondo"
-                android:gravity="center_horizontal"
+                android:tag="Coca"
                 android:text="@string/coca_cola"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
+        </com.google.android.material.chip.ChipGroup>
 
-            <Spinner
-                android:id="@+id/spCoca"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnGuardarCoca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/fondo"
-                android:text="@string/agregar"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/fondo"
+                android:gravity="center_horizontal"
+                android:text="@string/seleccione_un_producto"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spProdutos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnGuardarProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/fondo"
+                android:text="@string/agregar"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
         <!-- Títulos de las columnas -->
         <TableRow
             android:id="@+id/trProducto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_marginHorizontal="10dp">
 
             <!-- Nombre del producto -->
             <TextView
@@ -207,17 +207,19 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </TableRow>
+
+
+        <Button
+            android:id="@+id/btnGuardarAmoroso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/fondo"
+            android:text="@string/guardar_venta"
+            android:textSize="18sp" />
+
+
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btnGuardarAmoroso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/fondo"
-        android:text="@string/guardar_venta"
-        android:textSize="18sp" />
 
 
 </LinearLayout>

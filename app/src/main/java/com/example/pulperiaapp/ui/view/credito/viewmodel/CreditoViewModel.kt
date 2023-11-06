@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 import com.example.pulperiaapp.domain.amoroso.UseCaseAmoroso
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
@@ -25,6 +26,7 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
             actualizarDatos()
         }
     }
+
 
     fun eliminarCredito(cliente: String) {
         viewModelScope.launch {
@@ -48,7 +50,6 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
             _groupedAmorosoModel.value = ventasFiltradas.groupBy { it.cliente }
         }
     }
-
 
 
 }

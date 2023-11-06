@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.view.inventario.DatosInventarioFragment">
+    tools:context=".ui.view.inventario.InventarioDatosFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:backgroundTint="@color/fondo"
-            android:contentDescription="inventario"
+            android:contentDescription="@string/inventario"
             android:src="@drawable/baseline_add_24"
             app:rippleColor="@color/white"
             tools:targetApi="lollipop" />
@@ -44,13 +44,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvInventario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </ScrollView>
-
 
 </LinearLayout>

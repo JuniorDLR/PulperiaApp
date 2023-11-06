@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0.5dp">
+
+    <TextView
+        android:id="@+id/tvProductoRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:background="@drawable/cell_shape"
+        android:gravity="center"
+        android:text="PRODUCTO"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvTamanoR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape"
+        android:gravity="center"
+        android:text="TAMAÑO"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvCajillaR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape"
+        android:gravity="center"
+        android:text="CAJILLA"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvCantidadR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape"
+        android:gravity="center"
+        android:text="CANTIDAD"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textStyle="bold" />
+
+
+</TableRow>

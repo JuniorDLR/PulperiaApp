@@ -57,14 +57,14 @@ class AdapterAmoroso(
 
 
         if (detallesCliente != null) {
-            // Construir una cadena de detalles de compra
+
             val detallesCompra = StringBuilder()
-            var precioTotalCliente = 0.0 // Inicializa el precio total del cliente
+            var precioTotalCliente = 0.0
 
             for (detalle in detallesCliente) {
-                val fecha = detalle.fecha
-                val producto = detalle.producto
-                val cantidad = detalle.cantidad
+                val fecha = detalle.fecha.replace("[", "").replace("]", "")
+                val producto = detalle.producto.joinToString("")
+                val cantidad = detalle.cantidad.joinToString("")
                 val precioTotalDetalle = detalle.precio_total
 
                 detallesCompra.append("$producto - $cantidad - $fecha\n")
@@ -72,11 +72,14 @@ class AdapterAmoroso(
             }
 
 
+
+
             holder.itemView.setOnClickListener {
                 mostrarDialogoClienteDetalle(
                     cliente,
                     detallesCompra.toString(),
-                    precioTotalCliente)
+                    precioTotalCliente
+                )
             }
             holder.bind(detallesCliente[0])
         }
@@ -106,6 +109,7 @@ class AdapterAmoroso(
         dialog.setPositiveButton("Realizar pago") { diag, _ ->
             onClickUpdate(cliente)
         }
+
 
         scrollView.addView(contentView)
         dialog.setView(scrollView)

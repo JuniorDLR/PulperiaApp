@@ -18,7 +18,7 @@
     <string name="estado">Estado -> </string>
     <string name="cliente">Cliente -> </string>
     <string name="nombre_del_cliente">Nombre del Cliente</string>
-    <string name="total_400_0">Total: 400.0</string>
+    <string name="total_400_0">Total:</string>
     <string name="prix_cola_2l_2">Prix cola 2l - 2</string>
     <string name="lista_credito">Lista credito</string>
     <string name="logo">logo</string>
@@ -31,7 +31,7 @@
     <string name="agregar_producto">Agregar producto</string>
     <string name="ingrese_un_nombre">ingrese un nombre</string>
     <string name="registrar">Registrar</string>
-    <string name="ingrese_un_nombre_de_inventario">Ingrese un nombre de inventario</string>
+    <string name="ingrese_un_nombre_de_inventario">Nombre producto</string>
     <string name="ingrese_el_total_a_pagar">Ingrese el total a pagar</string>
     <string name="tomar_foto">Tomar foto</string>
     <string name="guardar">Guardar</string>
@@ -42,5 +42,22 @@
     <string name="_0_00">0.00</string>
     <string name="guardar_venta">Guardar venta</string>
     <string name="junaxerdev">App desarrollada por JunaxerDev</string>
-    <string name="ingresa_tus_credenciales">Ingresa tus credenciales</string>
+    <string name="ingresa_tus_credenciales">Ingrese sus credenciales</string>
+    <string name="logojunior">logoJunior</string>
+    <string name="enviar">Enviar</string>
+    <string name="ingrese_el_numero_del_desarrollador">Ingrese el numero del desarrollador</string>
+    <string name="seleccione_un_producto">Seleccione un producto</string>
+    <string name="venta_por_cajilla">Venta por cajilla</string>
+    <string name="big_cola">Big cola</string>
+    <string name="agregar_foto">Agregar foto</string>
+    <string name="_0_3">0/3</string>
+    <string name="precio_total_0_00">Precio Total: $0.00</string>
+    <string name="cajilla">CAJILLA</string>
+    <string name="tama_o">TAMAÑO</string>
+    <string name="agregar_a_la_tabla">Agregar a la tabla</string>
+    <string name="precio_unitario_por_cajilla">Precio Unitario por Cajilla</string>
+    <string name="cantidad_de_cajillas">Cantidad de Cajillas</string>
+    <string name="cantidad_por_cajilla">Cantidad por Cajilla</string>
+    <string name="tama_o_del_envase_ejemplo_1l">Tamaño del Envase (ejemplo: 1L)</string>
+    <string name="nombre_del_producto">Nombre del Producto</string>
 </resources>

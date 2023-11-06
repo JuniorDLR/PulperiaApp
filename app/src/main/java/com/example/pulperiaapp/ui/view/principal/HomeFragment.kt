@@ -1,7 +1,5 @@
 package com.example.pulperiaapp.ui.view.principal
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
@@ -9,17 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.animation.TranslateAnimation
-import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
-
 import com.airbnb.lottie.LottieAnimationView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentHomeBinding
@@ -36,7 +29,7 @@ class HomeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         animationView = binding.animationView
@@ -112,6 +105,7 @@ class HomeFragment : Fragment() {
                     false
                 val navController = Navigation.findNavController(binding.root)
                 navController.popBackStack()
+
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()

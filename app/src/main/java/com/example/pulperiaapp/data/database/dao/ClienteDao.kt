@@ -15,6 +15,12 @@ interface ClienteDao {
     @Query("SELECT producto FROM tbl_precio_prix")
     suspend fun obtenerProductoPrix(): List<String>
 
+    @Query("SELECT producto FROM tbl_bigcola")
+    suspend fun obtenerProductoBig(): List<String>
+
+    @Query("SELECT precio FROM tbl_bigcola WHERE producto=:producto")
+    suspend fun obtenerPrecioBig(producto: String): Double
+
     @Query("SELECT producto FROM tbl_precio_coca")
     suspend fun obtenerProductoCoca(): List<String>
 

@@ -3,7 +3,6 @@ package com.example.pulperiaapp.data.database.entitie
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 
 @Entity("tbl_venta_prix_coca")
@@ -13,17 +12,10 @@ data class VentaPrixCoca(
     @ColumnInfo("producto") val producto: String,
     @ColumnInfo("total_venta") val total: Double,
     @ColumnInfo("fecha_venta") val fecha: Long,
-    @ColumnInfo("cantidad") val cantidad: String
+    @ColumnInfo("venta_por_cajilla") val ventaPorCajilla: Boolean,
+    @ColumnInfo("cantidad") val cantidad: Int
 )
 
-fun VentaPrixCocaDetalle.toDomain(): VentaPrixCoca {
-    return VentaPrixCoca(
-        0,
-        producto = producto.joinToString(","),
-        total = total_venta,
-        fecha = fecha_venta,
-        cantidad = cantidad.joinToString(",")
-    )
-}
+
 
 

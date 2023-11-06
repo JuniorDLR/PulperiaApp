@@ -19,9 +19,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
-import com.example.pulperiaapp.data.database.entitie.toDomain
 import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
-import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -134,30 +132,48 @@ class VentasProductoFragment : Fragment() {
 
     private fun guardarProducto() {
         var totalVenta = 0.0
-        val productosVendidos = mutableListOf<String>()
-        val prodcutoCantidad = mutableListOf<String>()
-
-        // Recopila los productos vendidos en una lista
-        for (venta in productosSeleccionados) {
-            productosVendidos.add(venta.key)
-            totalVenta += venta.value.second
-            prodcutoCantidad.add(venta.value.first.toString())
-        }
-
-        val ventaConProductos = VentaPrixCocaDetalle(
-            VentaPrixCoca(
-                0,
-                productosVendidos.joinToString(","),
-                totalVenta,
-                System.currentTimeMillis(),
-                prodcutoCantidad.joinToString(",")
+        if (productosSeleccionados.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Tiene que ingresar productos para guardar",
+                Toast.LENGTH_LONG
             )
-        )
-        val ventaPrixCoca = ventaConProductos.toDomain()
-        ventaModel.insertarVenta(ventaPrixCoca)
+                .show()
 
-        Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG).show()
-        requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            for (venta in productosSeleccionados) {
+                val productoVendido = venta.key
+                val cantidad = venta.value.first
+                totalVenta += venta.value.second
+                if (binding.swVentaPorCajilla.isChecked) {
+                    val ventaConProductos = VentaPrixCoca(
+                        id = 0,
+                        producto = productoVendido,
+                        total = totalVenta,
+                        fecha = System.currentTimeMillis(),
+                        cantidad = cantidad,
+                        ventaPorCajilla = true
+                    )
+
+                    ventaModel.insertarVenta(ventaConProductos)
+                } else {
+                    val ventaConProductos =
+                        VentaPrixCoca(
+                            id = 0,
+                            producto = productoVendido,
+                            total = totalVenta,
+                            fecha = System.currentTimeMillis(),
+                            cantidad = cantidad,
+                            ventaPorCajilla = false
+                        )
+                    ventaModel.insertarVenta(ventaConProductos)
+                }
+            }
+
+            Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)
+                .show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
 
@@ -192,7 +208,6 @@ class VentasProductoFragment : Fragment() {
                             ).show()
 
                         } else {
-
                             lifecycleScope.launch {
                                 val precioProducto =
                                     ventaModel.obtenerPrecioPrix(productoSeleccionado)

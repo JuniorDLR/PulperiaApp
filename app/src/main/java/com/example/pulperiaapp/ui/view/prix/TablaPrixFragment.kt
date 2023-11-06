@@ -2,7 +2,6 @@ package com.example.pulperiaapp.ui.view.prix
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +35,7 @@ class TablaPrixFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTablaPrixBinding.inflate(inflater, container, false)
         binding.btnAgregarProductoPrix.setColorFilter(
             ContextCompat.getColor(
@@ -116,9 +115,11 @@ class TablaPrixFragment : Fragment() {
 
     }
 
-    fun limpiarCampos() {
+    private fun limpiarCampos() {
         binding.tvIdEditarPrix.setText("")
         binding.tvPrecioEditarPrix.setText("")
+        Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
+            .show()
 
     }
 
@@ -126,14 +127,18 @@ class TablaPrixFragment : Fragment() {
         val idEditar = binding.tvIdEditarPrix.text.toString()
         val precioEditar = binding.tvPrecioEditarPrix.text.toString()
 
-        if (idEditar == "" && precioEditar == "") {
+        if (idEditar.isEmpty() && precioEditar.isEmpty()) {
             Toast.makeText(requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG)
                 .show()
 
+        } else if (idEditar.isNotEmpty() && precioEditar.isEmpty() || precioEditar.isNotEmpty() && idEditar.isEmpty()) {
+            Toast.makeText(requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG)
+                .show()
         } else {
             val idInt = idEditar.toInt()
             val precioInt = precioEditar.toDouble()
             prixViewModel.editarPrixTabla(idInt, precioInt)
+
             limpiarCampos()
         }
     }
@@ -188,7 +193,7 @@ class TablaPrixFragment : Fragment() {
                     prixViewModel.eliminarPrixTabla(id)
                     Toast.makeText(
                         requireContext(),
-                        "Dato eliminado exitosamente!!",
+                        "Datos eliminado exitosamente!!",
                         Toast.LENGTH_SHORT
                     ).show()
                     binding.tvIdEditarPrix.setText("")

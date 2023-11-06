@@ -1,14 +1,10 @@
 package com.example.pulperiaapp.data.database.dao
 
 import androidx.room.Dao
-
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
-
-import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 @Dao
 interface VentaCocaPrix {
@@ -19,8 +15,8 @@ interface VentaCocaPrix {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertatVenta(ventaPrixCoca: VentaPrixCoca)
 
-    @Query("SELECT id,producto,total_venta,fecha_venta,cantidad FROM tbl_venta_prix_coca")
-    suspend fun obtenerVenta(): List<VentaPrixCocaDetalle>
+    @Query("SELECT *FROM tbl_venta_prix_coca")
+    suspend fun obtenerVenta(): List<VentaPrixCoca>
 
 
     @Query("SELECT producto FROM tbl_precio_prix")

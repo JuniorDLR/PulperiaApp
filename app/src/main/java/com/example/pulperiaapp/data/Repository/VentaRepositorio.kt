@@ -4,7 +4,7 @@ import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
-import java.time.Duration
+import com.example.pulperiaapp.ui.view.venta.viewmodel.toDomain
 import javax.inject.Inject
 
 class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaPrix) {
@@ -14,8 +14,9 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         ventaCocaPrix.insertatVenta(ventaPrixCoca)
 
     suspend fun obtenerVenta(): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVenta()
 
-        return ventaCocaPrix.obtenerVenta()
+        return response.map { it.toDomain() }
     }
 
 
@@ -29,7 +30,7 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
 
     }
 
-    suspend fun obtenerProdcutoBig():List<String>{
+    suspend fun obtenerProdcutoBig(): List<String> {
         return ventaCocaPrix.obtenerProdcutoBig()
     }
 
@@ -41,7 +42,7 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         return ventaCocaPrix.obtenerPrecioCoca(producto)
     }
 
-    suspend fun obtenerPrecioBig(producto: String):Double{
+    suspend fun obtenerPrecioBig(producto: String): Double {
         return ventaCocaPrix.obtenerPrecioBig(producto)
     }
 }

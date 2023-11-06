@@ -75,15 +75,6 @@
             app:destination="@id/agregarCocaFragment" />
     </fragment>
     <fragment
-        android:id="@+id/datosInventarioFragment"
-        android:name="com.example.pulperiaapp.ui.view.inventario.DatosInventarioFragment"
-        android:label="fragment_datos_inventario"
-        tools:layout="@layout/fragment_datos_inventario">
-        <action
-            android:id="@+id/action_datosInventarioFragment_to_inventarioFragment"
-            app:destination="@id/inventarioFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/tablaPrixFragment"
         android:name="com.example.pulperiaapp.ui.view.prix.TablaPrixFragment"
         android:label="fragment_tabla_prix"
@@ -126,4 +117,13 @@
         android:name="com.example.pulperiaapp.ui.view.principal.SeguridadFragment"
         android:label="fragment_seguridad"
         tools:layout="@layout/fragment_seguridad" />
+    <fragment
+        android:id="@+id/inventarioDatosFragment"
+        android:name="com.example.pulperiaapp.ui.view.inventario.InventarioDatosFragment"
+        android:label="fragment_inventario_datos"
+        tools:layout="@layout/fragment_inventario_datos" >
+        <action
+            android:id="@+id/action_inventarioDatosFragment_to_inventarioFragment"
+            app:destination="@id/inventarioFragment" />
+    </fragment>
 </navigation>

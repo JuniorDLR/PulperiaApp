@@ -11,8 +11,13 @@ import com.example.pulperiaapp.data.database.entitie.InventarioEntity
 interface InventarioDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertarInventario(inventarioEntity: InventarioEntity)
+    suspend fun insertarInventario(inventarioEntity: MutableList<InventarioEntity>)
 
     @Query("SELECT * FROM tbl_inventario ORDER BY id")
     suspend fun obtenerInventario(): List<InventarioEntity>
+
+    @Query("DELETE FROM tbl_inventario WHERE id=:id")
+    suspend fun eliminarInventario(id: Int)
+
+
 }

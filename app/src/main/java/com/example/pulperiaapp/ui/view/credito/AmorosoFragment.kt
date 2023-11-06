@@ -20,6 +20,8 @@ import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 import com.example.pulperiaapp.databinding.FragmentAmorosoBinding
 import com.example.pulperiaapp.ui.view.credito.viewmodel.ClienteViewModel
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -34,6 +36,7 @@ class AmorosoFragment : Fragment() {
     private val productoSeleccionados = mutableMapOf<String, Pair<Int, Double>>()
     private lateinit var tableLayout: TableLayout
     private lateinit var tableRow: TableRow
+    private lateinit var chipGroup: ChipGroup
 
 
     override fun onCreateView(
@@ -41,18 +44,21 @@ class AmorosoFragment : Fragment() {
     ): View {
 
         binding = FragmentAmorosoBinding.inflate(inflater, container, false)
-        tableLayout = binding.tlProducto
-        tableRow = binding.trProducto
+        initComponent()
 
         return binding.root
+    }
+
+    private fun initComponent() {
+        tableLayout = binding.tlProducto
+        tableRow = binding.trProducto
+        chipGroup = binding.chLista
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        prixItem()
-        cocaItem()
         lifecycleScope.launch {
             val autoComplete = binding.atvMoroso
             val lista = clienteViewModel.obtenerAmoros()
@@ -61,8 +67,72 @@ class AmorosoFragment : Fragment() {
             autoComplete.setAdapter(adapter)
         }
 
+        chipGroup.setOnCheckedStateChangeListener { group, idCheck ->
+            for (lista in idCheck) {
+                val selected = group.findViewById(lista) as Chip
+                when (selected.tag) {
+                    "Prixcola" -> prixItem()
+                    "BigCola" -> bigItem()
+                    "Coca" -> cocaItem()
+                    else -> {
+                        false
+                    }
+
+
+                }
+            }
+        }
+
         binding.btnGuardarAmoroso.setOnClickListener {
             guardarVentaAmoroso()
+        }
+
+    }
+
+    private fun bigItem() {
+        lifecycleScope.launch {
+            val spinner = binding.spProdutos
+            val producto = clienteViewModel.obtenerProductoBig()
+            val lista = listOf("Lista big") + producto
+            val adapter =
+                ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, lista)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_item)
+            spinner.adapter = adapter
+
+
+
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val productoSeleccionado = lista[position]
+                    binding.btnGuardarProducto.setOnClickListener {
+                        if (position == 0 && productoSeleccionado == "Lista big") {
+                            AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
+                                .setMessage("Debe de seleccionar un producto")
+                                .setPositiveButton("Continuar") { dialog, _ ->
+                                    dialog.dismiss()
+                                }.show()
+
+                        } else {
+                            lifecycleScope.launch {
+                                val obtenerPrecio =
+                                    clienteViewModel.obtenerPrecioBig(productoSeleccionado)
+                                guardarVenta(productoSeleccionado, obtenerPrecio)
+                            }
+                        }
+                    }
+
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+            }
         }
 
     }
@@ -73,7 +143,7 @@ class AmorosoFragment : Fragment() {
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         val amoroso = binding.atvMoroso.text.toString()
         val amorosoEntities = mutableListOf<CreditoEntity>()
-        if (amoroso.isNotEmpty()) {
+        if (amoroso.isNotEmpty() && productoSeleccionados.isNotEmpty()) {
 
 
             for ((producto, info) in productoSeleccionados) {
@@ -102,7 +172,7 @@ class AmorosoFragment : Fragment() {
         } else {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
-                .setMessage("Debes de ingresar un amoroso")
+                .setMessage("No has ingresado un amoroso o la tabla esta vacia.")
                 .setPositiveButton("Continuar") { dialog, _ ->
                     dialog.dismiss()
                 }
@@ -113,9 +183,9 @@ class AmorosoFragment : Fragment() {
 
     private fun cocaItem() {
         lifecycleScope.launch {
-            val spinnerCoca = binding.spCoca
+            val spinnerCoca = binding.spProdutos
             val lista = clienteViewModel.obtenerProductoCoca()
-            val opcion = listOf("Seleccione un producto") + lista
+            val opcion = listOf("Lista coca") + lista
 
             val adapter =
                 ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, opcion)
@@ -130,8 +200,8 @@ class AmorosoFragment : Fragment() {
                     itemSelected: AdapterView<*>?, p1: View?, position: Int, id: Long
                 ) {
                     val productoSeleccionado = opcion[position]
-                    binding.btnGuardarCoca.setOnClickListener {
-                        if (position == 0 && productoSeleccionado == "Seleccione un producto") {
+                    binding.btnGuardarProducto.setOnClickListener {
+                        if (position == 0 && productoSeleccionado == "Lista coca") {
                             AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
                                 .setMessage("Debe de seleccionar un producto")
                                 .setPositiveButton("Continuar") { dialog, _ ->
@@ -160,11 +230,11 @@ class AmorosoFragment : Fragment() {
 
     private fun prixItem() {
         lifecycleScope.launch {
-            val spinnerPrix = binding.spPrix
+            val spinnerPrix = binding.spProdutos
 
             val lista = clienteViewModel.obtenerProductoPrix()
 
-            val opcion = listOf("Seleccione un producto") + lista
+            val opcion = listOf("Lista prix") + lista
             val adapter =
                 ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, opcion)
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
@@ -176,9 +246,9 @@ class AmorosoFragment : Fragment() {
                     itemSleccionado: AdapterView<*>?, p1: View?, position: Int, id: Long
                 ) {
                     val productoSeleccionado = opcion[position]
-                    binding.btnGuardarPrix.setOnClickListener {
+                    binding.btnGuardarProducto.setOnClickListener {
 
-                        if (position == 0 && productoSeleccionado == "Seleccione un producto") {
+                        if (position == 0 && productoSeleccionado == "Lista prix") {
 
                             AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
                                 .setMessage("Debe de seleccionar un producto")

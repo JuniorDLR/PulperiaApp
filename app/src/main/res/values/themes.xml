@@ -8,4 +8,14 @@
     </style>
 
     <style name="Theme.PulperiaApp" parent="Base.Theme.PulperiaApp" />
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_backgraound</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="checkedIconTint">@color/white</item>
+
+    </style>
+
+
+
 </resources>

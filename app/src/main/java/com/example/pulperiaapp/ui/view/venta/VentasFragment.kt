@@ -27,7 +27,7 @@ class VentasFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentVentasBinding.inflate(inflater, container, false)
         initComponent()
         ventasModel.obtenerVenta()

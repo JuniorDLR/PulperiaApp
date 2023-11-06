@@ -31,35 +31,44 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chPrix"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="Prixcola"
-                android:text="Prix cola"
+                android:text="@string/prix_cola"
                 android:textSize="20sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chBigCola"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="BigCola"
-                android:text="Big cola"
+                android:text="@string/big_cola"
                 android:textSize="20sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chCoca"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:tag="Coca"
-                android:text="Coca cola"
+                android:text="@string/coca_cola"
                 android:textSize="20sp" />
         </com.google.android.material.chip.ChipGroup>
 
 
     </LinearLayout>
+
+    <Switch
+        android:id="@+id/swVentaPorCajilla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/venta_por_cajilla"
+        android:textSize="18sp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,7 +91,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/fondo"
                 android:gravity="center_horizontal"
-                android:text="Seleccione un producto"
+                android:text="@string/seleccione_un_producto"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -179,7 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="Total"
+                    android:text="@string/total"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

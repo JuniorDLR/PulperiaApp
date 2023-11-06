@@ -11,6 +11,13 @@ class ClienteRepositorio @Inject constructor(
         clienteDao.insertarCliente(clienteEntity)
     }
 
+    suspend fun obtenerProductoBig(): List<String> {
+        return clienteDao.obtenerProductoBig()
+    }
+
+    suspend fun obtenerPrecioBig(producto: String): Double {
+        return clienteDao.obtenerPrecioBig(producto)
+    }
 
     suspend fun obtenerProductoPrix(): List<String> {
         return clienteDao.obtenerProductoPrix()

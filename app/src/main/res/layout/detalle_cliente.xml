@@ -1,4 +1,3 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,8 +21,8 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
 
         <TextView
@@ -51,16 +50,14 @@
         android:paddingTop="8dp">
 
         <TextView
-
             android:id="@+id/tvListProductoDetalle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
             android:text="@string/prix_cola_2l_2"
             android:textColor="#000"
             android:textSize="16sp" />
-
-
 
 
     </LinearLayout>
@@ -70,13 +67,28 @@
         android:layout_height="1dp"
         android:background="#000" />
 
-    <TextView
-        android:id="@+id/tvPrecioTotal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="end"
-        android:text="@string/total_400_0"
-        android:textColor="#000"
-        android:textSize="18sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/total_400_0"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvPrecioTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:layout_marginLeft="2dp" />
+    </LinearLayout>
 </LinearLayout>

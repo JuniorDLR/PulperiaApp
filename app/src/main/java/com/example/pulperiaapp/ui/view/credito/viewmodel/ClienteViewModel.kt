@@ -15,14 +15,16 @@ class ClienteViewModel @Inject constructor(private val useCaseCliente: UseCaseCl
     suspend fun obtenerProductoCoca(): List<String> = useCaseCliente.obtenerProductoCoca()
     suspend fun insertarCliente(nombre: ClienteEntity) = useCaseCliente.insertarCliente(nombre)
 
-    suspend fun obtenerPrecioCoca(producto: String): Double {
-        return useCaseCliente.obtenerPrecioCoca(producto)
-    }
+    suspend fun obtenerPrecioCoca(producto: String): Double =
+        useCaseCliente.obtenerPrecioCoca(producto)
 
+    suspend fun obtenerPrecioBig(producto: String): Double =
+        useCaseCliente.obtenerPrecioBig(producto)
 
-    suspend fun obtenerPrecioPrix(producto: String): Double {
-        return useCaseCliente.obtenerPrecioPrix(producto)
-    }
+    suspend fun obtenerProductoBig(): List<String> = useCaseCliente.obtenerProductoBig()
+
+    suspend fun obtenerPrecioPrix(producto: String): Double =
+        useCaseCliente.obtenerPrecioPrix(producto)
 
     suspend fun obtenerAmoros(): List<String> = useCaseCliente.obtenerAmoroso()
 

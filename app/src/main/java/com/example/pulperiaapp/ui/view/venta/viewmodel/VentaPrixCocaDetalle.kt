@@ -1,21 +1,26 @@
 package com.example.pulperiaapp.ui.view.venta.viewmodel
 
-import androidx.room.Embedded
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 
 data class VentaPrixCocaDetalle(
-    @Embedded val venta: VentaPrixCoca
-) {
-    val producto: List<String>
-        get() = venta.producto.split(",").filter { it.isNotBlank() }
-    val total_venta: Double
-        get() = venta.total
-    val fecha_venta: Long
-        get() = venta.fecha
-    val cantidad: List<String>
-        get() = venta.cantidad.split(",").filter { it.isNotBlank() }
-}
+    val id: Int,
+    val producto: String,
+    val total_venta: Double,
+    val fecha_venta: Long,
+    val ventaPorCajilla: Boolean,
+    val cantidad: Int,
+)
+
+fun VentaPrixCoca.toDomain() = VentaPrixCocaDetalle(
+    id = id,
+    producto = producto,
+    total_venta = total,
+    fecha_venta = fecha,
+    ventaPorCajilla = ventaPorCajilla,
+    cantidad = cantidad
+)
+
 
 
 

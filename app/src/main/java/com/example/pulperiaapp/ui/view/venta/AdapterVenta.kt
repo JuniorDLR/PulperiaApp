@@ -36,14 +36,11 @@ class AdapterVenta() : RecyclerView.Adapter<AdapterVenta.ViewHolder>(), Filterab
             // Separa los productos y cantidades
             val productos = venta.producto
             val cantidades = venta.cantidad
+            val total = venta.total_venta
 
-            // Combina productos y cantidades con comas y guiones
-            val productosConCantidad =
-                productos.zip(cantidades) { producto, cantidad -> "$producto - $cantidad" }
-                    .joinToString(" , ")
 
-            binding.tvListProducto.text = productosConCantidad
-            binding.tvTotal.text = venta.total_venta.toString()
+            binding.tvListProducto.text = "$productos - $cantidades"
+            binding.tvTotal.text = total.toString()
             binding.tvFecha.text = fechaFormateada
         }
 

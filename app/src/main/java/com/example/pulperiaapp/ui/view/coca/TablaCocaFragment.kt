@@ -1,8 +1,7 @@
 package com.example.pulperiaapp.ui.view.coca
 
-import android.annotation.SuppressLint
+
 import android.app.AlertDialog
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -159,22 +158,29 @@ class TablaCocaFragment : Fragment() {
         val precio = binding.tvPrecioEditarCoca.text.toString()
 
 
-        if (id.isNotEmpty() && precio.isNotEmpty()) {
+        if (id.isEmpty() && precio.isEmpty()) {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
                 .setMessage("Los campos no pueden quedar vacios")
                 .setPositiveButton("Continuar") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
+        } else if (id.isEmpty() && precio.isNotEmpty() || id.isNotEmpty() && precio.isEmpty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("ADVERTENCIA")
+                .setMessage("Los campos no pueden quedar vacios")
+                .setPositiveButton("Continuar") { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
+
         } else {
             val idInt = id.toInt()
             val precioDouble = precio.toDouble()
             cocaViewModel.editarCocaTabla(idInt, precioDouble)
-            Toast.makeText(requireContext(), "Dato editado exitosamente!!", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
                 .show()
             binding.tvIdEditarCoca.setText("")
             binding.tvPrecioEditarCoca.setText("")
-
         }
 
 
