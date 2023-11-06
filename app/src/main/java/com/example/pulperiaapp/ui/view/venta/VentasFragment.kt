@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.venta
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,8 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentVentasBinding
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class VentasFragment : Fragment() {
@@ -24,6 +28,8 @@ class VentasFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapterVenta: AdapterVenta
 
+
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +40,12 @@ class VentasFragment : Fragment() {
         ventasModel.ventaModeL.observe(viewLifecycleOwner) { lista ->
             adapterVenta.setList(lista)
 
+        }
+
+
+        lifecycleScope.launch {
+            val total = ventasModel.obtenerTotal()
+            binding.tvTotalVenta.text = "Ganancia: $$total"
         }
         binding.btnAgregarVenta.setColorFilter(
             ContextCompat.getColor(

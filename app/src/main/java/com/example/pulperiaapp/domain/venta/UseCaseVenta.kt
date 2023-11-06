@@ -3,7 +3,6 @@ package com.example.pulperiaapp.domain.venta
 import com.example.pulperiaapp.data.Repository.VentaRepositorio
 
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
-import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
 
 import javax.inject.Inject
 
@@ -16,6 +15,9 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
         return repositorio.obtenerVenta()
     }
 
+    suspend fun obtenerTotal(): Double {
+        return repositorio.obtenerTotal()
+    }
 
     suspend fun obtenerProductoPrix(): List<String> {
         return repositorio.obtenerProductoPrix()
@@ -25,7 +27,7 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
         return repositorio.obtenerProductoCoca()
     }
 
-    suspend fun obtenerProductoBig():List<String>{
+    suspend fun obtenerProductoBig(): List<String> {
         return repositorio.obtenerProdcutoBig()
     }
 
@@ -39,7 +41,7 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
 
     }
 
-    suspend fun obtenerPrecioBig(producto: String):Double{
+    suspend fun obtenerPrecioBig(producto: String): Double {
         return repositorio.obtenerPrecioBig(producto)
     }
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
 import com.example.pulperiaapp.domain.venta.UseCaseVenta
+import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +27,10 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
             val lista = useCaseVenta.obtenerVenta()
             actualizarVentas(lista)
         }
+    }
+
+    suspend fun obtenerTotal(): Double {
+        return useCaseVenta.obtenerTotal()
     }
 
     fun actualizarVentas(nuevosDatos: List<VentaPrixCocaDetalle>) {
@@ -47,7 +52,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerProdcutoCoca()
     }
 
-    suspend fun obtenerProductoBig():List<String>{
+    suspend fun obtenerProductoBig(): List<String> {
         return useCaseVenta.obtenerProductoBig()
     }
 
@@ -59,7 +64,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerPrecioCoca(producto)
     }
 
-    suspend fun obtenerPrecioBig(producto: String):Double{
+    suspend fun obtenerPrecioBig(producto: String): Double {
         return useCaseVenta.obtenerPrecioBig(producto)
     }
 }

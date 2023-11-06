@@ -15,8 +15,12 @@ interface VentaCocaPrix {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertatVenta(ventaPrixCoca: VentaPrixCoca)
 
+    @Query("SELECT SUM(total_venta) FROM tbl_venta_prix_coca")
+    suspend fun obtenerTotal(): Double
+
     @Query("SELECT *FROM tbl_venta_prix_coca")
     suspend fun obtenerVenta(): List<VentaPrixCoca>
+
 
 
     @Query("SELECT producto FROM tbl_precio_prix")

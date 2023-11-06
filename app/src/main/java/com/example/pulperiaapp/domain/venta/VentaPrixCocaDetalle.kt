@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.venta.viewmodel
+package com.example.pulperiaapp.domain.venta
 
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 

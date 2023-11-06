@@ -3,8 +3,8 @@ package com.example.pulperiaapp.data.Repository
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 
-import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaPrixCocaDetalle
-import com.example.pulperiaapp.ui.view.venta.viewmodel.toDomain
+import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.domain.venta.toDomain
 import javax.inject.Inject
 
 class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaPrix) {
@@ -17,6 +17,10 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVenta()
 
         return response.map { it.toDomain() }
+    }
+
+    suspend fun obtenerTotal(): Double {
+        return ventaCocaPrix.obtenerTotal()
     }
 
 

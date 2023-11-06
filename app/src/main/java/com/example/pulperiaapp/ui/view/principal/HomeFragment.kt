@@ -22,7 +22,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var toolbar: Toolbar
     private lateinit var binding: FragmentHomeBinding
-
     private lateinit var animationView: LottieAnimationView
 
 
