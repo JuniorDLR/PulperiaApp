@@ -60,4 +60,5 @@
     <string name="cantidad_por_cajilla">Cantidad por Cajilla</string>
     <string name="tama_o_del_envase_ejemplo_1l">Tamaño del Envase (ejemplo: 1L)</string>
     <string name="nombre_del_producto">Nombre del Producto</string>
+    <string name="editar_venta">Editar venta</string>
 </resources>

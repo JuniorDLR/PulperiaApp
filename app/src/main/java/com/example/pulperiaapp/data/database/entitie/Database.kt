@@ -1,4 +1,5 @@
 package com.example.pulperiaapp.data.database.entitie
+//_+uqd<nK-@NK$R8GT2i&
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

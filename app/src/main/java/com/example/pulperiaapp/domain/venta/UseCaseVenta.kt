@@ -19,6 +19,9 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
         return repositorio.obtenerTotal()
     }
 
+    suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =
+        repositorio.editarVenta(ventaPrixCoca)
+
     suspend fun obtenerProductoPrix(): List<String> {
         return repositorio.obtenerProductoPrix()
     }
@@ -27,6 +30,7 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
         return repositorio.obtenerProductoCoca()
     }
 
+    suspend fun eliminarVenta(id: Int) = repositorio.eliminarVenta(id)
     suspend fun obtenerProductoBig(): List<String> {
         return repositorio.obtenerProdcutoBig()
     }
@@ -36,6 +40,7 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
 
     }
 
+
     suspend fun obtenerPrecioCoca(producto: String): Double {
         return repositorio.obtenerPrecioCoca(producto)
 
@@ -44,4 +49,9 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
     suspend fun obtenerPrecioBig(producto: String): Double {
         return repositorio.obtenerPrecioBig(producto)
     }
+
+    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar> =
+        repositorio.obtenerDetalleEditar(id)
+
+    fun pagin() = repositorio.paginSource()
 }

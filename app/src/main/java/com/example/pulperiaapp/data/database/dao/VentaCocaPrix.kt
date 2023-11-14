@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
+import com.example.pulperiaapp.domain.venta.DetalleEditar
 
 @Dao
 interface VentaCocaPrix {
@@ -21,6 +23,8 @@ interface VentaCocaPrix {
     @Query("SELECT *FROM tbl_venta_prix_coca")
     suspend fun obtenerVenta(): List<VentaPrixCoca>
 
+   @Update
+    suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca)
 
 
     @Query("SELECT producto FROM tbl_precio_prix")
@@ -45,5 +49,9 @@ interface VentaCocaPrix {
 
     @Query("SELECT precio FROM tbl_bigcola WHERE producto=:producto")
     suspend fun obtenerPrecioBig(producto: String): Double
+
+    @Query("SELECT producto,cantidad,total_venta FROM tbl_venta_prix_coca WHERE id =:id")
+    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar>
+
 
 }

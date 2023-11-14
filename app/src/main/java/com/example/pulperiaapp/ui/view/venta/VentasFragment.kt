@@ -1,16 +1,24 @@
 package com.example.pulperiaapp.ui.view.venta
 
+
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
@@ -29,28 +37,29 @@ class VentasFragment : Fragment() {
     private lateinit var adapterVenta: AdapterVenta
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentVentasBinding.inflate(inflater, container, false)
         initComponent()
         ventasModel.obtenerVenta()
-        ventasModel.ventaModeL.observe(viewLifecycleOwner) { lista ->
-            adapterVenta.setList(lista)
+        lifecycleScope.launch {
+            ventasModel.ventaModel.collect { lista ->
+                adapterVenta.setList(lista)
 
+            }
         }
 
-
-        lifecycleScope.launch {
-            val total = ventasModel.obtenerTotal()
+        ventasModel.obtenerTotal()
+        ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
             binding.tvTotalVenta.text = "Ganancia: $$total"
         }
+
+
         binding.btnAgregarVenta.setColorFilter(
             ContextCompat.getColor(
-                requireContext(),
-                R.color.white
+                requireContext(), R.color.white
             )
         )
 
@@ -60,9 +69,22 @@ class VentasFragment : Fragment() {
     }
 
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        lifecycleScope.launch {
+            ventasModel.ventaModelPagin.collect { pagingData ->
+                adapterVenta.submitData(pagingData)
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapterVenta.loadStateFlow.collect {
+                    binding.prependProgress.isVisible = it.source.prepend is LoadState.Loading
+                    binding.appendProgress.isVisible = it.source.append is LoadState.Loading
+                }
+            }
+        }
         binding.btnAgregarVenta.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.ventasProductoFragment)
         }
@@ -86,9 +108,48 @@ class VentasFragment : Fragment() {
         val linear = LinearLayoutManager(requireContext())
         linear.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linear
-        adapterVenta = AdapterVenta()
+        adapterVenta =
+            AdapterVenta(
+                onDeleteClickListener = { position, idProducto ->
+                    deleteItem(
+                        position,
+                        idProducto
+                    )
+                },
+                onUpdateClickListener = { fecha, idProducto -> updateItem(fecha, idProducto) }
+            )
         recyclerView.adapter = adapterVenta
 
 
     }
+
+    private fun updateItem(fecha: Long, idProducto: Int) {
+
+        findNavController().navigate(
+            VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
+                idProducto = idProducto, fechaActual = fecha
+            )
+        )
+
+    }
+
+
+    private fun deleteItem(position: Int, idProducto: Int) {
+        val alert = AlertDialog.Builder(requireContext())
+            .setTitle("ADVERTENCIA")
+            .setMessage("¿Desea eliminar esta venta?")
+            .setPositiveButton("Si") { dialog, _ ->
+                lifecycleScope.launch {
+                    ventasModel.eliminarVenta(idProducto)
+                    adapterVenta.notifyItemRemoved(position)
+                }
+
+            }
+            .setNegativeButton("no") { diag, _ ->
+                diag.dismiss()
+            }
+        alert.show()
+    }
+
+
 }

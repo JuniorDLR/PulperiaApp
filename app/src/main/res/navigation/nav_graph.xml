@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_ventasFragment_to_ventasProductoFragment"
             app:destination="@id/ventasProductoFragment" />
+        <action
+            android:id="@+id/action_ventasFragment_to_editarVentasFragment"
+            app:destination="@id/editarVentasFragment" />
     </fragment>
     <fragment
         android:id="@+id/creditoFragment"
@@ -118,6 +121,7 @@
         android:label="fragment_seguridad"
         tools:layout="@layout/fragment_seguridad" />
     <fragment
+
         android:id="@+id/inventarioDatosFragment"
         android:name="com.example.pulperiaapp.ui.view.inventario.InventarioDatosFragment"
         android:label="fragment_inventario_datos"
@@ -125,5 +129,17 @@
         <action
             android:id="@+id/action_inventarioDatosFragment_to_inventarioFragment"
             app:destination="@id/inventarioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarVentasFragment"
+        android:name="com.example.pulperiaapp.ui.view.venta.EditarVentasFragment"
+        android:label="fragment_editar_ventas"
+        tools:layout="@layout/fragment_editar_ventas" >
+        <argument
+            android:name="idProducto"
+            app:argType="integer" />
+        <argument
+            android:name="fechaActual"
+            app:argType="long" />
     </fragment>
 </navigation>

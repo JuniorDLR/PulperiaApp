@@ -12,6 +12,7 @@ data class VentaPrixCoca(
     @ColumnInfo("producto") val producto: String,
     @ColumnInfo("total_venta") val total: Double,
     @ColumnInfo("fecha_venta") val fecha: Long,
+    @ColumnInfo("fecha_editada") val fechaEditada: Long? = null,
     @ColumnInfo("venta_por_cajilla") val ventaPorCajilla: Boolean,
     @ColumnInfo("cantidad") val cantidad: Int
 )

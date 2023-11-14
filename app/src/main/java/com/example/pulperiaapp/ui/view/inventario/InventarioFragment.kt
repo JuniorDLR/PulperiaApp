@@ -3,7 +3,6 @@ package com.example.pulperiaapp.ui.view.inventario
 import ImageAdapter
 import android.annotation.SuppressLint
 import android.content.Context
-
 import android.os.Bundle
 import android.app.Activity
 import android.content.ContextWrapper
@@ -40,6 +39,9 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+
+
 
 @AndroidEntryPoint
 class InventarioFragment : Fragment() {

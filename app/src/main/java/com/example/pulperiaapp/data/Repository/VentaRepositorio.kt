@@ -1,7 +1,9 @@
 package com.example.pulperiaapp.data.Repository
 
+import com.example.pulperiaapp.data.VentaPaginSource
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
+import com.example.pulperiaapp.domain.venta.DetalleEditar
 
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import com.example.pulperiaapp.domain.venta.toDomain
@@ -23,6 +25,8 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         return ventaCocaPrix.obtenerTotal()
     }
 
+    suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =
+        ventaCocaPrix.editarVenta(ventaPrixCoca)
 
     suspend fun obtenerProductoPrix(): List<String> {
 
@@ -34,6 +38,8 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
 
     }
 
+    suspend fun eliminarVenta(id: Int) = ventaCocaPrix.eliminarVenta(id)
+
     suspend fun obtenerProdcutoBig(): List<String> {
         return ventaCocaPrix.obtenerProdcutoBig()
     }
@@ -42,6 +48,7 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         return ventaCocaPrix.obtenerPrecioPrix(producto)
     }
 
+
     suspend fun obtenerPrecioCoca(producto: String): Double {
         return ventaCocaPrix.obtenerPrecioCoca(producto)
     }
@@ -49,4 +56,10 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
     suspend fun obtenerPrecioBig(producto: String): Double {
         return ventaCocaPrix.obtenerPrecioBig(producto)
     }
+
+    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar> =
+        ventaCocaPrix.obtenerDetalleEditar(id)
+
+    fun paginSource() = VentaPaginSource(VentaRepositorio(ventaCocaPrix))
 }
+

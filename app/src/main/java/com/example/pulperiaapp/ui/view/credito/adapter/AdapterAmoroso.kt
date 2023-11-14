@@ -19,7 +19,8 @@ import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
 
 class AdapterAmoroso(
     private val onClickUpdate: (String) -> Unit,
-    private val context: Context
+    private val context: Context,
+
 
 ) :
     RecyclerView.Adapter<AdapterAmoroso.MyHolder>(), Filterable {
@@ -35,6 +36,7 @@ class AdapterAmoroso(
 
             val cliente = diag.cliente
             binding.tvCliente.text = cliente
+
 
         }
 

@@ -314,15 +314,15 @@ class VentasProductoFragment : Fragment() {
             val precio = info.second
 
             val tableRow = LayoutInflater.from(requireContext())
-                .inflate(R.layout.tabla_row_item, null) as TableRow
+                .inflate(R.layout.table_row_venta, null) as TableRow
 
-            val productoView = tableRow.findViewById<TextView>(R.id.tvIdR)
+            val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
             productoView.text = producto
 
-            val cantidadView = tableRow.findViewById<TextView>(R.id.tvProductoR)
+            val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
             cantidadView.text = cantidad.toString()
 
-            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
+            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
             precioView.text = precio.toString()
 
 

@@ -2,12 +2,15 @@ package com.example.pulperiaapp.ui.view.venta
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.RequiresApi
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.pulperiaapp.R
@@ -15,14 +18,20 @@ import com.example.pulperiaapp.databinding.ItemVentaBinding
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import java.text.SimpleDateFormat
 import kotlin.collections.List
+
 import java.util.Date
 import java.util.Locale
 
-class AdapterVenta() : RecyclerView.Adapter<AdapterVenta.ViewHolder>(), Filterable {
-    private var listaVenta: List<VentaPrixCocaDetalle> = emptyList()
-    private var filterList: List<VentaPrixCocaDetalle> = emptyList()
+class AdapterVenta(
+    private val onDeleteClickListener: (Int, Int) -> Unit,
+    private val onUpdateClickListener: (Long, Int) -> Unit
+) :
+    PagingDataAdapter<VentaPrixCocaDetalle, AdapterVenta.ViewHolder>(ARTICLE_DIFF_CALLBACK),
+    Filterable {
+    var listaVenta: List<VentaPrixCocaDetalle> = emptyList()
+    var filterList: List<VentaPrixCocaDetalle> = emptyList()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val binding = ItemVentaBinding.bind(view)
 
@@ -33,15 +42,26 @@ class AdapterVenta() : RecyclerView.Adapter<AdapterVenta.ViewHolder>(), Filterab
             val fechaFormateada =
                 SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(fecha))
 
-            // Separa los productos y cantidades
+
             val productos = venta.producto
             val cantidades = venta.cantidad
             val total = venta.total_venta
-
+            val idProducto = venta.id
+            val fechaReview = venta.fecha_venta
 
             binding.tvListProducto.text = "$productos - $cantidades"
             binding.tvTotal.text = total.toString()
             binding.tvFecha.text = fechaFormateada
+            binding.btnEliminarVenta.setOnClickListener {
+                onDeleteClickListener(bindingAdapterPosition, idProducto)
+            }
+            binding.btnEditarVenta.setOnClickListener {
+                onUpdateClickListener(
+                    fechaReview, idProducto
+                )
+
+            }
+
         }
 
 
@@ -61,8 +81,28 @@ class AdapterVenta() : RecyclerView.Adapter<AdapterVenta.ViewHolder>(), Filterab
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diag = filterList[position]
         holder.bind(diag)
+
     }
 
+    companion object {
+        private val ARTICLE_DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<VentaPrixCocaDetalle>() {
+                override fun areItemsTheSame(
+                    oldItem: VentaPrixCocaDetalle,
+                    newItem: VentaPrixCocaDetalle
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: VentaPrixCocaDetalle,
+                    newItem: VentaPrixCocaDetalle
+                ): Boolean {
+                    return oldItem == newItem
+                }
+
+            }
+    }
 
     fun setList(newList: List<VentaPrixCocaDetalle>) {
         listaVenta = newList
