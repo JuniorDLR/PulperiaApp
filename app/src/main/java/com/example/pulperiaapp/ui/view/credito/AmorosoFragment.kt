@@ -138,7 +138,7 @@ class AmorosoFragment : Fragment() {
     }
 
     private fun guardarVentaAmoroso() {
-        var precioTotal = 0.0
+
         val fechaFormateada =
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         val amoroso = binding.atvMoroso.text.toString()
@@ -147,15 +147,15 @@ class AmorosoFragment : Fragment() {
 
 
             for ((producto, info) in productoSeleccionados) {
-                val cantidad = info.first.toString()
-                precioTotal += info.second
+                val cantidad = info.first
+                val precio = info.second
 
                 val amorosoEntity = CreditoEntity(
                     0,
                     amoroso,
                     producto,
                     cantidad,
-                    precioTotal,
+                    precio,
                     fechaFormateada,
                     false
                 )
@@ -303,18 +303,18 @@ class AmorosoFragment : Fragment() {
 
         for ((producto, info) in productoSeleccionados) {
             tableRow = LayoutInflater.from(requireContext())
-                .inflate(R.layout.tabla_row_item, null) as TableRow
+                .inflate(R.layout.table_row_venta, null) as TableRow
 
             val cantidad = info.first
             val precio = info.second
-            val productoView = tableRow.findViewById<TextView>(R.id.tvIdR)
+            val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
             productoView.text = producto
 
-            val cantidadView = tableRow.findViewById<TextView>(R.id.tvProductoR)
+            val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
             cantidadView.text = cantidad.toString()
 
 
-            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
+            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
             precioView.text = precio.toString()
 
             tableLayout.addView(tableRow)

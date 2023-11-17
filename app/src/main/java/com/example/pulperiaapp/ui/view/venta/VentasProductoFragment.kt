@@ -131,7 +131,6 @@ class VentasProductoFragment : Fragment() {
     }
 
     private fun guardarProducto() {
-        var totalVenta = 0.0
         if (productosSeleccionados.isEmpty()) {
             Toast.makeText(
                 requireContext(),
@@ -144,30 +143,19 @@ class VentasProductoFragment : Fragment() {
             for (venta in productosSeleccionados) {
                 val productoVendido = venta.key
                 val cantidad = venta.value.first
-                totalVenta += venta.value.second
-                if (binding.swVentaPorCajilla.isChecked) {
-                    val ventaConProductos = VentaPrixCoca(
-                        id = 0,
-                        producto = productoVendido,
-                        total = totalVenta,
-                        fecha = System.currentTimeMillis(),
-                        cantidad = cantidad,
-                        ventaPorCajilla = true
-                    )
+                val total = venta.value.second
+                val ventaPorCajilla = binding.swVentaPorCajilla.isChecked
+                val ventaConProductos = VentaPrixCoca(
+                    id = 0,
+                    producto = productoVendido,
+                    total = total,
+                    fecha = System.currentTimeMillis(),
+                    cantidad = cantidad,
+                    ventaPorCajilla = ventaPorCajilla
+                )
 
-                    ventaModel.insertarVenta(ventaConProductos)
-                } else {
-                    val ventaConProductos =
-                        VentaPrixCoca(
-                            id = 0,
-                            producto = productoVendido,
-                            total = totalVenta,
-                            fecha = System.currentTimeMillis(),
-                            cantidad = cantidad,
-                            ventaPorCajilla = false
-                        )
-                    ventaModel.insertarVenta(ventaConProductos)
-                }
+                ventaModel.insertarVenta(ventaConProductos)
+
             }
 
             Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)

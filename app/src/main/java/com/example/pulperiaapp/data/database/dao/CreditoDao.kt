@@ -4,7 +4,11 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
+import com.example.pulperiaapp.domain.amoroso.DetalleAmoroso
+import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
+import com.example.pulperiaapp.domain.venta.DetalleEditar
 
 
 @Dao
@@ -20,12 +24,15 @@ interface CreditoDao {
     @Query("DELETE FROM tbl_credito WHERE cliente =:cliente")
     suspend fun eliminarCredito(cliente: String)
 
+    @Query("UPDATE tbl_credito SET producto=:producto, cantidad=:cantidad, precio_total=:precio WHERE id=:id")
+    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double)
+
 
     @Query("UPDATE tbl_credito SET estado_pago =:nuevoEstado WHERE cliente =:cliente")
     suspend fun estadoPago(nuevoEstado: Boolean, cliente: String)
 
-    @Query("SELECT id,cliente,producto,SUM(cantidad) AS cantidad,SUM(precio_total) AS precio_total,fecha,estado_pago  FROM tbl_credito WHERE cliente=:nombre GROUP BY cliente")
-    suspend fun obtenerPagoTotalCliente(nombre: String): List<CreditoEntity>
+    @Query("SELECT * FROM tbl_credito WHERE cliente = :cliente AND estado_pago = 0")
+    suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle>
 
 
 }

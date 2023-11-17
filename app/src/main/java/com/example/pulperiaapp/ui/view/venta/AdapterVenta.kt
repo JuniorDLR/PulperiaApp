@@ -38,34 +38,31 @@ class AdapterVenta(
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(venta: VentaPrixCocaDetalle) {
-            val fecha = venta.fecha_venta
-            val fechaFormateada =
-                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(fecha))
+            // Lógica para mostrar datos individuales o agrupados por cajilla
+            binding.tvFecha.text = SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()
+            ).format(Date(venta.fecha_venta))
 
+            if (venta.ventaPorCajilla) {
+                // Lógica para ventas por cajilla
+                binding.tvListProducto.text = "${venta.producto} - ${venta.cantidad} cajillas"
+                binding.tvTotal.text = venta.total_venta.toString()
+            } else {
+                // Lógica para ventas individuales
+                binding.tvListProducto.text = "${venta.producto} - ${venta.cantidad}"
+                binding.tvTotal.text = venta.total_venta.toString()
+            }
 
-            val productos = venta.producto
-            val cantidades = venta.cantidad
-            val total = venta.total_venta
-            val idProducto = venta.id
-            val fechaReview = venta.fecha_venta
-
-            binding.tvListProducto.text = "$productos - $cantidades"
-            binding.tvTotal.text = total.toString()
-            binding.tvFecha.text = fechaFormateada
             binding.btnEliminarVenta.setOnClickListener {
-                onDeleteClickListener(bindingAdapterPosition, idProducto)
+                onDeleteClickListener(bindingAdapterPosition, venta.id)
             }
             binding.btnEditarVenta.setOnClickListener {
-                onUpdateClickListener(
-                    fechaReview, idProducto
-                )
-
+                onUpdateClickListener(venta.fecha_venta, venta.id)
             }
-
         }
-
-
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflate = LayoutInflater.from(parent.context).inflate(

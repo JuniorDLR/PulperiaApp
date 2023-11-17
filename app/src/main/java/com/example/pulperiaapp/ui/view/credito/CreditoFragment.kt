@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
@@ -37,9 +38,9 @@ class CreditoFragment : Fragment() {
         initComponent()
 
         amorosoModel.groupedAmorosoModel.observe(viewLifecycleOwner) { lista ->
-
             adapter.setLista(lista)
         }
+
 
         return binding.root
     }
@@ -79,9 +80,18 @@ class CreditoFragment : Fragment() {
         managuer.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = managuer
         adapter = AdapterAmoroso(
-            onClickUpdate = { cliente -> actualizarPago(cliente) }, requireContext()
+            onClickUpdate = { cliente -> actualizarPago(cliente) }, requireContext(),
+            onClickSee = { cliente,id-> editar(cliente,id) }
         )
         recyclerView.adapter = adapter
+
+    }
+
+    private fun editar(cliente: String, id: Int) {
+        findNavController().navigate(
+            CreditoFragmentDirections.actionCreditoFragmentToEditarCreditoFragment(
+                cliente,id)
+        )
 
     }
 

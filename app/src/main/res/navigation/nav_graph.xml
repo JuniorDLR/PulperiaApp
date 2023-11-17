@@ -52,6 +52,10 @@
         <action
             android:id="@+id/action_creditoFragment_to_amorosoFragment"
             app:destination="@id/amorosoFragment" />
+        <action
+            android:id="@+id/action_creditoFragment_to_editarCreditoFragment"
+            app:destination="@id/editarCreditoFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/amorosoFragment"
@@ -72,7 +76,7 @@
         android:id="@+id/TablaCocaFragment"
         android:name="com.example.pulperiaapp.ui.view.coca.TablaCocaFragment"
         android:label="fragment_tabla_producto"
-        tools:layout="@layout/fragment_tabla_coca" >
+        tools:layout="@layout/fragment_tabla_coca">
         <action
             android:id="@+id/action_TablaCocaFragment_to_agregarCocaFragment"
             app:destination="@id/agregarCocaFragment" />
@@ -81,7 +85,7 @@
         android:id="@+id/tablaPrixFragment"
         android:name="com.example.pulperiaapp.ui.view.prix.TablaPrixFragment"
         android:label="fragment_tabla_prix"
-        tools:layout="@layout/fragment_tabla_prix" >
+        tools:layout="@layout/fragment_tabla_prix">
         <action
             android:id="@+id/action_tablaPrixFragment_to_agregarPrixFragment"
             app:destination="@id/agregarPrixFragment" />
@@ -105,7 +109,7 @@
         android:id="@+id/tablaBigColaFragment"
         android:name="com.example.pulperiaapp.ui.view.bigcola.TablaBigColaFragment"
         android:label="fragment_tabla_big_cola"
-        tools:layout="@layout/fragment_tabla_big_cola" >
+        tools:layout="@layout/fragment_tabla_big_cola">
         <action
             android:id="@+id/action_tablaBigColaFragment_to_agregandoBigFragment"
             app:destination="@id/agregandoBigFragment" />
@@ -125,7 +129,7 @@
         android:id="@+id/inventarioDatosFragment"
         android:name="com.example.pulperiaapp.ui.view.inventario.InventarioDatosFragment"
         android:label="fragment_inventario_datos"
-        tools:layout="@layout/fragment_inventario_datos" >
+        tools:layout="@layout/fragment_inventario_datos">
         <action
             android:id="@+id/action_inventarioDatosFragment_to_inventarioFragment"
             app:destination="@id/inventarioFragment" />
@@ -134,12 +138,24 @@
         android:id="@+id/editarVentasFragment"
         android:name="com.example.pulperiaapp.ui.view.venta.EditarVentasFragment"
         android:label="fragment_editar_ventas"
-        tools:layout="@layout/fragment_editar_ventas" >
+        tools:layout="@layout/fragment_editar_ventas">
         <argument
             android:name="idProducto"
             app:argType="integer" />
         <argument
             android:name="fechaActual"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarCreditoFragment"
+        android:name="com.example.pulperiaapp.ui.view.credito.EditarCreditoFragment"
+        android:label="fragment_editar_credito"
+        tools:layout="@layout/fragment_editar_credito" >
+        <argument
+            android:name="cliente"
+            app:argType="string" />
+        <argument
+            android:name="idProducto"
+            app:argType="integer" />
     </fragment>
 </navigation>

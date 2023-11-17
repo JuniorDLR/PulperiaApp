@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckedTextView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -77,6 +78,182 @@ class EditarVentasFragment : Fragment() {
 
 
     }
+
+    private fun guardarVentaEditada(idParametro: Int) {
+        val fecha = args.fechaActual
+        lifecycleScope.launch {
+            for ((producto, info) in productoAgregado) {
+                val cantidad = info.first
+                val total = info.second
+                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
+
+                val venta = VentaPrixCoca(
+                    idParametro,
+                    producto,
+                    total,
+                    fecha,
+                    System.currentTimeMillis(),
+                    esVentaPorCajilla,
+                    cantidad
+                )
+                ventaModel.editarVenta(venta)
+            }
+
+            for ((jr, info) in productoEditar) {
+                val producto = info.first
+                val cantidad = info.second
+                val precio = info.third
+                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
+
+                val venta = VentaPrixCoca(
+                    idParametro,
+                    producto,
+                    precio,
+                    fecha,
+                    System.currentTimeMillis(),
+                    esVentaPorCajilla,
+                    cantidad
+                )
+                ventaModel.editarVenta(venta)
+            }
+        }
+        Toast.makeText(requireContext(), "Datos editado exitosamente", Toast.LENGTH_LONG)
+            .show()
+        requireActivity().supportFragmentManager.popBackStack()
+    }
+
+
+    private fun iniComponent() {
+        tableLayou = binding.tlProductoEditar
+        tableRow = binding.trProductoEditar
+        chipGroup = binding.chListaEditar
+    }
+
+    private fun initData(idEditar: Int) {
+        lifecycleScope.launch {
+            ventaModel.obtenerDetalleEditarLiveData(idEditar)
+
+
+            ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
+                detalleList?.let {
+                    // Los datos se han actualizado, puedes proceder a visualizar la tabla
+                    for (detalleItem in detalleList) {
+                        val producto = detalleItem.producto
+                        val cantidad = detalleItem.cantidad
+                        val total = detalleItem.total_venta
+                        guardarDatoRecuperado(idEditar, producto, cantidad, total)
+                    }
+                    visualizarTabla(false)
+                }
+            }
+        }
+    }
+
+
+    private fun guardarDatoRecuperado(
+        idParametro: Int,
+        producto: String,
+        cantidad: Int,
+        total: Double
+    ) {
+
+        if (!productoEditar.containsKey(idParametro)) {
+            productoEditar[idParametro] = Triple(producto, cantidad, total)
+        }
+
+    }
+
+
+    private fun visualizarTabla(isChecked: Boolean) {
+        tableLayou.removeAllViews()
+        if (!isChecked && productoEditar.isNotEmpty()) {
+
+            // Agregar elementos de productoEditar
+            productoEditar.forEach { (pro, info) ->
+                val producto = info.first
+                val cantidad = info.second
+                val total = info.third
+                agregarFila(producto, cantidad, total, pro)
+
+            }
+        }
+
+        if (isChecked && productoAgregado.isNotEmpty()) {
+            // Agregar elementos de productoAgregado
+            productoAgregado.forEach { (producto, info) ->
+                val cantidad = info.first
+                val total = info.second
+                agregarFila(producto, cantidad, total, -1)
+            }
+        }
+    }
+
+    private fun agregarFila(producto: String, cantidad: Int, total: Double, pro: Int) {
+
+        val tableRow = LayoutInflater.from(requireContext())
+            .inflate(R.layout.table_row_venta, null) as TableRow
+
+        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
+        productoView.text = producto
+
+        val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
+        cantidadView.text = cantidad.toString()
+
+        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
+        precioView.text = total.toString()
+
+        productoView.setOnClickListener {
+            if (cantidad >= 1) {
+                val nuevaCantidad = cantidad - 1
+                val newPrecio = nuevaCantidad * total / cantidad
+                if (pro != -1) {
+                    // Si es de productoEditar
+                    productoEditar[pro] = Triple(producto, nuevaCantidad, newPrecio)
+                } else {
+                    // Si es de productoAgregado
+                    productoAgregado[producto] = Pair(nuevaCantidad, newPrecio)
+                }
+                visualizarTabla(false)
+            } else {
+                if (pro != -1) {
+                    // Si es de productoEditar
+                    productoEditar.remove(pro)
+                } else {
+                    // Si es de productoAgregado
+                    productoAgregado.remove(producto)
+                }
+                binding.tvTotalAmountEditar.text = 0.0.toString()
+                visualizarTabla(false)
+            }
+        }
+
+        cantidadView.setOnClickListener {
+            if (cantidad >= 1) {
+                val nuevaCantidad = cantidad + 1
+                val newPrecio = nuevaCantidad * total / cantidad
+                if (pro != -1) {
+                    productoEditar[pro] = Triple(producto, nuevaCantidad, newPrecio)
+                } else {
+                    productoAgregado[producto] = Pair(nuevaCantidad, newPrecio)
+                }
+                visualizarTabla(false)
+            } else {
+
+                if (pro != -1) {
+                    productoEditar.remove(pro)
+                } else {
+                    productoAgregado.remove(producto)
+                }
+                binding.tvTotalAmountEditar.text = 0.0.toString()
+                visualizarTabla(false)
+            }
+
+        }
+
+        tableLayou.addView(tableRow)
+        binding.tvTotalAmountEditar.text = total.toString()
+    }
+
 
     private fun ventaCoca() {
         lifecycleScope.launch {
@@ -218,192 +395,40 @@ class EditarVentasFragment : Fragment() {
         }
 
     }
-
     fun guardarVenta(productoSeleccionado: String, precioProducto: Double) {
-        if (productoAgregado.containsKey(productoSeleccionado)) {
-            val (cantidadExistente) = productoAgregado[productoSeleccionado]!!
-            val nuevaCantidad = cantidadExistente + 1
-            val nuevoPrecio = nuevaCantidad * precioProducto
-            productoAgregado[productoSeleccionado] = Pair(nuevaCantidad, nuevoPrecio)
+        val cliente = args.idProducto
+        val cantidadInicial = 1
 
+        if (binding.swVentaPorCajillaEditar.isChecked) {
+            // Lógica cuando el switch está activado
+            if (productoAgregado.containsKey(productoSeleccionado)) {
+                val (cantidadExistente, _) = productoAgregado[productoSeleccionado]!!
+                val nuevaCantidad = cantidadExistente + 1
+                val nuevoPrecio = nuevaCantidad * precioProducto
+                productoAgregado[productoSeleccionado] = Pair(nuevaCantidad, nuevoPrecio)
+            } else {
+                val cantidadInicial = 1
+                val nuevoPrecio = cantidadInicial * precioProducto
+                productoAgregado[productoSeleccionado] = Pair(cantidadInicial, nuevoPrecio)
+            }
+            visualizarTabla(true)
         } else {
-            val cantidadPorDefecto = 1
-            productoEditar.clear()
-            productoAgregado[productoSeleccionado] = Pair(cantidadPorDefecto, precioProducto)
+            // Lógica cuando el switch NO está activado
+            val productoTriple = productoEditar[cliente]
 
-        }
-
-        visualizarTabla()
-    }
-
-    private fun iniComponent() {
-        tableLayou = binding.tlProductoEditar
-        tableRow = binding.trProductoEditar
-        chipGroup = binding.chListaEditar
-    }
-
-    private fun initData(idEditar: Int) {
-        lifecycleScope.launch {
-            ventaModel.obtenerDetalleEditarLiveData(idEditar)
-
-
-            ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
-                detalleList?.let {
-                    // Los datos se han actualizado, puedes proceder a visualizar la tabla
-                    for (detalleItem in detalleList) {
-                        val producto = detalleItem.producto
-                        val cantidad = detalleItem.cantidad
-                        val total = detalleItem.total_venta
-                        guardarDatoRecuperado(idEditar, producto, cantidad, total)
-                    }
-                    visualizarTabla()
-                }
-            }
-        }
-    }
-
-
-    private fun guardarDatoRecuperado(
-        idParametro: Int,
-        producto: String,
-        cantidad: Int,
-        total: Double
-    ) {
-
-        if (!productoEditar.containsKey(idParametro)) {
-            productoEditar[idParametro] = Triple(producto, cantidad, total)
-        }
-
-    }
-
-
-    private fun visualizarTabla() {
-        tableLayou.removeAllViews()
-
-        // Agregar elementos de productoEditar
-        productoEditar.forEach { (pro, info) ->
-            val producto = info.first
-            val cantidad = info.second
-            val total = info.third
-            agregarFila(producto, cantidad, total, pro)
-        }
-
-        // Agregar elementos de productoAgregado
-        productoAgregado.forEach { (producto, info) ->
-            val cantidad = info.first
-            val total = info.second
-            agregarFila(producto, cantidad, total, -1)
-        }
-    }
-
-    private fun agregarFila(producto: String, cantidad: Int, total: Double, pro: Int) {
-        val tableRow = LayoutInflater.from(requireContext())
-            .inflate(R.layout.table_row_venta, null) as TableRow
-
-        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
-        productoView.text = producto
-
-        val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
-        cantidadView.text = cantidad.toString()
-
-        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
-        precioView.text = total.toString()
-
-        productoView.setOnClickListener {
-            if (cantidad >= 1) {
-                val nuevaCantidad = cantidad - 1
-                val newPrecio = nuevaCantidad * total / cantidad
-                if (pro != -1) {
-                    // Si es de productoEditar
-                    productoEditar[pro] = Triple(producto, nuevaCantidad, newPrecio)
-                } else {
-                    // Si es de productoAgregado
-                    productoAgregado[producto] = Pair(nuevaCantidad, newPrecio)
-                }
-                visualizarTabla()
+            if (productoTriple != null && productoTriple.first != productoSeleccionado) {
+                productoEditar[cliente] = Triple(productoSeleccionado, cantidadInicial, precioProducto)
+            } else if (productoTriple != null) {
+                val (_, cantidadExistente, _) = productoTriple
+                val nuevaCantidad = cantidadExistente + cantidadInicial
+                val nuevoPrecio = nuevaCantidad * precioProducto
+                productoEditar[cliente] = Triple(productoSeleccionado, nuevaCantidad, nuevoPrecio)
             } else {
-                if (pro != -1) {
-                    // Si es de productoEditar
-                    productoEditar.remove(pro)
-                } else {
-                    // Si es de productoAgregado
-                    productoAgregado.remove(producto)
-                }
-                binding.tvTotalAmountEditar.text = 0.0.toString()
-                visualizarTabla()
+                val nuevoPrecio = cantidadInicial * precioProducto
+                productoEditar[cliente] = Triple(productoSeleccionado, cantidadInicial, nuevoPrecio)
             }
+            visualizarTabla(false)
         }
-
-        cantidadView.setOnClickListener {
-            if (cantidad >= 1) {
-                val nuevaCantidad = cantidad + 1
-                val newPrecio = nuevaCantidad * total / cantidad
-                if (pro != -1) {
-                    productoEditar[pro] = Triple(producto, nuevaCantidad, newPrecio)
-                } else {
-                    productoAgregado[producto] = Pair(nuevaCantidad, newPrecio)
-                }
-                visualizarTabla()
-            } else {
-
-                if (pro != -1) {
-                    productoEditar.remove(pro)
-                } else {
-                    productoAgregado.remove(producto)
-                }
-                binding.tvTotalAmountEditar.text = 0.0.toString()
-                visualizarTabla()
-            }
-
-        }
-
-        tableLayou.addView(tableRow)
-        binding.tvTotalAmountEditar.text = total.toString()
     }
-
-
-    private fun guardarVentaEditada(idParametro: Int) {
-        val fecha = args.fechaActual
-        lifecycleScope.launch {
-            for ((producto, info) in productoAgregado) {
-                val cantidad = info.first
-                val total = info.second
-                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
-
-                val venta = VentaPrixCoca(
-                    idParametro,
-                    producto,
-                    total,
-                    fecha,
-                    System.currentTimeMillis(),
-                    esVentaPorCajilla,
-                    cantidad
-                )
-                ventaModel.editarVenta(venta)
-            }
-
-            for ((jr, info) in productoEditar) {
-                val producto = info.first
-                val cantidad = info.second
-                val precio = info.third
-                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
-
-                val venta = VentaPrixCoca(
-                    idParametro,
-                    producto,
-                    precio,
-                    fecha,
-                    System.currentTimeMillis(),
-                    esVentaPorCajilla,
-                    cantidad
-                )
-                ventaModel.editarVenta(venta)
-            }
-        }
-        Toast.makeText(requireContext(), "Datos editado exitosamente", Toast.LENGTH_LONG)
-            .show()
-        requireActivity().supportFragmentManager.popBackStack()
-    }
-
 
 }

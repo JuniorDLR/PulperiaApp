@@ -11,7 +11,7 @@ data class CreditoEntity(
     @ColumnInfo("id") val id: Int = 0,
     @ColumnInfo("cliente") val cliente: String,
     @ColumnInfo("producto") val producto: String,
-    @ColumnInfo("cantidad") val cantidad: String,
+    @ColumnInfo("cantidad") val cantidad: Int,
     @ColumnInfo("precio_total") val precioTotal: Double,
     @ColumnInfo("fecha") val fecha: String,
     @ColumnInfo("estado_pago") var estado_pago: Boolean

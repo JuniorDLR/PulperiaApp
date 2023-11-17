@@ -28,6 +28,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
     private val _ventaModel = MutableStateFlow<List<VentaPrixCocaDetalle>>(emptyList())
     val ventaModel: StateFlow<List<VentaPrixCocaDetalle>> = _ventaModel
+
     val _obtenerTotal = MutableLiveData<Double>()
     val obtenerTotal: LiveData<Double> = _obtenerTotal
 
@@ -38,6 +39,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     private val _ventaModelPagin =
         MutableStateFlow<PagingData<VentaPrixCocaDetalle>>(PagingData.empty())
     val ventaModelPagin: StateFlow<PagingData<VentaPrixCocaDetalle>> = _ventaModelPagin
+
 
     init {
         viewModelScope.launch {
@@ -68,8 +70,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         }
     }
 
-    suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =
-        useCaseVenta.editarVenta(ventaPrixCoca)
+    suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) = useCaseVenta.editarVenta(ventaPrixCoca)
 
     fun obtenerVenta() {
         viewModelScope.launch {
