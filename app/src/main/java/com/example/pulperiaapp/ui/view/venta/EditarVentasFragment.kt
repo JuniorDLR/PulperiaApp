@@ -85,6 +85,7 @@ class EditarVentasFragment : Fragment() {
             for ((producto, info) in productoAgregado) {
                 val cantidad = info.first
                 val total = info.second
+
                 val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
                 val venta = VentaPrixCoca(
@@ -395,6 +396,7 @@ class EditarVentasFragment : Fragment() {
         }
 
     }
+
     fun guardarVenta(productoSeleccionado: String, precioProducto: Double) {
         val cliente = args.idProducto
         val cantidadInicial = 1
@@ -417,7 +419,8 @@ class EditarVentasFragment : Fragment() {
             val productoTriple = productoEditar[cliente]
 
             if (productoTriple != null && productoTriple.first != productoSeleccionado) {
-                productoEditar[cliente] = Triple(productoSeleccionado, cantidadInicial, precioProducto)
+                productoEditar[cliente] =
+                    Triple(productoSeleccionado, cantidadInicial, precioProducto)
             } else if (productoTriple != null) {
                 val (_, cantidadExistente, _) = productoTriple
                 val nuevaCantidad = cantidadExistente + cantidadInicial

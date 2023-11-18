@@ -151,7 +151,9 @@ class VentasProductoFragment : Fragment() {
                     total = total,
                     fecha = System.currentTimeMillis(),
                     cantidad = cantidad,
-                    ventaPorCajilla = ventaPorCajilla
+                    ventaPorCajilla = ventaPorCajilla,
+
+
                 )
 
                 ventaModel.insertarVenta(ventaConProductos)

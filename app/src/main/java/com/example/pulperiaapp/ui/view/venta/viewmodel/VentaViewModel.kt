@@ -76,6 +76,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         viewModelScope.launch {
             val lista = useCaseVenta.obtenerVenta()
             actualizarDatos(lista)
+
         }
     }
 

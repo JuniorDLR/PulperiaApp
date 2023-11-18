@@ -4,5 +4,6 @@ data class DetalleAmoroso(
     val id: Int,
     val producto: String,
     var cantidad: Int,
-    var precio_total: Double
-)
+    var precio_total: Double,
+
+    )

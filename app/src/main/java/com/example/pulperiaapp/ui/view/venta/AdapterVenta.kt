@@ -38,7 +38,7 @@ class AdapterVenta(
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(venta: VentaPrixCocaDetalle) {
-            // Lógica para mostrar datos individuales o agrupados por cajilla
+
             binding.tvFecha.text = SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()

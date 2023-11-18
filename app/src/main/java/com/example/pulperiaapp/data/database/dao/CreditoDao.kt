@@ -21,11 +21,17 @@ interface CreditoDao {
     @Query("SELECT * FROM tbl_credito")
     suspend fun obtenerCredito(): List<CreditoEntity>
 
-    @Query("DELETE FROM tbl_credito WHERE cliente =:cliente")
-    suspend fun eliminarCredito(cliente: String)
+    @Query("DELETE FROM tbl_credito WHERE id =:id")
+    suspend fun eliminarCredito(id: Int)
 
-    @Query("UPDATE tbl_credito SET producto=:producto, cantidad=:cantidad, precio_total=:precio WHERE id=:id")
-    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double)
+    @Query("UPDATE tbl_credito SET producto=:producto, cantidad=:cantidad, precio_total=:precio,fecha=:fecha WHERE id=:id")
+    suspend fun editarCredito(
+        id: Int,
+        producto: String,
+        cantidad: Int,
+        precio: Double,
+        fecha: String
+    )
 
 
     @Query("UPDATE tbl_credito SET estado_pago =:nuevoEstado WHERE cliente =:cliente")

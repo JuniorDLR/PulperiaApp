@@ -9,7 +9,7 @@ data class VentaPrixCocaDetalle(
     val total_venta: Double,
     val fecha_venta: Long,
     val ventaPorCajilla: Boolean,
-    val cantidad: Int,
+    val cantidad: Int
 )
 
 fun VentaPrixCoca.toDomain() = VentaPrixCocaDetalle(
@@ -19,6 +19,7 @@ fun VentaPrixCoca.toDomain() = VentaPrixCocaDetalle(
     fecha_venta = fecha,
     ventaPorCajilla = ventaPorCajilla,
     cantidad = cantidad
+
 )
 
 

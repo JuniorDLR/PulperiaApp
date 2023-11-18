@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.credito
 
+import android.app.AlertDialog
 import android.os.Bundle
 
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentCreditoBinding
 import com.example.pulperiaapp.ui.view.credito.adapter.AdapterAmoroso
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
+import com.twilio.rest.monitor.v1.Alert
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -81,7 +83,7 @@ class CreditoFragment : Fragment() {
         recyclerView.layoutManager = managuer
         adapter = AdapterAmoroso(
             onClickUpdate = { cliente -> actualizarPago(cliente) }, requireContext(),
-            onClickSee = { cliente,id-> editar(cliente,id) }
+            onClickSee = { cliente, id -> editar(cliente, id) }
         )
         recyclerView.adapter = adapter
 
@@ -90,15 +92,27 @@ class CreditoFragment : Fragment() {
     private fun editar(cliente: String, id: Int) {
         findNavController().navigate(
             CreditoFragmentDirections.actionCreditoFragmentToEditarCreditoFragment(
-                cliente,id)
+                cliente, id
+            )
         )
 
     }
 
     private fun actualizarPago(cliente: String) {
-        amorosoModel.actualizarEstado(true, cliente)
-        Toast.makeText(requireContext(), "El cliente ya pago", Toast.LENGTH_LONG).show()
+        AlertDialog.Builder(requireContext())
+            .setTitle("ADVERTENCIA")
+            .setMessage("¿Estas seguro que desea cancelar el pago?")
+            .setPositiveButton("Si") { dialog, _ ->
+                amorosoModel.actualizarEstado(true, cliente)
+                Toast.makeText(requireContext(), "Saldo de  $cliente cancelado ", Toast.LENGTH_LONG)
+                    .show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { diag, _ ->
+                diag.dismiss()
+            }
 
+            .show()
     }
 
 

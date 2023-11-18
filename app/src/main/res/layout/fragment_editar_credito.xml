@@ -22,103 +22,8 @@
         android:gravity="center"
         android:text="CLIENTE"
         android:textSize="20sp"
+        android:padding="10dp"
         android:textStyle="bold" />
-
-    <!--
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chListaEditarCredito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chPrixEditarCredito"
-                    style="@style/CustomChipStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="Prixcola"
-                    android:text="@string/prix_cola"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chBigColaEditarCredito"
-                    style="@style/CustomChipStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="BigCola"
-                    android:text="@string/big_cola"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chCocaEditarCredito"
-                    style="@style/CustomChipStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="Coca"
-                    android:text="@string/coca_cola"
-                    android:textSize="20sp" />
-            </com.google.android.material.chip.ChipGroup>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
-
-
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="30dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/fondo"
-                    android:gravity="center_horizontal"
-                    android:text="@string/seleccione_un_producto"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spProdutosEditarCredito"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/btnGuardarProductoEditarCredito"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:backgroundTint="@color/fondo"
-                    android:text="@string/agregar"
-                    android:textSize="18sp" />
-
-
-            </LinearLayout>
-            <!- Títulos de las columnas -->
-
 
     <TableRow
         android:id="@+id/trProducto"
@@ -215,9 +120,6 @@
         android:backgroundTint="@color/fondo"
         android:text="Editar credito"
         android:textSize="18sp" />
-
-
-    <!--</LinearLayout> -->
 
 
 </LinearLayout>

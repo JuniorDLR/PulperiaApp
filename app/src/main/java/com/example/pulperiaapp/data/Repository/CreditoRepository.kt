@@ -15,12 +15,12 @@ class CreditoRepository @Inject constructor(private val creditoDao: CreditoDao) 
         creditoDao.insertarCredito(creditoEntity)
     }
 
-    suspend fun eliminarCredito(cliente: String) {
-        creditoDao.eliminarCredito(cliente)
+    suspend fun eliminarCredito(id: Int) {
+        creditoDao.eliminarCredito(id)
     }
 
-    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double) =
-        creditoDao.editarCredito(id,producto,cantidad, precio)
+    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double,fecha:String) =
+        creditoDao.editarCredito(id,producto,cantidad, precio,fecha)
 
     suspend fun actualizarPago(nuevoEstado: Boolean, cliente: String) =
         creditoDao.estadoPago(nuevoEstado, cliente)

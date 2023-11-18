@@ -54,7 +54,8 @@ class EditarCreditoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDate()
-        binding.tvVisualizarCliente.text = args.cliente
+        val cliente = "Cliente - ${args.cliente}"
+        binding.tvVisualizarCliente.text = cliente
         binding.btnEditarCredito.setOnClickListener {
             editarCredito()
         }
@@ -67,12 +68,17 @@ class EditarCreditoFragment : Fragment() {
             val fechaFormateada =
                 SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             productoRecuperado[cliente]?.forEach { detalle ->
-                val prodcuto = detalle.producto
+                val producto = detalle.producto
                 val cantidad = detalle.cantidad
                 val precio = detalle.precio_total
                 val id = detalle.id
 
-                creditoModel.editarCredito(id, prodcuto, cantidad, precio)
+                if (cantidad > 0) {
+                    creditoModel.editarCredito(id, producto, cantidad, precio, fechaFormateada)
+                } else {
+
+                    creditoModel.eliminarCredito(id)
+                }
             }
 
             Toast.makeText(requireContext(), "Datos editados exitosamente!!!", Toast.LENGTH_LONG)
@@ -95,6 +101,7 @@ class EditarCreditoFragment : Fragment() {
                             val producto = j.producto
                             val cantidad = j.cantidad
                             val precio = j.precio_total
+
                             guardarDetalleRecuperado(id, producto, cantidad, precio)
                         }
                     }
@@ -105,35 +112,47 @@ class EditarCreditoFragment : Fragment() {
     }
 
 
-    private fun guardarDetalleRecuperado(id: Int, producto: String, cantidad: Int, precio: Double) {
+    private fun guardarDetalleRecuperado(
+        id: Int,
+        producto: String,
+        cantidad: Int,
+        precio: Double,
+
+    ) {
         val cliente = args.cliente
 
-        if (!productoRecuperado.containsKey(cliente)) {
-            val lista = mutableListOf(DetalleAmoroso(id, producto, cantidad, precio))
-            productoRecuperado[cliente] = lista
-        } else {
-            productoRecuperado[cliente]?.add(DetalleAmoroso(id, producto, cantidad, precio))
+        if (cantidad > 0) {
+            if (!productoRecuperado.containsKey(cliente)) {
+                val lista = mutableListOf(DetalleAmoroso(id, producto, cantidad, precio))
+                productoRecuperado[cliente] = lista
+            } else {
+                productoRecuperado[cliente]?.add(
+                    DetalleAmoroso(
+                        id,
+                        producto,
+                        cantidad,
+                        precio,
+
+                    )
+                )
+            }
         }
     }
 
 
     private fun actualizarTabla() {
-
         tableLayout.removeAllViews()
 
         var totaRecuperado = 0.0
         val cliente = args.cliente
-        productoRecuperado[cliente]?.forEach { map ->
-            val idCliente = map.id
+        productoRecuperado[cliente]?.filter { it.cantidad > 0 }?.forEach { map ->
             val producto = map.producto
             val cantidad = map.cantidad
             val precio = map.precio_total
-            agregarFila(producto, cantidad, precio, cliente, idCliente)
+            agregarFila(producto, cantidad, precio, cliente, map.id)
             totaRecuperado += precio
         }
         binding.tvTotalAmount.text = totaRecuperado.toString()
-
-
     }
 
 
@@ -144,6 +163,8 @@ class EditarCreditoFragment : Fragment() {
         pro: String,
         idCliente: Int
     ) {
+
+
         val tableRow = LayoutInflater.from(requireContext())
             .inflate(R.layout.table_row_venta, null) as TableRow
         tableRow.tag = idCliente
@@ -162,7 +183,7 @@ class EditarCreditoFragment : Fragment() {
                 val nuevaCantidad = cantidad - 1
                 val nuevoPrecio = nuevaCantidad * precio / cantidad
 
-                val detalleExistente = productoRecuperado[pro]?.find { it.producto == producto }
+                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     it.cantidad = nuevaCantidad
                     it.precio_total = nuevoPrecio
@@ -170,9 +191,11 @@ class EditarCreditoFragment : Fragment() {
 
                 actualizarTabla()
             } else {
-                val detalleExistente = productoRecuperado[pro]?.find { it.producto == producto }
+                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     productoRecuperado[pro]?.remove(it)
+
+
                 }
                 binding.tvTotalAmount.text = 0.0.toString()
                 actualizarTabla()
@@ -183,7 +206,7 @@ class EditarCreditoFragment : Fragment() {
             if (cantidad >= 1) {
                 val nuevaCantidad = cantidad + 1
                 val nuevoPrecio = nuevaCantidad * precio / cantidad
-                val detalleExistente = productoRecuperado[pro]?.find { it.producto == producto }
+                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     it.cantidad = nuevaCantidad
                     it.precio_total = nuevoPrecio
@@ -191,7 +214,7 @@ class EditarCreditoFragment : Fragment() {
 
                 actualizarTabla()
             } else {
-                val detalleExistente = productoRecuperado[pro]?.find { it.producto == producto }
+                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     productoRecuperado[pro]?.remove(it)
                 }

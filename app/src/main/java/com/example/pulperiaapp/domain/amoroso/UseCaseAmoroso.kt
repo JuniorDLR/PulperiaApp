@@ -11,12 +11,12 @@ class UseCaseAmoroso @Inject constructor(private val creditoRepository: CreditoR
         creditoRepository.guardarCredito(creditoEntity)
     }
 
-    suspend fun eliminarCredito(cliente: String) = creditoRepository.eliminarCredito(cliente)
+    suspend fun eliminarCredito(id: Int) = creditoRepository.eliminarCredito(id)
     suspend fun actualizarpago(nuevoEstado: Boolean, cliente: String) =
         creditoRepository.actualizarPago(nuevoEstado, cliente)
 
-    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double) =
-        creditoRepository.editarCredito(id,producto, cantidad, precio)
+    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double,fecha:String) =
+        creditoRepository.editarCredito(id,producto, cantidad, precio,fecha)
 
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle> =
         creditoRepository.obtenerDetalleAmoroso(cliente)

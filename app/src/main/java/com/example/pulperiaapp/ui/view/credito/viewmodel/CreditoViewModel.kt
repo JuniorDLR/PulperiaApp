@@ -29,9 +29,9 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
     }
 
 
-    fun eliminarCredito(cliente: String) {
+    fun eliminarCredito(id: Int) {
         viewModelScope.launch {
-            useCaseAmoroso.eliminarCredito(cliente)
+            useCaseAmoroso.eliminarCredito(id)
             actualizarDatos()
         }
     }
@@ -45,8 +45,8 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
     }
 
 
-    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double) {
-        useCaseAmoroso.editarCredito(id, producto, cantidad, precio)
+    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double,fecha:String) {
+        useCaseAmoroso.editarCredito(id, producto, cantidad, precio,fecha)
 
     }
 
