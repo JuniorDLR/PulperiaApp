@@ -19,13 +19,15 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="360dp"
+        android:background="@color/white"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         app:cardCornerRadius="16dp">
 
 
         <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

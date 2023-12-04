@@ -13,12 +13,13 @@ data class InventarioEntity(
     @ColumnInfo("nombre_producto") val nombreProducto: String,
     @ColumnInfo("tamano") val tamano: String,
     @ColumnInfo("fecha_entrega") val fechaEntrega: String,
-    @ColumnInfo("cantidad_cajilla") val cantidadCajilla: String,
+    @ColumnInfo("fecha_editada") var fechaEditada: String? = null,
+    @ColumnInfo("cantidad_cajilla") val cantidadCajilla: Int,
     @ColumnInfo("cantidad") val cantidad: Int,
     @ColumnInfo("importe") val precio: Double,
-    @ColumnInfo("Imagen1") var ruta1: String? = null,
-    @ColumnInfo("Imagen2") var ruta2: String? = null,
-    @ColumnInfo("Imagen3") var ruta3: String? = null,
+    @ColumnInfo("imagen1") var ruta1: String? = null,
+    @ColumnInfo("imagen2") var ruta2: String? = null,
+    @ColumnInfo("imagen3") var ruta3: String? = null,
 
     )
 

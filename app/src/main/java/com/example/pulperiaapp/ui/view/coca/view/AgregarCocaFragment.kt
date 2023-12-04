@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.coca
+package com.example.pulperiaapp.ui.view.coca.view
 
 import android.app.AlertDialog
 import android.os.Bundle

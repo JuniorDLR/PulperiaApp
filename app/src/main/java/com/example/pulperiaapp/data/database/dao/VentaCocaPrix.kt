@@ -20,10 +20,15 @@ interface VentaCocaPrix {
     @Query("SELECT SUM(total_venta) FROM tbl_venta_prix_coca")
     suspend fun obtenerTotal(): Double
 
-    @Query("SELECT *FROM tbl_venta_prix_coca")
-    suspend fun obtenerVenta(): List<VentaPrixCoca>
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 0 AND fecha_venta >= :fechaInicio AND fecha_venta < :fechaFin")
+    suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
 
-   @Update
+
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 1 AND fecha_venta>=:fechaInicio AND fecha_venta<:fechaFin")
+    suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
+
+
+    @Update
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca)
 
 
@@ -50,8 +55,8 @@ interface VentaCocaPrix {
     @Query("SELECT precio FROM tbl_bigcola WHERE producto=:producto")
     suspend fun obtenerPrecioBig(producto: String): Double
 
-    @Query("SELECT producto,cantidad,total_venta FROM tbl_venta_prix_coca WHERE id =:id")
-    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar>
+    @Query("SELECT producto,cantidad,total_venta,venta_por_cajilla,id FROM tbl_venta_prix_coca WHERE fecha_venta =:idInventario")
+    suspend fun obtenerDetalleEditar(idInventario: String): List<DetalleEditar>
 
 
 }

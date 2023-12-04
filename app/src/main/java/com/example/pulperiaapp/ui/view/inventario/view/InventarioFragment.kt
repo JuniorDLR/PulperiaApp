@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.inventario
+package com.example.pulperiaapp.ui.view.inventario.view
 
 import ImageAdapter
 import android.annotation.SuppressLint
@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,8 +40,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-
 
 
 @AndroidEntryPoint
@@ -191,7 +190,7 @@ class InventarioFragment : Fragment() {
         tableRow = binding.trItem
         viewPager = binding.vpFoto
 
-        imageAdapter = ImageAdapter(object : ImageCounterListener {
+        imageAdapter = ImageAdapter(bitmapList, object : ImageCounterListener {
             override fun onImageAdd(imageCount: Int) {
                 actualizarConteo()
 
@@ -253,20 +252,25 @@ class InventarioFragment : Fragment() {
 
 
     private fun guardarProducto() {
-
-
         val fechaFormateada =
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        val listaInventario = mutableListOf<InventarioEntity>()
-        if (productoIngresado.isNotEmpty()) {
-            productoIngresado.forEach { (fecha, lista) ->
-                for (prodcuto in lista) {
-                    val nombre = prodcuto.nombre
-                    val tamano = prodcuto.tamano
-                    val cantidadCajilla = prodcuto.cantidad_cajilla
-                    val cantidad = prodcuto.cantidad
-                    val importe = prodcuto.importe
 
+        if (productoIngresado.isNotEmpty()) {
+            for ((index, entry) in productoIngresado.entries.withIndex()) {
+                val (fecha, lista) = entry
+                for (producto in lista) {
+                    val nombre = producto.nombre_producto
+                    val tamano = producto.tamano
+                    val cantidadCajilla = producto.cantidad_cajilla
+                    val cantidad = producto.cantidad
+                    val importe = producto.importe
+
+                    // Use separate variables for the last record
+
+                    Log.d("inventario", "Index: $index, Last Index: ${productoIngresado.entries.size - 1}")
+                    val lastRecordRuta1 = if (index == productoIngresado.size - 1) ruta1 else null
+                    val lastRecordRuta2 = if (index == productoIngresado.size - 1) ruta2 else null
+                    val lastRecordRuta3 = if (index == productoIngresado.size - 1) ruta3 else null
 
                     val inventario = InventarioEntity(
                         id = 0,
@@ -276,26 +280,23 @@ class InventarioFragment : Fragment() {
                         cantidadCajilla = cantidadCajilla,
                         cantidad = cantidad,
                         precio = importe,
-                        ruta1 = ruta1,
-                        ruta2 = ruta2,
-                        ruta3 = ruta3
-
+                        ruta1 = lastRecordRuta1,
+                        ruta2 = lastRecordRuta2,
+                        ruta3 = lastRecordRuta3
                     )
 
-                    listaInventario.add(inventario)
+                    inventarioModel.insertarInventario(inventario)
                 }
-
             }
-            inventarioModel.insertarInventario(listaInventario)
 
             requireActivity().supportFragmentManager.popBackStack()
             Toast.makeText(
-                requireContext(), "Inventario Guardado exitosamente!!", Toast.LENGTH_LONG
+                requireContext(),
+                "Inventario Guardado exitosamente!!",
+                Toast.LENGTH_LONG
             ).show()
         } else {
-            Toast.makeText(
-                requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(requireContext(), "Los campos están vacíos", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -353,16 +354,17 @@ class InventarioFragment : Fragment() {
             val precioDouble = precioUnitario.toDouble()
             val cantidadInt = cantidad.toInt()
 
+            val cantidadCajillaInt = cantidadCajilla.toInt()
 
             val inventario = InventarioModel(
                 0,
                 nombreProducto,
                 tamano,
                 fechaFormateada,
-                cantidadCajilla,
+                null,
+                cantidadCajillaInt,
                 cantidadInt,
-                precioDouble
-            )
+                precioDouble)
 
             val listaInventario: MutableList<InventarioModel> =
                 productoIngresado[fechaFormateada]?.toMutableList() ?: mutableListOf()
@@ -382,7 +384,7 @@ class InventarioFragment : Fragment() {
         for ((fecha, listaInventario) in productoIngresado) {
 
             for (lista in listaInventario) {
-                val nombre = lista.nombre
+                val nombre = lista.nombre_producto
                 val tamano = lista.tamano
                 val cantidadCajilla = lista.cantidad_cajilla
                 val cantidad = lista.cantidad
@@ -399,7 +401,7 @@ class InventarioFragment : Fragment() {
                 tamanoView.text = tamano
 
                 val cantidadCajillaView = tableRow.findViewById<TextView>(R.id.tvCajillaR)
-                cantidadCajillaView.text = cantidadCajilla
+                cantidadCajillaView.text = cantidadCajilla.toString()
 
                 val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadR)
                 cantidadView.text = cantidad.toString()

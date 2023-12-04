@@ -1,6 +1,5 @@
 package com.example.pulperiaapp.data.Repository
 
-import com.example.pulperiaapp.data.VentaPaginSource
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 import com.example.pulperiaapp.domain.venta.DetalleEditar
@@ -15,11 +14,17 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
     suspend fun insertarVenta(ventaPrixCoca: VentaPrixCoca) =
         ventaCocaPrix.insertatVenta(ventaPrixCoca)
 
-    suspend fun obtenerVenta(): List<VentaPrixCocaDetalle> {
-        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVenta()
+    suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaIndividual(fechaInicio,fechaFin)
 
         return response.map { it.toDomain() }
     }
+
+    suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaCajilla(fechaInicio,fechaFin)
+        return response.map { it.toDomain() }
+    }
+
 
     suspend fun obtenerTotal(): Double {
         return ventaCocaPrix.obtenerTotal()
@@ -57,9 +62,8 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         return ventaCocaPrix.obtenerPrecioBig(producto)
     }
 
-    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar> =
-        ventaCocaPrix.obtenerDetalleEditar(id)
+    suspend fun obtenerDetalleEditar(idInventario: String): List<DetalleEditar> =
+        ventaCocaPrix.obtenerDetalleEditar(idInventario)
 
-    fun paginSource() = VentaPaginSource(VentaRepositorio(ventaCocaPrix))
 }
 

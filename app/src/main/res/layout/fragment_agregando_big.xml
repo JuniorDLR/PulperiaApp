@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.view.bigcola.AgregandoBigFragment">
+    tools:context=".ui.view.bigcola.view.AgregandoBigFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -14,12 +14,12 @@
         app:title="Producto Big cola"
         app:titleTextColor="@color/white" />
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvProducoAgregar"
@@ -34,9 +34,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvAgregarPrecio"
@@ -49,12 +50,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <Button
         android:id="@+id/btnAgregarBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/fondo"
         android:text="@string/agregar_producto"
         android:textSize="20sp"

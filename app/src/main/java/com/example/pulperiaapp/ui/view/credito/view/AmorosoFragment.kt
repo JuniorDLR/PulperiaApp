@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.credito
+package com.example.pulperiaapp.ui.view.credito.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog

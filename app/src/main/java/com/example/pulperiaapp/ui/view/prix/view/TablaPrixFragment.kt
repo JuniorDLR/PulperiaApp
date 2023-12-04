@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.prix
+package com.example.pulperiaapp.ui.view.prix.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog

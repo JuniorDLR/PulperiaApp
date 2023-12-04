@@ -7,11 +7,17 @@ import javax.inject.Inject
 class UseCaseInventario @Inject constructor(private val inventarioRepository: InventarioRepository) {
 
 
-    suspend fun insertarInventario(inventarioEntity: MutableList<InventarioEntity>) =
+    suspend fun insertarInventario(inventarioEntity: InventarioEntity) =
         inventarioRepository.insertarInventario(inventarioEntity)
 
     suspend fun obtenerInventario(): List<InventarioModel> =
         inventarioRepository.obtenerInventario()
 
     suspend fun eliminarInventario(id: Int) = inventarioRepository.eliminarInventario(id)
+
+    suspend fun obtenerDetalleInventario(idInventario: String): List<InventarioModel> =
+        inventarioRepository.obtenerDetalleInventario(idInventario)
+
+    suspend fun editarInventario(inventarioEntity: InventarioEntity) =
+        inventarioRepository.editarInventario(inventarioEntity)
 }

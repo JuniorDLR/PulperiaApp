@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.prix
+package com.example.pulperiaapp.ui.view.prix.view
 
 import android.app.AlertDialog
 import android.os.Bundle

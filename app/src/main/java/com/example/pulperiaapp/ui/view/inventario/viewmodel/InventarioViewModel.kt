@@ -19,13 +19,23 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
     private val _inventarioModel = MutableLiveData<Map<String, List<InventarioModel>>>()
     val inventarioModel: LiveData<Map<String, List<InventarioModel>>> = _inventarioModel
 
+    private val _groupInventario = MutableLiveData<List<InventarioModel>>()
+    val groupInventario: LiveData<List<InventarioModel>> = _groupInventario
 
-    fun insertarInventario(inventarioEntity: MutableList<InventarioEntity>) {
+    fun insertarInventario(inventarioEntity: InventarioEntity) {
         viewModelScope.launch {
             useCaseInventario.insertarInventario(inventarioEntity)
             actualizarDatos()
 
         }
+    }
+
+    suspend fun editarInventario(inventarioEntity: InventarioEntity) {
+
+        useCaseInventario.editarInventario(inventarioEntity)
+        actualizarDatos()
+
+
     }
 
     fun obtenerInventario() {
@@ -40,6 +50,19 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
             val response = lista ?: useCaseInventario.obtenerInventario()
             _inventarioModel.value = response.groupBy { it.fecha_entrega }
         }
+    }
+
+    suspend fun obtenerDetalleInventario(idInventario: String): List<InventarioModel> {
+        return try {
+            val lista = useCaseInventario.obtenerDetalleInventario(idInventario)
+            _groupInventario.postValue(lista)
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+
+
     }
 
     fun eliminarInventario(id: Int) {

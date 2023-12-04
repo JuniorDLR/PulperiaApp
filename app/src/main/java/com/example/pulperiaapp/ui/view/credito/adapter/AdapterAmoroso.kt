@@ -65,7 +65,6 @@ class AdapterAmoroso(
                 val id = i.id
                 val producto = i.producto
                 val cantidad = i.cantidad
-                Log.d("id", id.toString())
                 val precio = i.precio_total
 
                 val fecha = i.fecha
@@ -83,31 +82,33 @@ class AdapterAmoroso(
             holder.bind(detallesCliente[0])
         }
     }
-
-
-    @SuppressLint("MissingInflatedId")
     private fun mostrarDialogoClienteDetalle(cliente: String, id: Int) {
         val dialog = AlertDialog.Builder(context)
         val scrollView = ScrollView(context)
         val contentView = LayoutInflater.from(context).inflate(R.layout.detalle_cliente, null)
         val tlProducto = contentView.findViewById<TableLayout>(R.id.tlProducto)
-
+        val resources = context.resources
 
         var totaPagar: Double = 0.0
         datosItem[cliente]?.forEach { info ->
-
-
             val precioTotal = info.precio_total
             totaPagar += precioTotal
 
-
             val row = TableRow(context)
+            val layoutParams = TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+            )
+
+            // Agregar márgenes inferiores a cada fila
+            layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.row_bottom_margin)
+            row.layoutParams = layoutParams
+
             val clienteView = contentView.findViewById<TextView>(R.id.tvClienteDetalle)
             clienteView.text = cliente
 
             val productoView = TextView(context)
             productoView.text = info.producto
-
 
             val cantidadView = TextView(context)
             cantidadView.text = info.cantidad.toString()
@@ -118,19 +119,24 @@ class AdapterAmoroso(
             val precioView = TextView(context)
             precioView.text = info.precio_total.toString()
 
-
             row.addView(productoView)
             row.addView(cantidadView)
             row.addView(fechaView)
             row.addView(precioView)
 
             tlProducto.addView(row)
-        }
 
+            // Agregar una vista de espacio entre cada fila
+            val spaceView = View(context)
+            spaceView.layoutParams = TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                resources.getDimensionPixelSize(R.dimen.row_space_height)
+            )
+            tlProducto.addView(spaceView)
+        }
 
         val total = contentView.findViewById<TextView>(R.id.tvTotalAmoroso)
         total.text = totaPagar.toString()
-        Log.d("Precio", totaPagar.toString())
 
         dialog.setPositiveButton("Realizar pago") { diag, _ ->
             onClickUpdate(cliente)

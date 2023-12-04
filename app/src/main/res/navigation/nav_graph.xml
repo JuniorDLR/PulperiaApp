@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/ventasFragment"
-        android:name="com.example.pulperiaapp.ui.view.venta.VentasFragment"
+        android:name="com.example.pulperiaapp.ui.view.venta.view.VentasFragment"
         android:label="fragment_ventas"
         tools:layout="@layout/fragment_ventas">
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/creditoFragment"
-        android:name="com.example.pulperiaapp.ui.view.credito.CreditoFragment"
+        android:name="com.example.pulperiaapp.ui.view.credito.view.CreditoFragment"
         android:label="fragment_credito"
         tools:layout="@layout/fragment_credito">
         <action
@@ -59,22 +59,22 @@
     </fragment>
     <fragment
         android:id="@+id/amorosoFragment"
-        android:name="com.example.pulperiaapp.ui.view.credito.AmorosoFragment"
+        android:name="com.example.pulperiaapp.ui.view.credito.view.AmorosoFragment"
         android:label="fragment_amoroso"
         tools:layout="@layout/fragment_amoroso" />
     <fragment
         android:id="@+id/inventarioFragment"
-        android:name="com.example.pulperiaapp.ui.view.inventario.InventarioFragment"
+        android:name="com.example.pulperiaapp.ui.view.inventario.view.InventarioFragment"
         android:label="fragment_inventario"
         tools:layout="@layout/fragment_inventario" />
     <fragment
         android:id="@+id/ventasProductoFragment"
-        android:name="com.example.pulperiaapp.ui.view.venta.VentasProductoFragment"
+        android:name="com.example.pulperiaapp.ui.view.venta.view.VentasProductoFragment"
         android:label="fragment_ventas_producto"
         tools:layout="@layout/fragment_ventas_producto" />
     <fragment
         android:id="@+id/TablaCocaFragment"
-        android:name="com.example.pulperiaapp.ui.view.coca.TablaCocaFragment"
+        android:name="com.example.pulperiaapp.ui.view.coca.view.TablaCocaFragment"
         android:label="fragment_tabla_producto"
         tools:layout="@layout/fragment_tabla_coca">
         <action
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/tablaPrixFragment"
-        android:name="com.example.pulperiaapp.ui.view.prix.TablaPrixFragment"
+        android:name="com.example.pulperiaapp.ui.view.prix.view.TablaPrixFragment"
         android:label="fragment_tabla_prix"
         tools:layout="@layout/fragment_tabla_prix">
         <action
@@ -92,12 +92,12 @@
     </fragment>
     <fragment
         android:id="@+id/agregarCocaFragment"
-        android:name="com.example.pulperiaapp.ui.view.coca.AgregarCocaFragment"
+        android:name="com.example.pulperiaapp.ui.view.coca.view.AgregarCocaFragment"
         android:label="fragment_agregar_coca"
         tools:layout="@layout/fragment_agregar_coca" />
     <fragment
         android:id="@+id/agregarPrixFragment"
-        android:name="com.example.pulperiaapp.ui.view.prix.AgregarPrixFragment"
+        android:name="com.example.pulperiaapp.ui.view.prix.view.AgregarPrixFragment"
         android:label="fragment_agregar_prix"
         tools:layout="@layout/fragment_agregar_prix" />
     <fragment
@@ -107,7 +107,7 @@
         tools:layout="@layout/fragment_registrar_cliente" />
     <fragment
         android:id="@+id/tablaBigColaFragment"
-        android:name="com.example.pulperiaapp.ui.view.bigcola.TablaBigColaFragment"
+        android:name="com.example.pulperiaapp.ui.view.bigcola.view.TablaBigColaFragment"
         android:label="fragment_tabla_big_cola"
         tools:layout="@layout/fragment_tabla_big_cola">
         <action
@@ -116,7 +116,7 @@
     </fragment>
     <fragment
         android:id="@+id/agregandoBigFragment"
-        android:name="com.example.pulperiaapp.ui.view.bigcola.AgregandoBigFragment"
+        android:name="com.example.pulperiaapp.ui.view.bigcola.view.AgregandoBigFragment"
         android:label="fragment_agregando_big"
         tools:layout="@layout/fragment_agregando_big" />
     <fragment
@@ -127,16 +127,19 @@
     <fragment
 
         android:id="@+id/inventarioDatosFragment"
-        android:name="com.example.pulperiaapp.ui.view.inventario.InventarioDatosFragment"
+        android:name="com.example.pulperiaapp.ui.view.inventario.view.InventarioDatosFragment"
         android:label="fragment_inventario_datos"
         tools:layout="@layout/fragment_inventario_datos">
         <action
             android:id="@+id/action_inventarioDatosFragment_to_inventarioFragment"
             app:destination="@id/inventarioFragment" />
+        <action
+            android:id="@+id/action_inventarioDatosFragment_to_editarInventarioFragment"
+            app:destination="@id/editarInventarioFragment" />
     </fragment>
     <fragment
         android:id="@+id/editarVentasFragment"
-        android:name="com.example.pulperiaapp.ui.view.venta.EditarVentasFragment"
+        android:name="com.example.pulperiaapp.ui.view.venta.view.EditarVentasFragment"
         android:label="fragment_editar_ventas"
         tools:layout="@layout/fragment_editar_ventas">
         <argument
@@ -144,11 +147,14 @@
             app:argType="integer" />
         <argument
             android:name="fechaActual"
-            app:argType="long" />
+            app:argType="string" />
+        <argument
+            android:name="esIndividual"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/editarCreditoFragment"
-        android:name="com.example.pulperiaapp.ui.view.credito.EditarCreditoFragment"
+        android:name="com.example.pulperiaapp.ui.view.credito.view.EditarCreditoFragment"
         android:label="fragment_editar_credito"
         tools:layout="@layout/fragment_editar_credito" >
         <argument
@@ -157,5 +163,13 @@
         <argument
             android:name="idProducto"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarInventarioFragment"
+        android:name="com.example.pulperiaapp.ui.view.inventario.view.EditarInventarioFragment"
+        android:label="fragment_editar_inventario"
+        tools:layout="@layout/fragment_editar_inventario" >
+        <argument android:name="idInventario"
+            app:argType="string" />
     </fragment>
 </navigation>

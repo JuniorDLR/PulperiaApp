@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.view.venta.EditarVentasFragment">
+    tools:context=".ui.view.venta.view.EditarVentasFragment">
 
 
     <androidx.appcompat.widget.Toolbar

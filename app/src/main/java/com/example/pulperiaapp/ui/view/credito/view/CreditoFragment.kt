@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.credito
+package com.example.pulperiaapp.ui.view.credito.view
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -20,7 +22,8 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentCreditoBinding
 import com.example.pulperiaapp.ui.view.credito.adapter.AdapterAmoroso
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
-import com.twilio.rest.monitor.v1.Alert
+import com.example.pulperiaapp.ui.view.principal.MainActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -74,6 +77,14 @@ class CreditoFragment : Fragment() {
             }
 
         })
+
+
+        val callBack = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            cerrarSesion()
+        }
+        callBack.isEnabled = true
+
+
     }
 
     private fun initComponent() {
@@ -116,4 +127,21 @@ class CreditoFragment : Fragment() {
     }
 
 
+    fun cerrarSesion() {
+        val alert = AlertDialog.Builder(requireContext())
+            .setTitle("ADVERTENCIA")
+            .setMessage("¿Estas seguro qeu desea cerrar sesion?")
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
+                    false
+
+                val navControllet = Navigation.findNavController(binding.root)
+                navControllet.popBackStack()
+            }
+
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+        alert.show()
+    }
 }

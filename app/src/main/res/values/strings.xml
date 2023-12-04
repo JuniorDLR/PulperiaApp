@@ -54,7 +54,7 @@
     <string name="precio_total_0_00">Precio Total: $0.00</string>
     <string name="cajilla">CAJILLA</string>
     <string name="tama_o">TAMAÑO</string>
-    <string name="agregar_a_la_tabla">Agregar a la tabla</string>
+    <string name="agregar_a_la_tabla">Agregar datos</string>
     <string name="precio_unitario_por_cajilla">Precio Unitario por Cajilla</string>
     <string name="cantidad_de_cajillas">Cantidad de Cajillas</string>
     <string name="cantidad_por_cajilla">Cantidad por Cajilla</string>
@@ -62,4 +62,7 @@
     <string name="nombre_del_producto">Nombre del Producto</string>
     <string name="editar_venta">Editar venta</string>
     <string name="fecha">FECHA</string>
+    <string name="editar_inventario">Editar inventario</string>
+    <string name="ventas_individuales">Ventas individuales</string>
+    <string name="ventas_por_cajilla">Ventas por cajilla</string>
 </resources>

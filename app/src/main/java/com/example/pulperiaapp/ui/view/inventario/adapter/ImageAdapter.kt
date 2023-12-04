@@ -1,4 +1,5 @@
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +9,17 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
 
 class ImageAdapter(
+    private val image: MutableList<Bitmap>,
     val imageCounterListener: ImageCounterListener
 ) :
     PagerAdapter() {
 
     private var deletePosition: Int = -1
-    private val image: MutableList<Bitmap> = emptyArray<Bitmap>().toMutableList()
 
     // Se utiliza para crear y agregar vistas al ViewPager.
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(container.context)
+        Log.d("ImageAdapter", "Imagen agregada en posición $position")
         val itemView = inflater.inflate(R.layout.item_viewpaguer, container, false)
         val imageView = itemView.findViewById<ImageView>(R.id.image_view)
         val delete = itemView.findViewById<ImageView>(R.id.delete_button)
@@ -39,7 +41,8 @@ class ImageAdapter(
             deletePosition = position
             image.removeAt(position)
             notifyDataSetChanged()
-            imageCounterListener.onImageDelete(position)
+            val tamano = image.size
+            imageCounterListener.onImageDelete(tamano)
         }
     }
 
@@ -70,5 +73,11 @@ class ImageAdapter(
     // Si la vista que está siendo mostrada actualmente es la misma que el objeto que se le está pasando.
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
+    }
+
+    fun getItemCount(): Int = image.size
+
+    fun hasImageAtPosition(position: Int): Boolean {
+        return position >= 0 && position < image.size
     }
 }

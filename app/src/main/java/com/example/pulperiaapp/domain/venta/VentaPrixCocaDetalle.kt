@@ -7,7 +7,7 @@ data class VentaPrixCocaDetalle(
     val id: Int,
     val producto: String,
     val total_venta: Double,
-    val fecha_venta: Long,
+    val fecha_venta: String,
     val ventaPorCajilla: Boolean,
     val cantidad: Int
 )

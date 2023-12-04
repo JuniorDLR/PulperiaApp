@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.venta
+package com.example.pulperiaapp.ui.view.venta.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -25,6 +25,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class VentasProductoFragment : Fragment() {
@@ -145,11 +148,12 @@ class VentasProductoFragment : Fragment() {
                 val cantidad = venta.value.first
                 val total = venta.value.second
                 val ventaPorCajilla = binding.swVentaPorCajilla.isChecked
+                val fechaFormateada = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                 val ventaConProductos = VentaPrixCoca(
                     id = 0,
                     producto = productoVendido,
                     total = total,
-                    fecha = System.currentTimeMillis(),
+                    fecha =fechaFormateada,
                     cantidad = cantidad,
                     ventaPorCajilla = ventaPorCajilla,
 

@@ -1,16 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.view.inventario.view.InventarioFragment">
+    tools:context=".ui.view.inventario.view.EditarInventarioFragment">
+
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
-        app:title="Agregando inventario"
+        app:title="Editando inventario"
         app:titleTextColor="@color/white" />
 
 
@@ -31,7 +33,7 @@
                 android:layout_marginVertical="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvNombreProducto"
+                    android:id="@+id/tvNombreProductoEditar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/nombre_del_producto"
@@ -46,7 +48,7 @@
                 android:layout_marginVertical="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvTamanoEnvase"
+                    android:id="@+id/tvTamanoEnvaseEditar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/tama_o_del_envase_ejemplo_1l"
@@ -57,9 +59,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
@@ -68,7 +70,7 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvCantidadPorCajilla"
+                        android:id="@+id/tvCantidadPorCajillaEditar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cantidad_por_cajilla"
@@ -83,7 +85,7 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvCantidadCajillas"
+                        android:id="@+id/tvCantidadCajillasEditar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cantidad_de_cajillas"
@@ -105,7 +107,7 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tvPrecioUnitario"
+                        android:id="@+id/tvPrecioUnitarioEditar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/precio_unitario_por_cajilla"
@@ -114,13 +116,13 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/btnAgregarTabla"
+                    android:id="@+id/btnTablaEditar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
                     android:background="?attr/colorPrimary"
-                    android:text="@string/agregar_a_la_tabla"
+                    android:text="@string/editar_inventario"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -138,7 +140,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
+                        android:layout_weight="1.5"
                         android:background="@drawable/header_shape"
                         android:gravity="center"
                         android:text="@string/producto"
@@ -209,7 +211,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-
                 android:text="@string/precio_total_0_00"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="20sp" />
@@ -226,7 +227,7 @@
                 android:textSize="20sp" />
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/vpFoto"
+                android:id="@+id/vpFotoEditar"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_margin="16dp" />
@@ -238,14 +239,14 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnTomarFoto"
+                    android:id="@+id/btnTomarFotoEditar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
                     android:background="?attr/colorPrimary"
                     android:text="@string/agregar_foto"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/btnGuardar"
@@ -254,10 +255,11 @@
                     android:layout_margin="16dp"
                     android:layout_weight="1"
                     android:background="?attr/colorPrimary"
-                    android:text="@string/guardar"
+                    android:text="@string/editar"
                     android:textSize="15sp" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

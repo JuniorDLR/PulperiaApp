@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.credito
+package com.example.pulperiaapp.ui.view.credito.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -168,6 +168,7 @@ class EditarCreditoFragment : Fragment() {
         val tableRow = LayoutInflater.from(requireContext())
             .inflate(R.layout.table_row_venta, null) as TableRow
         tableRow.tag = idCliente
+
         val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
         productoView.text = producto
 

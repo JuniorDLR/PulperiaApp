@@ -10,23 +10,30 @@ import com.example.pulperiaapp.domain.inventario.InventarioModel
 
 
 class InventarioAdapter
-    (private val onClickDelete: (Int, Int) -> Unit) :
+    (
+    private val onClickDelete: (String, Int) -> Unit,
+    private val onClickUpdate: (String) -> Unit
+) :
     RecyclerView.Adapter<InventarioAdapter.ViewHolder>() {
 
     var listaModel: Map<String, List<InventarioModel>> = emptyMap()
     var contador = 0
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val binding = InventarioItemBinding.bind(view)
 
         fun bind(lista: InventarioModel) {
             binding.tvFechaInventario.text = lista.fecha_entrega
+            binding.btnEditarInventario.setOnClickListener {
+                onClickUpdate(lista.fecha_entrega)
+            }
+            binding.btnEliminarInventario.setOnClickListener {
+                onClickDelete(lista.fecha_entrega, lista.id)
+            }
 
 
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,12 +49,6 @@ class InventarioAdapter
         val diag = listaModel.keys.elementAt(position)
         val lista = listaModel[diag]
         holder.binding.NombreInventario.text = inventarioDinamico()
-        val id = lista?.first()?.id
-        holder.binding.btnEliminar.setOnClickListener {
-            if (id != null) {
-                onClickDelete(position, id)
-            }
-        }
         if (lista != null) {
             holder.bind(lista[0])
         }
@@ -64,7 +65,6 @@ class InventarioAdapter
     fun inventarioDinamico(): String {
         val nombreInventario = "Inventario $contador"
         contador++
-
         return nombreInventario
 
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.bigcola.TablaBigColaFragment">
+    tools:context=".ui.view.bigcola.view.TablaBigColaFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,6 @@
                 android:background="@color/fondo"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:title="Tabla Big cola"
-
                 app:titleTextColor="@color/white"
 
                 />
@@ -35,22 +34,21 @@
 
                 <SearchView
                     android:id="@+id/svTablaProductoBig"
-                    android:layout_width="325dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:layout_weight="5"
                     android:background="@color/buscador" />
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnAgregarProductoBig"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/fondo"
-                    android:contentDescription="@string/agregarprix"
-                    android:src="@drawable/baseline_add_24"
-                    app:rippleColor="@color/white"
-                    tools:targetApi="lollipop" />
+                    android:src="@drawable/baseline_add_24" />
 
             </LinearLayout>
 
@@ -113,7 +111,7 @@
             </TableLayout>
 
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/svTablaBig"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
@@ -129,7 +127,7 @@
                 </TableLayout>
 
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

@@ -26,33 +26,21 @@ private const val ITEMS_PER_PAGE = 10
 class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta) : ViewModel() {
 
 
-    private val _ventaModel = MutableStateFlow<List<VentaPrixCocaDetalle>>(emptyList())
-    val ventaModel: StateFlow<List<VentaPrixCocaDetalle>> = _ventaModel
+    private val _ventaModelCajilla =
+        MutableStateFlow<Map<String, List<VentaPrixCocaDetalle>>>(emptyMap())
+    val ventaModelCajilla: StateFlow<Map<String, List<VentaPrixCocaDetalle>>> = _ventaModelCajilla
+
+    private val _ventaModelIndividual =
+        MutableStateFlow<List<VentaPrixCocaDetalle>>(emptyList())
+    val ventaModelIndividual: StateFlow<List<VentaPrixCocaDetalle>> =
+        _ventaModelIndividual
+
 
     val _obtenerTotal = MutableLiveData<Double>()
     val obtenerTotal: LiveData<Double> = _obtenerTotal
 
     private val _data = MutableLiveData<List<DetalleEditar>>()
     val data: LiveData<List<DetalleEditar>> = _data
-
-
-    private val _ventaModelPagin =
-        MutableStateFlow<PagingData<VentaPrixCocaDetalle>>(PagingData.empty())
-    val ventaModelPagin: StateFlow<PagingData<VentaPrixCocaDetalle>> = _ventaModelPagin
-
-
-    init {
-        viewModelScope.launch {
-            Pager(
-                config = PagingConfig(ITEMS_PER_PAGE, enablePlaceholders = false),
-                pagingSourceFactory = { useCaseVenta.pagin() }
-            ).flow
-                .cachedIn(viewModelScope)
-                .collect { pagingData ->
-                    _ventaModelPagin.value = pagingData
-                }
-        }
-    }
 
 
     fun insertarVenta(ventaPrixCoca: VentaPrixCoca) {
@@ -72,21 +60,33 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) = useCaseVenta.editarVenta(ventaPrixCoca)
 
-    fun obtenerVenta() {
-        viewModelScope.launch {
-            val lista = useCaseVenta.obtenerVenta()
-            actualizarDatos(lista)
+    suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
 
+        return try {
+            val lista = useCaseVenta.obtenerVentaIndividual(fechaInicio = fechaInicio, fechaFin = fechaFin)
+            _ventaModelIndividual.value = lista
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
+
+
     }
 
+    suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
 
-    private fun actualizarDatos(lista: List<VentaPrixCocaDetalle>? = null) {
-        viewModelScope.launch {
-            val listaObtenida = lista ?: useCaseVenta.obtenerVenta()
-            _ventaModel.value = listaObtenida
+        return try {
+            val lista = useCaseVenta.obtenerVentaCajilla(fechaInicio = fechaInicio, fechaFin = fechaFin)
+            val listaGroup = lista.groupBy { it.fecha_venta }
+            _ventaModelCajilla.value = listaGroup
+            lista
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+
         }
-
     }
 
 
@@ -100,7 +100,6 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
     suspend fun eliminarVenta(id: Int) {
         useCaseVenta.eliminarVenta(id)
-        obtenerVenta()
         obtenerTotal()
     }
 
@@ -117,17 +116,20 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerPrecioCoca(producto)
     }
 
-    suspend fun obtenerDetalleEditarLiveData(id: Int) {
-        try {
-            val lista: List<DetalleEditar> = useCaseVenta.obtenerDetalleEditar(id)
+    suspend fun obtenerDetalleEditarLiveData(idInventario: String): List<DetalleEditar> {
+        return try {
+            val lista: List<DetalleEditar> = useCaseVenta.obtenerDetalleEditar(idInventario)
             _data.postValue(lista)
+            lista
         } catch (e: Exception) {
             e.printStackTrace()
-
+            emptyList()
         }
     }
 
     suspend fun obtenerPrecioBig(producto: String): Double {
         return useCaseVenta.obtenerPrecioBig(producto)
     }
+
+
 }

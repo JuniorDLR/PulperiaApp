@@ -6,14 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.view.venta.VentasFragment">
-
+    tools:context=".ui.view.venta.view.VentasFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
-
         app:titleTextColor="@color/white">
 
         <RelativeLayout
@@ -60,7 +58,6 @@
             android:layout_weight="5"
             android:background="@color/buscador" />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAgregarVenta"
             android:layout_width="0dp"
@@ -71,6 +68,25 @@
             android:src="@drawable/baseline_add_24" />
 
     </LinearLayout>
+
+    <!-- Agregar el TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ventas_individuales" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ventas_por_cajilla" />
+    </com.google.android.material.tabs.TabLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -99,6 +115,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </LinearLayout>

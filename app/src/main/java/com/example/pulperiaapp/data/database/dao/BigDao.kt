@@ -9,6 +9,8 @@ import com.example.pulperiaapp.data.database.entitie.PrecioBigCola
 @Dao
 interface BigDao {
 
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarPrecioBig(precioBigCola: PrecioBigCola)
 

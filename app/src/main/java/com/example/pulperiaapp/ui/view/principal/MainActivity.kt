@@ -2,6 +2,7 @@ package com.example.pulperiaapp.ui.view.principal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -30,9 +31,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        savedInstanceState?.let { bundle ->
+            val isNavViewVisible = bundle.getBoolean("isNavViewVisible",true)
+            binding.NavigationBottom.isVisible = isNavViewVisible
+        }
 
 
+    }
 
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        // Guardar el estado de la barra de navegación
+        outState.putBoolean("isNavViewVisible", binding.NavigationBottom.isVisible)
+
+        // Llamar al método de la superclase
+        super.onSaveInstanceState(outState)
     }
 }

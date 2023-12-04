@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.ui.view.bigcola
+package com.example.pulperiaapp.ui.view.bigcola.view
 
 import android.app.AlertDialog
 import android.os.Bundle

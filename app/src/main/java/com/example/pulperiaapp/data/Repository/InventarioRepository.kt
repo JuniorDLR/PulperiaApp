@@ -9,7 +9,7 @@ import javax.inject.Inject
 class InventarioRepository @Inject constructor(private val inventarioDao: InventarioDao) {
 
 
-    suspend fun insertarInventario(inventarioEntity: MutableList<InventarioEntity>) =
+    suspend fun insertarInventario(inventarioEntity: InventarioEntity) =
         inventarioDao.insertarInventario(inventarioEntity)
 
     suspend fun obtenerInventario(): List<InventarioModel> {
@@ -18,4 +18,10 @@ class InventarioRepository @Inject constructor(private val inventarioDao: Invent
     }
 
     suspend fun eliminarInventario(id: Int) = inventarioDao.eliminarInventario(id)
+
+    suspend fun obtenerDetalleInventario(idInventario: String): List<InventarioModel> =
+        inventarioDao.obtenerDetalleInventario(idInventario)
+
+    suspend fun editarInventario(inventarioEntity: InventarioEntity) =
+        inventarioDao.editarInventario(inventarioEntity)
 }

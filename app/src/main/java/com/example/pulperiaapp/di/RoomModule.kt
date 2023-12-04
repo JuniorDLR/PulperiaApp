@@ -56,7 +56,4 @@ object RoomModule {
     @Singleton
     fun providerBigCola(db: Database) = db.getBigColca()
 
-    @Provides
-    @Singleton
-    fun providerPaagin(ventaCocaPrix: VentaCocaPrix) = VentaRepositorio(ventaCocaPrix)
 }

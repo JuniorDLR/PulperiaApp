@@ -11,9 +11,20 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
     suspend fun insertarVenta(ventaPrixCoca: VentaPrixCoca) =
         repositorio.insertarVenta(ventaPrixCoca)
 
-    suspend fun obtenerVenta(): List<VentaPrixCocaDetalle> {
-        return repositorio.obtenerVenta()
+    suspend fun obtenerVentaIndividual(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
+        return repositorio.obtenerVentaIndividual(fechaInicio, fechaFin)
     }
+
+    suspend fun obtenerVentaCajilla(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
+        return repositorio.obtenerVentaCajilla(fechaInicio, fechaFin)
+    }
+
 
     suspend fun obtenerTotal(): Double {
         return repositorio.obtenerTotal()
@@ -50,8 +61,8 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
         return repositorio.obtenerPrecioBig(producto)
     }
 
-    suspend fun obtenerDetalleEditar(id: Int): List<DetalleEditar> =
-        repositorio.obtenerDetalleEditar(id)
+    suspend fun obtenerDetalleEditar(idInventario: String): List<DetalleEditar> =
+        repositorio.obtenerDetalleEditar(idInventario)
 
-    fun pagin() = repositorio.paginSource()
+
 }
