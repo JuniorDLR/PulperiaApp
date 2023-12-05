@@ -3,6 +3,8 @@ package com.example.pulperiaapp.ui.view.inventario.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.InventarioItemBinding
@@ -12,12 +14,16 @@ import com.example.pulperiaapp.domain.inventario.InventarioModel
 class InventarioAdapter
     (
     private val onClickDelete: (String, Int) -> Unit,
-    private val onClickUpdate: (String) -> Unit
-) :
-    RecyclerView.Adapter<InventarioAdapter.ViewHolder>() {
+    private val onClickUpdate: (String) -> Unit,
+
+
+    ) :
+    RecyclerView.Adapter<InventarioAdapter.ViewHolder>(), Filterable {
 
     var listaModel: Map<String, List<InventarioModel>> = emptyMap()
-    var contador = 0
+    var listaModelFilter: Map<String, List<InventarioModel>> = emptyMap()
+    var nombre: String = ""
+
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -42,13 +48,14 @@ class InventarioAdapter
         return ViewHolder(inflate)
     }
 
-    override fun getItemCount(): Int = listaModel.size
+    override fun getItemCount(): Int = listaModelFilter.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diag = listaModel.keys.elementAt(position)
         val lista = listaModel[diag]
-        holder.binding.NombreInventario.text = inventarioDinamico()
+        nombre = "Inventario: $position"
+        holder.binding.NombreInventario.text = nombre
         if (lista != null) {
             holder.bind(lista[0])
         }
@@ -58,15 +65,40 @@ class InventarioAdapter
 
     fun setList(lista: Map<String, List<InventarioModel>>) {
         listaModel = lista
+        listaModelFilter = lista
         notifyDataSetChanged()
 
     }
 
-    fun inventarioDinamico(): String {
-        val nombreInventario = "Inventario $contador"
-        contador++
-        return nombreInventario
 
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+
+                val queryTex = p0?.toString()?.trim() ?: ""
+                listaModelFilter = if (queryTex.isEmpty()) {
+                    listaModel
+                } else {
+                    listaModel.filter { (key, lista) ->
+                        lista.any { it.fecha_entrega.contains(queryTex, ignoreCase = true) }
+                    }
+                }
+
+                val filterResult = FilterResults()
+                filterResult.values = listaModelFilter
+                filterResult.count = listaModelFilter.size
+                return filterResult
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                notifyDataSetChanged()
+            }
+        }
     }
 
+
 }
+
+
+

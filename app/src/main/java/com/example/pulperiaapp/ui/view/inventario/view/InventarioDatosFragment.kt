@@ -2,17 +2,26 @@ package com.example.pulperiaapp.ui.view.inventario.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.os.Build
+
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.google.android.material.datepicker.CalendarConstraints
+
+import java.util.Calendar
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +31,11 @@ import com.example.pulperiaapp.ui.view.inventario.adapter.InventarioAdapter
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.example.pulperiaapp.ui.view.principal.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.twilio.rest.preview.wireless.Sim
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class InventarioDatosFragment : Fragment() {
@@ -32,6 +44,8 @@ class InventarioDatosFragment : Fragment() {
     private val inventarioModel: InventarioViewModel by viewModels()
     private lateinit var adapter: InventarioAdapter
     private lateinit var recyclerView: RecyclerView
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -47,12 +61,14 @@ class InventarioDatosFragment : Fragment() {
                 requireContext(), R.color.white
             )
         )
+        binding.etFecha.setOnClickListener { showDatePicker() }
 
 
 
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initComponent() {
         recyclerView = binding.rvInventario
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -61,9 +77,35 @@ class InventarioDatosFragment : Fragment() {
 
         adapter = InventarioAdapter(
             onClickDelete = { fecha, id -> eliminarItem(fecha, id) },
-            onClickUpdate =
-            { idFecha -> updateItem(idFecha) })
+            onClickUpdate = { idFecha -> updateItem(idFecha) }
+        )
         recyclerView.adapter = adapter
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog =
+            DatePickerDialog(
+                requireContext(),
+                R.style.MyDatePickerDialogTheme,
+                { _, selectYear, selectMonth, selecteDay ->
+                    val selectDay = Calendar.getInstance()
+                    selectDay.set(selectYear, selectMonth, selecteDay)
+
+                    val dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val formatDate = dataFormat.format(selectDay.time)
+                    binding.etFecha.setText(formatDate)
+
+                }, year, month, day
+            )
+        datePickerDialog.show()
 
     }
 
@@ -112,6 +154,7 @@ class InventarioDatosFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()
@@ -123,6 +166,22 @@ class InventarioDatosFragment : Fragment() {
             cerrarSesion()
         }
         callBck.isEnabled = true
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                adapter.filter.filter(p0)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        }
+        binding.etFecha.addTextChangedListener(textWatcher)
+
     }
 
     private fun cerrarSesion() {

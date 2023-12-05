@@ -4,7 +4,6 @@
         <item name="colorPrimary">@color/colorStatusBar</item>
 
 
-
     </style>
 
     <style name="Theme.PulperiaApp" parent="Base.Theme.PulperiaApp" />
@@ -16,6 +15,10 @@
 
     </style>
 
+    <style name="MyDatePickerDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorAccent">@color/fondo</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 
 
 </resources>

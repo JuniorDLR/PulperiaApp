@@ -23,6 +23,7 @@ class AdapterVenta(
     Filterable {
     var listaVenta: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
     var filterList: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
+    var ventaContext: String = "individual"
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -72,6 +73,7 @@ class AdapterVenta(
 
     fun setListIndividual(newList: List<VentaPrixCocaDetalle>) {
         filterList = newList.associate { it.id.toString() to listOf(it) }
+        listaVenta = newList.associate { it.id.toString() to listOf(it) }
         notifyDataSetChanged()
     }
 
@@ -83,9 +85,15 @@ class AdapterVenta(
                 filterList = if (productoQuery.isEmpty()) {
                     listaVenta
                 } else {
-                    listaVenta.filter { (cl) ->
-                        cl.contains(productoQuery, ignoreCase = true)
+                    if (ventaContext == "individual") {
+                        listaVenta.filter { (_, ventas) ->
+                            ventas.any { it.producto.contains(productoQuery, ignoreCase = true) }
 
+                        }
+                    } else {
+                        listaVenta.filter { (_,ventas) ->
+                            ventas.any { it.fecha_venta.contains(productoQuery,ignoreCase = true) }
+                        }
                     }
 
 
@@ -103,5 +111,10 @@ class AdapterVenta(
         }
     }
 
+
+    fun verificacion(contexto: String) {
+        ventaContext = contexto
+        notifyDataSetChanged()
+    }
 
 }
