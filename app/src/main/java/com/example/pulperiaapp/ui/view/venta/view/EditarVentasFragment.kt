@@ -22,6 +22,7 @@ import com.example.pulperiaapp.domain.venta.DetalleEditar
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -107,37 +108,45 @@ class EditarVentasFragment : Fragment() {
         val idEditar: Int = args.idProducto
 
         lifecycleScope.launch {
-            productoEditar[idEditar]?.forEach { info ->
-                val id = info.id
-                val producto = info.producto
-                val cantidad = info.cantidad
-                val precio = info.total_venta
-                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
+            if (productoEditar.isEmpty()) {
+                Snackbar.make(
+                    requireView(),
+                    "No hay datos en la tabla",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                productoEditar[idEditar]?.forEach { info ->
+                    val id = info.id
+                    val producto = info.producto
+                    val cantidad = info.cantidad
+                    val precio = info.total_venta
+                    val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
-                // Obtener la fecha actual dentro del bucle para cada venta
-                val fecha = args.fechaActual
-                val fechaFormateada =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-
-
-                // Edición, usar ID existente
-                val venta = VentaPrixCoca(
-                    id = id,
-                    producto = producto,
-                    total = precio,
-                    fecha = fecha,
-                    fechaEditada = fechaFormateada,
-                    ventaPorCajilla = esVentaPorCajilla,
-                    cantidad = cantidad
-                )
+                    // Obtener la fecha actual dentro del bucle para cada venta
+                    val fecha = args.idFecha
+                    val fechaFormateada =
+                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
 
-                insertarOVenta(venta)
+                    // Edición, usar ID existente
+                    val venta = VentaPrixCoca(
+                        id = id,
+                        producto = producto,
+                        total = precio,
+                        fecha = fecha,
+                        fechaEditada = fechaFormateada,
+                        ventaPorCajilla = esVentaPorCajilla,
+                        cantidad = cantidad
+                    )
+
+
+                    insertarOVenta(venta)
+                }
+                Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
+                    .show()
+                requireActivity().supportFragmentManager.popBackStack()
             }
 
-            Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
-                .show()
-            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
@@ -149,7 +158,7 @@ class EditarVentasFragment : Fragment() {
     }
 
     private fun initData(idEditar: Int) {
-        val fechaActual: String = args.fechaActual
+        val fechaActual: String = args.idFecha
         lifecycleScope.launch {
             ventaModel.obtenerDetalleEditarLiveData(fechaActual)
             ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
@@ -238,7 +247,7 @@ class EditarVentasFragment : Fragment() {
         precioView.text = total.toString()
 
         productoView.setOnClickListener {
-            if (cantidad >= 1) {
+            if (cantidad > 1) {
                 val nuevaCantidad = cantidad - 1
                 val newPrecio = nuevaCantidad * total / cantidad
                 if (idEditar != -1) {
@@ -270,6 +279,7 @@ class EditarVentasFragment : Fragment() {
                         productoEditar[idEditar]?.find { it.id == idProdcuto }
                     detalleExistente?.let {
                         productoEditar[idEditar]?.remove(it)
+
                     }
 
                     visualizarTabla(false)
@@ -358,10 +368,10 @@ class EditarVentasFragment : Fragment() {
                     val productoSeleccionado = opcion[position]
                     binding.btnEditarProducto.setOnClickListener {
                         if (position == 0 && productoSeleccionado == "Lista Coca") {
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
                         } else {
                             lifecycleScope.launch {
@@ -405,10 +415,10 @@ class EditarVentasFragment : Fragment() {
                     val productoSeleccionado = opcion[position]
                     binding.btnEditarProducto.setOnClickListener {
                         if (position == 0 && productoSeleccionado == "Lista Big") {
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
                         } else {
                             lifecycleScope.launch {
@@ -453,10 +463,10 @@ class EditarVentasFragment : Fragment() {
 
                         if (position == 0 && productoSeleccionado == "Lista prix") {
 
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
 
                         } else {

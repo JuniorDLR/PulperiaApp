@@ -19,6 +19,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaPrixBinding
 import com.example.pulperiaapp.domain.prix.TablaPrix
 import com.example.pulperiaapp.ui.view.prix.viewmodel.PrixViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -127,19 +128,22 @@ class TablaPrixFragment : Fragment() {
         val idEditar = binding.tvIdEditarPrix.text.toString()
         val precioEditar = binding.tvPrecioEditarPrix.text.toString()
 
-        if (idEditar.isEmpty() && precioEditar.isEmpty()) {
-            Toast.makeText(requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG)
+        if (idEditar.isEmpty() || precioEditar.isEmpty()) {
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
                 .show()
 
+
         } else if (idEditar.isNotEmpty() && precioEditar.isEmpty() || precioEditar.isNotEmpty() && idEditar.isEmpty()) {
-            Toast.makeText(requireContext(), "Los campos estan vacios", Toast.LENGTH_LONG)
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
                 .show()
+
         } else {
             val idInt = idEditar.toInt()
             val precioInt = precioEditar.toDouble()
             prixViewModel.editarPrixTabla(idInt, precioInt)
-
             limpiarCampos()
+            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -174,15 +178,12 @@ class TablaPrixFragment : Fragment() {
 
 
         if (idEliminar.isEmpty()) {
-            Toast.makeText(requireContext(), "El campo id esta vacio ", Toast.LENGTH_LONG).show()
+            Snackbar.make(requireView(), "El campo id esta vacio", Snackbar.LENGTH_SHORT).show()
 
-        } else if (precioEliminar.isNotEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Para eliminar solo se debe introducir el id ",
-                Toast.LENGTH_LONG
-            ).show()
+        } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
 
+            Snackbar.make(requireView(), "Solo debes introducir el id para eliminar", Snackbar.LENGTH_LONG)
+                .show()
 
         } else {
             AlertDialog.Builder(requireContext())

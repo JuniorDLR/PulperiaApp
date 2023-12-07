@@ -146,7 +146,7 @@
             android:name="idProducto"
             app:argType="integer" />
         <argument
-            android:name="fechaActual"
+            android:name="idFecha"
             app:argType="string" />
         <argument
             android:name="esIndividual"

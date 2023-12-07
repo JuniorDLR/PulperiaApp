@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarCocaBinding
@@ -43,7 +44,7 @@ class AgregarCocaFragment : Fragment() {
         val producto = binding.tvProducoAgregar.text.toString()
         val precio = binding.tvAgregarPrecio.text.toString()
 
-        if (producto == "" && precio == "") {
+        if (producto.isEmpty() || precio.isEmpty()) {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
                 .setMessage("Los campos no pueden quedar vaciones")
@@ -55,6 +56,8 @@ class AgregarCocaFragment : Fragment() {
             val precioCocaEntity = PrecioCocaEntity(0, producto = producto, precio = precioDouble)
             cocaViewModel.insertarCocaTabla(precioCocaEntity)
             requireActivity().supportFragmentManager.popBackStack()
+            Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT)
+                .show()
         }
 
     }

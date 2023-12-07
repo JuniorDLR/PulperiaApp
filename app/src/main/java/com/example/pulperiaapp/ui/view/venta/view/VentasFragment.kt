@@ -3,16 +3,17 @@ package com.example.pulperiaapp.ui.view.venta.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
+
 
 import androidx.activity.addCallback
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
@@ -34,11 +35,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.withContext
+
+import java.text.SimpleDateFormat
+
+import java.util.Calendar
 
 
 @AndroidEntryPoint
@@ -52,23 +56,26 @@ class VentasFragment : Fragment() {
     private var esIndividual: Boolean = false
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentVentasBinding.inflate(inflater, container, false)
+
         initComponent()
+        val fechaInicio = obtenerFechaInicioActual()
+        val fechaFin = obtenerFechaFin()
+
+        ventasModel.obtenerTotal(fechaInicio, fechaFin)
+
         binding.root.postDelayed({
             tabLayout.getTabAt(1)?.select()
         }, 100)
-        ventasModel.obtenerTotal()
+
 
         ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
             val ganancia = "Ganacia: $total"
             binding.tvTotalVenta.text = ganancia
         }
-
-
 
 
         binding.btnAgregarVenta.setColorFilter(
@@ -87,9 +94,11 @@ class VentasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.btnAgregarVenta.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.ventasProductoFragment)
         }
+
 
         binding.shVentas.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -103,42 +112,50 @@ class VentasFragment : Fragment() {
 
         })
 
+
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
-            @RequiresApi(Build.VERSION_CODES.O)
+
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-
-                    val fechaActual = LocalDateTime.now()
-                    val zonaHoraria = ZoneId.systemDefault()
-                    val fechaInicio = fechaActual.toLocalDate().atStartOfDay(zonaHoraria)
-                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    val fechaFin = fechaActual.toLocalDate().plusDays(1).atStartOfDay(zonaHoraria)
-                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-
+                    val fechaInicio = obtenerFechaInicioActual()
+                    val fechaFin = obtenerFechaFin()
 
                     lifecycleScope.launch {
-
                         when (it.position) {
                             0 -> {
-                                ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
-                                ventasModel.ventaModelIndividual.collect { lista ->
-                                    adapterVenta.setListIndividual(lista)
+                                try {
+
+                                    ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
+                                    ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
+                                        adapterVenta.setListIndividual(lista)
+                                    }
+
                                     esIndividual = true
                                     adapterVenta.verificacion("individual")
+                                } catch (e: Exception) {
+                                    Log.e("TAG", "Error al obtener venta individual: ${e.message}")
                                 }
                             }
 
                             1 -> {
-                                ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
-                                ventasModel.ventaModelCajilla.collect { lista ->
-                                    adapterVenta.setListCajilla(lista)
+                                try {
+                                    ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
+                                    ventasModel.ventaModelCajilla.observe(viewLifecycleOwner) { lista ->
+                                        adapterVenta.setListCajilla(lista)
+                                    }
                                     esIndividual = false
                                     adapterVenta.verificacion("Cajilla")
+                                } catch (e: Exception) {
+                                    Log.e(
+                                        "TAG",
+                                        "Error al obtener venta de la cajilla: ${e.message}"
+                                    )
                                 }
                             }
-
                         }
                     }
+
+
                 }
             }
 
@@ -160,7 +177,6 @@ class VentasFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initComponent() {
         recyclerView = binding.rvVentas
         tabLayout = binding.tabLayout
@@ -187,45 +203,76 @@ class VentasFragment : Fragment() {
 
         findNavController().navigate(
             VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
-                idProducto = idProducto, fechaActual = fecha, esIndividual = esIndividual
+                idProducto = idProducto, idFecha = fecha, esIndividual = esIndividual
             )
         )
 
     }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("NotifyDataSetChanged")
     private fun deleteItem(idProducto: Int, position: Int, fechaAgrupada: String) {
-        val alert = AlertDialog.Builder(requireContext())
+        val fechaInicio = obtenerFechaInicioActual()
+        val fechaFin = obtenerFechaFin()
+
+        AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Desea eliminar esta venta?")
             .setPositiveButton("Si") { dialog, _ ->
                 lifecycleScope.launch {
-
-                    if (esIndividual) {
-                        ventasModel.eliminarVenta(idProducto)
-                    } else {
-                        val fechaActual = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-                        val ventasCajilla = ventasModel.obtenerVentaCajilla(fechaActual, "")
-
-                        val ventasFiltradas =
-                            ventasCajilla.filter { it.fecha_venta == fechaAgrupada }
-                        for (fecha in ventasFiltradas) {
-                            ventasModel.eliminarVenta(fecha.id)
-                            adapterVenta.notifyItemRemoved(position)
+                    try {
+                        if (esIndividual) {
+                            ventasModel.eliminarVenta(idProducto)
+                        } else {
+                            val ventasCajilla =
+                                ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
+                            val ventasFiltradas =
+                                ventasCajilla.filter { it.fecha_venta == fechaAgrupada }
+                            for (venta in ventasFiltradas) {
+                                ventasModel.eliminarVenta(venta.id)
+                            }
                         }
+                        // Eliminar el elemento de la lista de datos del adaptador
+                        adapterVenta.removeItem(position)
+                        // Notificar al adaptador sobre el cambio específico
+                        adapterVenta.notifyItemRemoved(position)
+                        Toast.makeText(
+                            requireContext(),
+                            "Venta eliminada exitosamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ventasModel.obtenerTotal(fechaInicio, fechaFin)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // Manejar la excepción según tus necesidades
                     }
-
-
                 }
-
+                dialog.dismiss()
             }
-            .setNegativeButton("no") { diag, _ ->
+            .setNegativeButton("No") { diag, _ ->
                 diag.dismiss()
             }
-        alert.show()
+            .show()
     }
 
+
+    // Función de extensión para obtener la fecha de inicio actual
+    private fun obtenerFechaInicioActual(): String {
+        val fechaActual = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaActual.time)
+    }
+
+
+    private fun obtenerFechaFin(): String {
+        val fechaActual = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 12)
+        }
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaActual.time)
+
+    }
 
     fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())

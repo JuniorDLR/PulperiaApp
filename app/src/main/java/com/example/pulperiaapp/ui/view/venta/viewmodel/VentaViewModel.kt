@@ -4,40 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 import com.example.pulperiaapp.domain.venta.DetalleEditar
 
 import com.example.pulperiaapp.domain.venta.UseCaseVenta
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import com.example.pulperiaapp.ui.view.venta.adapter.AdapterVenta
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val ITEMS_PER_PAGE = 10
 
 @HiltViewModel
 class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta) : ViewModel() {
 
 
     private val _ventaModelCajilla =
-        MutableStateFlow<Map<String, List<VentaPrixCocaDetalle>>>(emptyMap())
-    val ventaModelCajilla: StateFlow<Map<String, List<VentaPrixCocaDetalle>>> = _ventaModelCajilla
+        MutableLiveData<Map<String, List<VentaPrixCocaDetalle>>>(emptyMap())
+    val ventaModelCajilla: LiveData<Map<String, List<VentaPrixCocaDetalle>>> = _ventaModelCajilla
+
 
     private val _ventaModelIndividual =
-        MutableStateFlow<List<VentaPrixCocaDetalle>>(emptyList())
-    val ventaModelIndividual: StateFlow<List<VentaPrixCocaDetalle>> =
+        MutableLiveData<List<VentaPrixCocaDetalle>>(emptyList())
+    val ventaModelIndividual: LiveData<List<VentaPrixCocaDetalle>> =
         _ventaModelIndividual
 
 
-    val _obtenerTotal = MutableLiveData<Double>()
-    val obtenerTotal: LiveData<Double> = _obtenerTotal
+    val _obtenerTotal = MutableLiveData<Double?>()
+    val obtenerTotal: LiveData<Double?> = _obtenerTotal
 
     private val _data = MutableLiveData<List<DetalleEditar>>()
     val data: LiveData<List<DetalleEditar>> = _data
@@ -50,9 +46,9 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         }
     }
 
-    fun obtenerTotal() {
+    fun obtenerTotal(fechaInicio: String, fechaFin: String) {
         viewModelScope.launch {
-            val total: Double? = useCaseVenta.obtenerTotal()
+            val total: Double? = useCaseVenta.obtenerTotal(fechaInicio, fechaFin)
 
             _obtenerTotal.value = total ?: 0.0
         }
@@ -60,10 +56,14 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) = useCaseVenta.editarVenta(ventaPrixCoca)
 
-    suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
+    suspend fun obtenerVentaIndividual(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
 
         return try {
-            val lista = useCaseVenta.obtenerVentaIndividual(fechaInicio = fechaInicio, fechaFin = fechaFin)
+            val lista =
+                useCaseVenta.obtenerVentaIndividual(fechaInicio = fechaInicio, fechaFin = fechaFin)
             _ventaModelIndividual.value = lista
             lista
         } catch (e: Exception) {
@@ -74,12 +74,16 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
     }
 
-    suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
+    suspend fun obtenerVentaCajilla(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
 
         return try {
-            val lista = useCaseVenta.obtenerVentaCajilla(fechaInicio = fechaInicio, fechaFin = fechaFin)
-            val listaGroup = lista.groupBy { it.fecha_venta }
-            _ventaModelCajilla.value = listaGroup
+
+            val lista =
+                useCaseVenta.obtenerVentaCajilla(fechaInicio = fechaInicio, fechaFin = fechaFin)
+            _ventaModelCajilla.value = lista.groupBy { it.fecha_venta }
             lista
 
         } catch (e: Exception) {
@@ -98,10 +102,12 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerProdcutoCoca()
     }
 
-    suspend fun eliminarVenta(id: Int) {
-        useCaseVenta.eliminarVenta(id)
-        obtenerTotal()
+    fun eliminarVenta(id: Int) {
+        viewModelScope.launch {
+            useCaseVenta.eliminarVenta(id)
+        }
     }
+
 
     suspend fun obtenerProductoBig(): List<String> {
         return useCaseVenta.obtenerProductoBig()
@@ -116,9 +122,9 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerPrecioCoca(producto)
     }
 
-    suspend fun obtenerDetalleEditarLiveData(idInventario: String): List<DetalleEditar> {
+    suspend fun obtenerDetalleEditarLiveData(idFecha: String): List<DetalleEditar> {
         return try {
-            val lista: List<DetalleEditar> = useCaseVenta.obtenerDetalleEditar(idInventario)
+            val lista: List<DetalleEditar> = useCaseVenta.obtenerDetalleEditar(idFecha)
             _data.postValue(lista)
             lista
         } catch (e: Exception) {

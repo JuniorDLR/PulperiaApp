@@ -19,7 +19,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.google.android.material.datepicker.CalendarConstraints
+
 
 import java.util.Calendar
 import androidx.navigation.fragment.findNavController
@@ -31,7 +31,7 @@ import com.example.pulperiaapp.ui.view.inventario.adapter.InventarioAdapter
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.example.pulperiaapp.ui.view.principal.MainActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.twilio.rest.preview.wireless.Sim
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -68,7 +68,7 @@ class InventarioDatosFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     private fun initComponent() {
         recyclerView = binding.rvInventario
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -154,7 +154,7 @@ class InventarioDatosFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()

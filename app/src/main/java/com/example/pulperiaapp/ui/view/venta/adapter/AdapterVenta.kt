@@ -1,13 +1,12 @@
 package com.example.pulperiaapp.ui.view.venta.adapter
 
-import android.annotation.SuppressLint
-import android.os.Build
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.annotation.RequiresApi
+
 import androidx.recyclerview.widget.RecyclerView
 //_+uqd<nK-@NK$R8GT2i&
 import com.example.pulperiaapp.R
@@ -29,8 +28,7 @@ class AdapterVenta(
 
         val binding = ItemVentaBinding.bind(view)
 
-        @SuppressLint("SetTextI18n")
-        @RequiresApi(Build.VERSION_CODES.O)
+
         fun bind(venta: VentaPrixCocaDetalle) {
             binding.tvFecha.text = venta.fecha_venta
             binding.tvListProducto.text =
@@ -38,7 +36,7 @@ class AdapterVenta(
             binding.tvTotal.text = venta.total_venta.toString()
 
             binding.btnEliminarVenta.setOnClickListener {
-                onDeleteClickListener(venta.id, bindingAdapterPosition, venta.fecha_venta)
+                onDeleteClickListener(venta.id, adapterPosition, venta.fecha_venta)
             }
             binding.btnEditarVenta.setOnClickListener {
                 onUpdateClickListener(venta.fecha_venta, venta.id)
@@ -57,7 +55,6 @@ class AdapterVenta(
     override fun getItemCount(): Int = filterList.size
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diagKey = filterList.values.elementAt(position)
         if (diagKey.isNotEmpty()) {
@@ -73,7 +70,6 @@ class AdapterVenta(
 
     fun setListIndividual(newList: List<VentaPrixCocaDetalle>) {
         filterList = newList.associate { it.id.toString() to listOf(it) }
-        listaVenta = newList.associate { it.id.toString() to listOf(it) }
         notifyDataSetChanged()
     }
 
@@ -91,8 +87,8 @@ class AdapterVenta(
 
                         }
                     } else {
-                        listaVenta.filter { (_,ventas) ->
-                            ventas.any { it.fecha_venta.contains(productoQuery,ignoreCase = true) }
+                        listaVenta.filter { (_, ventas) ->
+                            ventas.any { it.fecha_venta.contains(productoQuery, ignoreCase = true) }
                         }
                     }
 
@@ -116,5 +112,14 @@ class AdapterVenta(
         ventaContext = contexto
         notifyDataSetChanged()
     }
+
+    fun removeItem(position: Int) {
+        filterList = filterList.toMutableMap().apply {
+            remove(keys.elementAt(position))
+        }
+        notifyItemRemoved(position)
+    }
+
+
 
 }

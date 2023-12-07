@@ -15,19 +15,18 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         ventaCocaPrix.insertatVenta(ventaPrixCoca)
 
     suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
-        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaIndividual(fechaInicio,fechaFin)
-
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaIndividual(fechaInicio, fechaFin)
         return response.map { it.toDomain() }
     }
 
     suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
-        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaCajilla(fechaInicio,fechaFin)
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaCajilla(fechaInicio, fechaFin)
         return response.map { it.toDomain() }
     }
 
 
-    suspend fun obtenerTotal(): Double {
-        return ventaCocaPrix.obtenerTotal()
+    suspend fun obtenerTotal(fechaInicio: String, fechaFin: String): Double {
+        return ventaCocaPrix.obtenerTotal(fechaInicio,fechaFin)
     }
 
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =
@@ -62,8 +61,8 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
         return ventaCocaPrix.obtenerPrecioBig(producto)
     }
 
-    suspend fun obtenerDetalleEditar(idInventario: String): List<DetalleEditar> =
-        ventaCocaPrix.obtenerDetalleEditar(idInventario)
+    suspend fun obtenerDetalleEditar(idFecha: String): List<DetalleEditar> =
+        ventaCocaPrix.obtenerDetalleEditar(idFecha)
 
 }
 

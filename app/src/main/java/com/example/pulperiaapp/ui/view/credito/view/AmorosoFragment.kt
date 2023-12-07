@@ -22,11 +22,13 @@ import com.example.pulperiaapp.ui.view.credito.viewmodel.ClienteViewModel
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.coroutines.cancellation.CancellationException
 
 @AndroidEntryPoint
 class AmorosoFragment : Fragment() {
@@ -111,11 +113,11 @@ class AmorosoFragment : Fragment() {
                     val productoSeleccionado = lista[position]
                     binding.btnGuardarProducto.setOnClickListener {
                         if (position == 0 && productoSeleccionado == "Lista big") {
-                            AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
-                                .setMessage("Debe de seleccionar un producto")
-                                .setPositiveButton("Continuar") { dialog, _ ->
-                                    dialog.dismiss()
-                                }.show()
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
+                            ).show()
 
                         } else {
                             lifecycleScope.launch {
@@ -170,13 +172,11 @@ class AmorosoFragment : Fragment() {
             Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)
                 .show()
         } else {
-            AlertDialog.Builder(requireContext())
-                .setTitle("ADVERTENCIA")
-                .setMessage("No has ingresado un amoroso o la tabla esta vacia.")
-                .setPositiveButton("Continuar") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            Snackbar.make(
+                requireView(),
+                "No has ingresado un amoroso o la tabla esta vacia",
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -202,11 +202,11 @@ class AmorosoFragment : Fragment() {
                     val productoSeleccionado = opcion[position]
                     binding.btnGuardarProducto.setOnClickListener {
                         if (position == 0 && productoSeleccionado == "Lista coca") {
-                            AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
-                                .setMessage("Debe de seleccionar un producto")
-                                .setPositiveButton("Continuar") { dialog, _ ->
-                                    dialog.dismiss()
-                                }.show()
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
+                            ).show()
 
                         } else {
                             lifecycleScope.launch {
@@ -249,12 +249,11 @@ class AmorosoFragment : Fragment() {
                     binding.btnGuardarProducto.setOnClickListener {
 
                         if (position == 0 && productoSeleccionado == "Lista prix") {
-
-                            AlertDialog.Builder(requireContext()).setTitle("ADVERTENCIA")
-                                .setMessage("Debe de seleccionar un producto")
-                                .setPositiveButton("Continuar") { dialog, _ ->
-                                    dialog.dismiss()
-                                }.show()
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
+                            ).show()
 
                         } else {
                             lifecycleScope.launch {
@@ -316,6 +315,32 @@ class AmorosoFragment : Fragment() {
 
             val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
             precioView.text = precio.toString()
+
+
+            productoView.setOnClickListener {
+                if (cantidad > 1) {
+                    val nuevaCantidad = cantidad - 1
+                    val nuevoPrecio = nuevaCantidad * precio / cantidad
+                    productoSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
+                    actualizarTabla()
+                } else {
+                    productoSeleccionados.remove(producto)
+                    actualizarTabla()
+                }
+            }
+
+            cantidadView.setOnClickListener {
+                if (cantidad > 0) {
+                    val nuevaCantidad = cantidad + 1
+                    val nuevoPrecio = nuevaCantidad * precio / cantidad
+                    productoSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
+                    actualizarTabla()
+
+                } else {
+                    productoSeleccionados.remove(producto)
+                    actualizarTabla()
+                }
+            }
 
             tableLayout.addView(tableRow)
 

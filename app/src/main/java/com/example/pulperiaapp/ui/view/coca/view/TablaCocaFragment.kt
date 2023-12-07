@@ -21,6 +21,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaCocaBinding
 import com.example.pulperiaapp.domain.coca.TablaCoca
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -117,16 +118,20 @@ class TablaCocaFragment : Fragment() {
 
 
     private fun eliminarProducto() {
+        val idEliminar = binding.tvIdEditarCoca.text.toString()
+        val precioEliminar = binding.tvPrecioEditarCoca.text.toString()
 
-        if (binding.tvIdEditarCoca.text!!.isEmpty()) {
-            Toast.makeText(requireContext(), "El campo id esta vacio ", Toast.LENGTH_LONG).show()
 
-        } else if (binding.tvPrecioEditarCoca.text!!.isNotEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Para eliminar solo se debe introducir el id ",
-                Toast.LENGTH_LONG
-            ).show()
+        if (idEliminar.isEmpty()) {
+            Snackbar.make(requireView(), "El campo id esta vacio", Snackbar.LENGTH_SHORT).show()
+
+        } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
+            Snackbar.make(
+                requireView(),
+                "Solo debes introducir el id para eliminar",
+                Snackbar.LENGTH_LONG
+            )
+                .show()
 
         } else {
             AlertDialog.Builder(requireContext())
@@ -137,7 +142,7 @@ class TablaCocaFragment : Fragment() {
                     cocaViewModel.eliminarProducto(id)
                     Toast.makeText(
                         requireContext(),
-                        "Dato eliminado exitosamente!!",
+                        "Datos eliminado exitosamente!!",
                         Toast.LENGTH_SHORT
                     ).show()
                     binding.tvIdEditarCoca.setText("")
@@ -158,32 +163,28 @@ class TablaCocaFragment : Fragment() {
         val precio = binding.tvPrecioEditarCoca.text.toString()
 
 
-        if (id.isEmpty() && precio.isEmpty()) {
-            AlertDialog.Builder(requireContext())
-                .setTitle("ADVERTENCIA")
-                .setMessage("Los campos no pueden quedar vacios")
-                .setPositiveButton("Continuar") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
+        if (id.isEmpty() || precio.isEmpty()) {
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
+                .show()
         } else if (id.isEmpty() && precio.isNotEmpty() || id.isNotEmpty() && precio.isEmpty()) {
-            AlertDialog.Builder(requireContext())
-                .setTitle("ADVERTENCIA")
-                .setMessage("Los campos no pueden quedar vacios")
-                .setPositiveButton("Continuar") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
-
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
+                .show()
         } else {
             val idInt = id.toInt()
             val precioDouble = precio.toDouble()
             cocaViewModel.editarCocaTabla(idInt, precioDouble)
+            limpiarCampos()
             Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
                 .show()
-            binding.tvIdEditarCoca.setText("")
-            binding.tvPrecioEditarCoca.setText("")
+
         }
 
 
+    }
+
+    private fun limpiarCampos() {
+        binding.tvIdEditarCoca.setText("")
+        binding.tvPrecioEditarCoca.setText("")
     }
 
 

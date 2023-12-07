@@ -23,6 +23,7 @@ import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -106,10 +107,10 @@ class VentasProductoFragment : Fragment() {
                     val productoSeleccionado = listaConcatenada[position]
                     binding.btnGuardarProducto.setOnClickListener {
                         if (position == 0 && productoSeleccionado == "Lista Big cola") {
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
                         } else {
                             lifecycleScope.launch {
@@ -135,12 +136,11 @@ class VentasProductoFragment : Fragment() {
 
     private fun guardarProducto() {
         if (productosSeleccionados.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Tiene que ingresar productos para guardar",
-                Toast.LENGTH_LONG
-            )
-                .show()
+            Snackbar.make(
+                requireView(),
+                "No hay datos en la tabla",
+                Snackbar.LENGTH_LONG
+            ).show()
 
         } else {
             for (venta in productosSeleccionados) {
@@ -148,23 +148,24 @@ class VentasProductoFragment : Fragment() {
                 val cantidad = venta.value.first
                 val total = venta.value.second
                 val ventaPorCajilla = binding.swVentaPorCajilla.isChecked
-                val fechaFormateada = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+                val fechaFormateada =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                 val ventaConProductos = VentaPrixCoca(
                     id = 0,
                     producto = productoVendido,
                     total = total,
-                    fecha =fechaFormateada,
+                    fecha = fechaFormateada,
                     cantidad = cantidad,
                     ventaPorCajilla = ventaPorCajilla,
 
 
-                )
+                    )
 
                 ventaModel.insertarVenta(ventaConProductos)
 
             }
 
-            Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)
+            Toast.makeText(requireContext(), "Datos guardados exitosamente!!", Toast.LENGTH_LONG)
                 .show()
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -194,11 +195,10 @@ class VentasProductoFragment : Fragment() {
                     binding.btnGuardarProducto.setOnClickListener {
 
                         if (position == 0 && productoSeleccionado == "Lista prix") {
-
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
 
                         } else {
@@ -250,11 +250,10 @@ class VentasProductoFragment : Fragment() {
                     binding.btnGuardarProducto.setOnClickListener {
 
                         if (position == 0 && productoSeleccionado == "Lista Coca") {
-
-                            Toast.makeText(
-                                requireContext(),
-                                "Debe seleccionar un producto",
-                                Toast.LENGTH_LONG
+                            Snackbar.make(
+                                requireView(),
+                                "Debes de seleccionar un producto",
+                                Snackbar.LENGTH_LONG
                             ).show()
                         } else {
 
@@ -331,6 +330,15 @@ class VentasProductoFragment : Fragment() {
 
                 } else {
                     productosSeleccionados.remove(producto)
+                    actualizarTabla()
+                }
+            }
+
+            cantidadView.setOnClickListener {
+                if (cantidad > 0) {
+                    val nuevaCnatidad = cantidad + 1
+                    val nuevoPrecio = nuevaCnatidad * precio / cantidad
+                    productosSeleccionados[producto] = Pair(nuevaCnatidad, nuevoPrecio)
                     actualizarTabla()
                 }
             }

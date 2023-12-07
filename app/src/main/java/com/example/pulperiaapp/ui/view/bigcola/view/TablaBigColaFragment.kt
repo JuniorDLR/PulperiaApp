@@ -18,6 +18,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaBigColaBinding
 import com.example.pulperiaapp.domain.bigcola.TablaBig
 import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -120,36 +121,45 @@ class TablaBigColaFragment : Fragment() {
         val id = binding.tvIdEditarBig.text.toString()
         val precio = binding.tvPrecioEditarBig.text.toString()
 
-        if (id.isNotEmpty() && precio.isNotEmpty()) {
+        if (id.isEmpty() || precio.isEmpty()) {
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
+                .show()
+        } else if (id.isNotEmpty() && precio.isEmpty() || precio.isNotEmpty() && id.isEmpty()) {
+            Snackbar.make(requireView(), "Los campos no pueden quedar vacio", Snackbar.LENGTH_SHORT)
+                .show()
+        } else {
             val precioDouble = precio.toDouble()
             val idInt = id.toInt()
             bigColaViewModel.editarBigCola(precioDouble, idInt)
-            binding.tvIdEditarBig.setText("")
-            binding.tvPrecioEditarBig.setText("")
-            Toast.makeText(requireContext(), "Producto editado exitosamente", Toast.LENGTH_LONG)
+            limpiarCampos()
+            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
                 .show()
-
-
-        } else {
-            AlertDialog.Builder(requireContext())
-                .setTitle("ADVERTENCIA")
-                .setMessage("Los campos no pueden quedar vacios")
-                .setPositiveButton("Continuar") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
         }
     }
 
-    private fun eliminarBigCola() {
-        val id = binding.tvIdEditarBig.text.toString()
-        val precio = binding.tvPrecioEditarBig.text.toString()
+    private fun limpiarCampos() {
+        binding.tvIdEditarBig.setText("")
+        binding.tvPrecioEditarBig.setText("")
+    }
 
-        if (id.isNotEmpty() && precio.isEmpty()) {
+    private fun eliminarBigCola() {
+        val idEliminar = binding.tvIdEditarBig.text.toString()
+        val precioEliminar = binding.tvPrecioEditarBig.text.toString()
+
+        if (idEliminar.isEmpty()) {
+
+            Snackbar.make(requireView(), "El campo id esta vacio", Snackbar.LENGTH_SHORT).show()
+
+        } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
+
+            Snackbar.make(requireView(), "Solo debes introducir el id para eliminar", Snackbar.LENGTH_LONG)
+                .show()
+        } else {
             AlertDialog.Builder(requireContext())
                 .setTitle("ALERTA PRODUCTO")
                 .setMessage("¿Estas seguro que deseas eliminarlo?")
                 .setPositiveButton("Aceptar") { dialog, _ ->
-                    val idInt = id.toInt()
+                    val idInt = idEliminar.toInt()
                     bigColaViewModel.eliminarBigCola(idInt)
                     binding.tvPrecioEditarBig.setText("")
                     binding.tvIdEditarBig.setText("")
@@ -166,12 +176,6 @@ class TablaBigColaFragment : Fragment() {
                     dialog.dismiss()
                 }
                 .show()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "Para eliminar solo se debe introducir el id ",
-                Toast.LENGTH_LONG
-            ).show()
         }
 
 

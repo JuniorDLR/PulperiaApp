@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarPrixBinding
@@ -35,7 +36,7 @@ class AgregarPrixFragment : Fragment() {
         val producto = binding.tvProducoAgregarP.text.toString()
         val precio = binding.tvAgregarPrecioP.text.toString()
 
-        if (producto == "" && precio == "") {
+        if (producto.isEmpty() || precio.isEmpty()) {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
                 .setMessage("Los campos no pueden quedar vacios")
@@ -47,6 +48,8 @@ class AgregarPrixFragment : Fragment() {
             val precioPrixEntity = PrecioPrixEntity(0, producto, precioDouble)
             prixModel.insertraPrixTabla(precioPrixEntity)
             requireActivity().supportFragmentManager.popBackStack()
+            Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT)
+                .show()
         }
 
     }
