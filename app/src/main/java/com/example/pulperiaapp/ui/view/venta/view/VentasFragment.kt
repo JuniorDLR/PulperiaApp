@@ -200,7 +200,7 @@ class VentasFragment : Fragment() {
     }
 
     private fun updateItem(fecha: String, idProducto: Int) {
-
+        Log.d("DebugID", "ID al hacer clic en Editar: $idProducto")
         findNavController().navigate(
             VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
                 idProducto = idProducto, idFecha = fecha, esIndividual = esIndividual

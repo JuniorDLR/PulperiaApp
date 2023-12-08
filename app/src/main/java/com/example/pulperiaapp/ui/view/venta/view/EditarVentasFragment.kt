@@ -85,22 +85,15 @@ class EditarVentasFragment : Fragment() {
     }
 
     private suspend fun insertarOVenta(venta: VentaPrixCoca) {
-        when {
-            venta.id == 0 -> {
-                // Es una nueva venta, insertarla
-                ventaModel.insertarVenta(venta)
-            }
 
-            venta.cantidad > 0 -> {
-                // La cantidad es mayor que 0, editar la venta existente
-                ventaModel.editarVenta(venta)
-            }
-
-            else -> {
-                // La cantidad es 0, eliminar la venta existente
-                ventaModel.eliminarVenta(venta.id)
-            }
+        if (venta.id == 0) {
+            // Es una nueva venta, insertarla
+            ventaModel.insertarVenta(venta)
+        } else if (venta.cantidad > 0) {
+            // La cantidad es mayor que 0, editar la venta existente
+            ventaModel.editarVenta(venta)
         }
+
     }
 
 
@@ -139,8 +132,13 @@ class EditarVentasFragment : Fragment() {
                         cantidad = cantidad
                     )
 
+                    if (cantidad > 0) {
+                        insertarOVenta(venta)
+                    } else {
+                        Log.d("Eliminacion","${venta.id}")
+                        ventaModel.eliminarVenta(venta.id)
+                    }
 
-                    insertarOVenta(venta)
                 }
                 Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
                     .show()
@@ -164,8 +162,10 @@ class EditarVentasFragment : Fragment() {
             ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
                 detalleList?.let {
                     it.forEach { j ->
-                        // Los datos se han actualizado, puedes proceder a visualizar la tabla
-                        guardarDatoRecuperado(idEditar, j)
+                        if ((j.id == idEditar && !j.venta_por_cajilla) || (j.venta_por_cajilla)) {
+                            // Los datos se han actualizado, puedes proceder a visualizar la tabla
+                            guardarDatoRecuperado(idEditar, j)
+                        }
 
                     }
                     visualizarTabla(false)
@@ -182,7 +182,6 @@ class EditarVentasFragment : Fragment() {
         if (esIndividual) {
             existingList.clear() // Si es individual, borramos la lista existente
         }
-
         existingList.add(detalleList)
         productoEditar[idEditar] = existingList
     }
@@ -237,6 +236,7 @@ class EditarVentasFragment : Fragment() {
             .inflate(R.layout.table_row_venta, null) as TableRow
         tableRow.tag = idProdcuto
 
+
         val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
         productoView.text = producto
 
@@ -247,7 +247,7 @@ class EditarVentasFragment : Fragment() {
         precioView.text = total.toString()
 
         productoView.setOnClickListener {
-            if (cantidad > 1) {
+            if (cantidad >= 1) {
                 val nuevaCantidad = cantidad - 1
                 val newPrecio = nuevaCantidad * total / cantidad
                 if (idEditar != -1) {
@@ -275,8 +275,7 @@ class EditarVentasFragment : Fragment() {
 
             } else {
                 if (idEditar != -1) {
-                    val detalleExistente =
-                        productoEditar[idEditar]?.find { it.id == idProdcuto }
+                    val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
                     detalleExistente?.let {
                         productoEditar[idEditar]?.remove(it)
 
@@ -342,6 +341,7 @@ class EditarVentasFragment : Fragment() {
         }
 
         tableLayou.addView(tableRow)
+        tableLayou.requestLayout()
         binding.tvTotalAmountEditar.text = total.toString()
     }
 
