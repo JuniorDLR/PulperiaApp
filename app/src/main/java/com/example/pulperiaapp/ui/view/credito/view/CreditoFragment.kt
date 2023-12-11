@@ -94,7 +94,7 @@ class CreditoFragment : Fragment() {
         recyclerView.layoutManager = managuer
         adapter = AdapterAmoroso(
             onClickUpdate = { cliente -> actualizarPago(cliente) }, requireContext(),
-            onClickSee = { cliente, id -> editar(cliente, id) }
+            onClickSee = { cliente, id -> editar(cliente, id) }, false
         )
         recyclerView.adapter = adapter
 

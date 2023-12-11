@@ -65,4 +65,10 @@
     <string name="editar_inventario">Editar inventario</string>
     <string name="ventas_individuales">Ventas individuales</string>
     <string name="ventas_por_cajilla">Ventas por cajilla</string>
+    <string name="buscar">Buscar</string>
+    <string name="clientes_que_ya_han_realizado_el_pago">Clientes que ya han realizado el pago</string>
+    <string name="filtrar_ventas_por_fechas">Filtrar ventas por fechas</string>
+    <string name="mostrar_clientes_registrados">Mostrar clientes registrados</string>
+    <string name="ventas_por_individual">Ventas por individual</string>
+    <string name="aplicar_filtros">Aplicar Filtros</string>
 </resources>

@@ -29,6 +29,7 @@ import com.example.pulperiaapp.data.database.entitie.InventarioEntity
 import com.example.pulperiaapp.databinding.FragmentInventarioBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
+
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,20 +94,23 @@ class InventarioFragment : Fragment() {
             if (bitmap != null) {
                 val bitmapImage = bitmapList.any { it.sameAs(bitmap) }
                 if (!bitmapImage) {
+
                     when (imageToken) {
                         1 -> {
+
+
                             ruta1 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap)
+                            imageAdapter.addImage(bitmap, 0)
                         }
 
                         2 -> {
                             ruta2 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap)
+                            imageAdapter.addImage(bitmap, 1)
                         }
 
                         3 -> {
                             ruta3 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap)
+                            imageAdapter.addImage(bitmap, 2)
                         }
                     }
 
@@ -206,6 +210,7 @@ class InventarioFragment : Fragment() {
         viewPager.adapter = imageAdapter
     }
 
+
     private var previousImageCount: Int = 0
     private fun actualizarConteo() {
         val conteo = imageAdapter.count
@@ -267,7 +272,10 @@ class InventarioFragment : Fragment() {
 
                     // Use separate variables for the last record
 
-                    Log.d("inventario", "Index: $index, Last Index: ${productoIngresado.entries.size - 1}")
+                    Log.d(
+                        "inventario",
+                        "Index: $index, Last Index: ${productoIngresado.entries.size - 1}"
+                    )
                     val lastRecordRuta1 = if (index == productoIngresado.size - 1) ruta1 else null
                     val lastRecordRuta2 = if (index == productoIngresado.size - 1) ruta2 else null
                     val lastRecordRuta3 = if (index == productoIngresado.size - 1) ruta3 else null
@@ -364,7 +372,8 @@ class InventarioFragment : Fragment() {
                 null,
                 cantidadCajillaInt,
                 cantidadInt,
-                precioDouble)
+                precioDouble
+            )
 
             val listaInventario: MutableList<InventarioModel> =
                 productoIngresado[fechaFormateada]?.toMutableList() ?: mutableListOf()

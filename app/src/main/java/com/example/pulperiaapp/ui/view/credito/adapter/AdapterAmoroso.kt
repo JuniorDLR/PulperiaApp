@@ -1,10 +1,10 @@
 package com.example.pulperiaapp.ui.view.credito.adapter
 
-import android.annotation.SuppressLint
+
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +22,11 @@ import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
 
 
 class AdapterAmoroso(
-    private val onClickUpdate: (String) -> Unit,
+    private val onClickUpdate: (String) -> Unit = { _ -> },
     private val context: Context,
-    private val onClickSee: (String, Int) -> Unit,
+    private val onClickSee: (String, Int) -> Unit = { _, _ -> },
+    private val isEspecter: Boolean
+
 ) : RecyclerView.Adapter<AdapterAmoroso.MyHolder>(), Filterable {
     private var listaAmoroso: Map<String, List<VentaAmorosoDetalle>> = emptyMap()
     private var filterable: Map<String, List<VentaAmorosoDetalle>> = emptyMap()
@@ -82,6 +84,7 @@ class AdapterAmoroso(
             holder.bind(detallesCliente[0])
         }
     }
+
     private fun mostrarDialogoClienteDetalle(cliente: String, id: Int) {
         val dialog = AlertDialog.Builder(context)
         val scrollView = ScrollView(context)
@@ -89,7 +92,7 @@ class AdapterAmoroso(
         val tlProducto = contentView.findViewById<TableLayout>(R.id.tlProducto)
         val resources = context.resources
 
-        var totaPagar: Double = 0.0
+        var totaPagar = 0.0
         datosItem[cliente]?.forEach { info ->
             val precioTotal = info.precio_total
             totaPagar += precioTotal
@@ -135,20 +138,25 @@ class AdapterAmoroso(
             tlProducto.addView(spaceView)
         }
 
+
+
+
         val total = contentView.findViewById<TextView>(R.id.tvTotalAmoroso)
         total.text = totaPagar.toString()
 
-        dialog.setPositiveButton("Realizar pago") { diag, _ ->
-            onClickUpdate(cliente)
-        }
-        dialog.setNegativeButton("Editar") { diag, _ ->
-            onClickSee(cliente, id)
+        if (!isEspecter) {
+            dialog.setPositiveButton("Realizar pago") { diag, _ ->
+                onClickUpdate(cliente)
+            }
+            dialog.setNegativeButton("Editar") { diag, _ ->
+                onClickSee(cliente, id)
+            }
         }
 
         scrollView.addView(contentView)
         dialog.setView(scrollView)
-
         dialog.show()
+
     }
 
 

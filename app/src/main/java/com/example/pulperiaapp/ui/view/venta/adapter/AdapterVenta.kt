@@ -16,8 +16,8 @@ import kotlin.collections.List
 
 
 class AdapterVenta(
-    private val onDeleteClickListener: (Int, Int, String) -> Unit,
-    private val onUpdateClickListener: (String, Int) -> Unit
+    private val onDeleteClickListener: (Int, Int, String) -> Unit = { _, _, _ -> },
+    private val onUpdateClickListener: (String, Int) -> Unit = { _, _ -> }
 ) : RecyclerView.Adapter<AdapterVenta.ViewHolder>(),
     Filterable {
     var listaVenta: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
@@ -119,7 +119,6 @@ class AdapterVenta(
         }
         notifyItemRemoved(position)
     }
-
 
 
 }

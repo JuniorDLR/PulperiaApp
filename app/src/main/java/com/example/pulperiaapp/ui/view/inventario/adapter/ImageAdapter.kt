@@ -1,5 +1,5 @@
 import android.graphics.Bitmap
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,7 @@ class ImageAdapter(
     // Se utiliza para crear y agregar vistas al ViewPager.
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(container.context)
-        Log.d("ImageAdapter", "Imagen agregada en posición $position")
+
         val itemView = inflater.inflate(R.layout.item_viewpaguer, container, false)
         val imageView = itemView.findViewById<ImageView>(R.id.image_view)
         val delete = itemView.findViewById<ImageView>(R.id.delete_button)
@@ -46,11 +46,19 @@ class ImageAdapter(
         }
     }
 
-    fun addImage(image: Bitmap) {
-        this.image.add(image)
-        notifyDataSetChanged()
-        imageCounterListener.onImageAdd(this.image.size)
+    fun getDeletedPosition(): Int {
+        return deletePosition
     }
+
+
+    fun addImage(image: Bitmap, position: Int) {
+        if (position >= 0 && position <= this.image.size) {
+            this.image.add(position, image)
+            notifyDataSetChanged()
+            imageCounterListener.onImageAdd(this.image.size)
+        }
+    }
+
 
     override fun getItemPosition(`object`: Any): Int {
         val view = `object` as View
@@ -80,4 +88,5 @@ class ImageAdapter(
     fun hasImageAtPosition(position: Int): Boolean {
         return position >= 0 && position < image.size
     }
+
 }

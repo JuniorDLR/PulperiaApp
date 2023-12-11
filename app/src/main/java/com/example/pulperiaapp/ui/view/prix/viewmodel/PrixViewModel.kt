@@ -35,7 +35,6 @@ class PrixViewModel @Inject constructor(
 
         viewModelScope.launch {
             val lista = useCasePrix.obtenerPrixTabla()
-            useCasePrix.obtenerPrixTabla()
             _prixModel.postValue(lista)
         }
 

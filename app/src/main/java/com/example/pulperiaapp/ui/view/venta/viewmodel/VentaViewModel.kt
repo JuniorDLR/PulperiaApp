@@ -6,13 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 import com.example.pulperiaapp.domain.venta.DetalleEditar
-
 import com.example.pulperiaapp.domain.venta.UseCaseVenta
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
-import com.example.pulperiaapp.ui.view.venta.adapter.AdapterVenta
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -64,7 +60,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return try {
             val lista =
                 useCaseVenta.obtenerVentaIndividual(fechaInicio = fechaInicio, fechaFin = fechaFin)
-            _ventaModelIndividual.value = lista
+            _ventaModelIndividual.postValue(lista)
             lista
         } catch (e: Exception) {
             e.printStackTrace()
@@ -83,6 +79,44 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
             val lista =
                 useCaseVenta.obtenerVentaCajilla(fechaInicio = fechaInicio, fechaFin = fechaFin)
+            _ventaModelCajilla.value = lista.groupBy { it.fecha_venta }
+            lista
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+
+        }
+    }
+
+
+
+    suspend fun obtenerFilterIndividual(
+        fechaInicio: String
+
+    ): List<VentaPrixCocaDetalle> {
+
+        return try {
+            val lista =
+                useCaseVenta.obtenerFilterIndividual(fechaInicio = fechaInicio)
+            _ventaModelIndividual.postValue(lista)
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+
+
+    }
+
+    suspend fun obtenerFilterCajilla(
+        fechaInicio: String
+    ): List<VentaPrixCocaDetalle> {
+
+        return try {
+
+            val lista =
+                useCaseVenta.obtenerFilterCajilla(fechaInicio = fechaInicio)
             _ventaModelCajilla.value = lista.groupBy { it.fecha_venta }
             lista
 

@@ -2,7 +2,7 @@ package com.example.pulperiaapp.domain.amoroso
 
 import com.example.pulperiaapp.data.Repository.CreditoRepository
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
-import com.example.pulperiaapp.domain.venta.DetalleEditar
+
 import javax.inject.Inject
 
 class UseCaseAmoroso @Inject constructor(private val creditoRepository: CreditoRepository) {
@@ -20,6 +20,8 @@ class UseCaseAmoroso @Inject constructor(private val creditoRepository: CreditoR
 
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle> =
         creditoRepository.obtenerDetalleAmoroso(cliente)
+
+    suspend fun obtenerFilterPago():List<VentaAmorosoDetalle> = creditoRepository.obtenerFilterPago()
 
     suspend fun obtenerCredito(): List<VentaAmorosoDetalle> {
         return creditoRepository.obtenerCredito()

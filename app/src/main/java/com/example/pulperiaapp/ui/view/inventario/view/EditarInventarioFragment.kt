@@ -311,7 +311,7 @@ class EditarInventarioFragment : Fragment() {
             inventarioModel.groupInventario.observe(viewLifecycleOwner) { lista ->
                 lista?.let {
                     it.forEach { j ->
-                        Log.d("lista",lista.toString())
+                        Log.d("lista", lista.toString())
                         guardarDatosRecuperados(j, idInventario)
                     }
 
@@ -331,7 +331,7 @@ class EditarInventarioFragment : Fragment() {
     private fun actulizarTabla() {
         tableLayout.removeAllViews()
         val idCliente = args.idInventario
-        var total: Double = 0.0
+        var total = 0.0
         bitmapList.clear()
         inventarioRecuperado[idCliente]?.forEach { inventario ->
             total += inventario.importe
@@ -341,12 +341,14 @@ class EditarInventarioFragment : Fragment() {
         val count = "${imageAdapter.count}/$MAX"
         binding.tvPrecioPagar.text = total.toString()
         binding.contadorImage.text = count
+
     }
 
     @SuppressLint("InflateParams")
     private fun agregarFila(inventario: InventarioModel) {
         val table = LayoutInflater.from(requireContext())
             .inflate(R.layout.table_row_inventario, null) as TableRow
+
 
         val nombreView = table.findViewById<TextView>(R.id.tvProductoRow)
         nombreView.text = inventario.nombre_producto
@@ -404,7 +406,6 @@ class EditarInventarioFragment : Fragment() {
     }
 
 
-
     fun openGallery() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
@@ -420,28 +421,28 @@ class EditarInventarioFragment : Fragment() {
             val bitmap = getBitmapFromUri(fromUri)
             if (bitmap != null) {
                 val bitmapUri = bitmapList.any { it.sameAs(bitmap) }
-
+                val posicion = imageAdapter.getDeletedPosition()
                 if (!bitmapUri) {
                     when (imageToken) {
                         1 -> {
                             ruta1Editar = saveImageToInternalStorage(bitmap)
-                            updateInventarioMap(ruta1Editar, 1)
 
                         }
 
                         2 -> {
                             ruta2Editar = saveImageToInternalStorage(bitmap)
-                            updateInventarioMap(ruta2Editar, 2)
 
                         }
 
                         3 -> {
                             ruta3Editar = saveImageToInternalStorage(bitmap)
-                            updateInventarioMap(ruta3Editar, 3)
 
                         }
                     }
-                    imageAdapter.addImage(bitmap)
+
+
+
+                    imageAdapter.addImage(bitmap, posicion)
                 } else {
                     Toast.makeText(
                         requireContext(), "Esta imagen ya ha sido seleccionada", Toast.LENGTH_LONG
@@ -455,24 +456,11 @@ class EditarInventarioFragment : Fragment() {
 
         } else {
             Toast.makeText(
-                requireContext(), "Ya no se puede seleecionar mas fotos", Toast.LENGTH_LONG
+                requireContext(), "Ya no se puede seleccionar más fotos", Toast.LENGTH_LONG
             ).show()
         }
-
     }
 
-    private fun updateInventarioMap(ImagePath: String?, imageToken: Int) {
-        inventarioRecuperado.values.forEach { lista ->
-            lista.forEach {
-                when (imageToken) {
-                    1 -> it.imagen1 = ImagePath
-                    2 -> it.imagen2 = ImagePath
-                    3 -> it.imagen3 = ImagePath
-                }
-            }
-        }
-
-    }
 
     private fun saveImageToInternalStorage(bitmap: Bitmap): String? {
         val wrapper = ContextWrapper(requireContext().applicationContext)
@@ -509,3 +497,7 @@ class EditarInventarioFragment : Fragment() {
 
 
 }
+
+
+
+

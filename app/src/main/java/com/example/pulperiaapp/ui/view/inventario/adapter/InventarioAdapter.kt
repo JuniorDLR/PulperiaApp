@@ -13,7 +13,7 @@ import com.example.pulperiaapp.domain.inventario.InventarioModel
 
 class InventarioAdapter
     (
-    private val onClickDelete: (String, Int) -> Unit,
+    private val onClickDelete: (String) -> Unit,
     private val onClickUpdate: (String) -> Unit,
 
 
@@ -35,7 +35,7 @@ class InventarioAdapter
                 onClickUpdate(lista.fecha_entrega)
             }
             binding.btnEliminarInventario.setOnClickListener {
-                onClickDelete(lista.fecha_entrega, lista.id)
+                onClickDelete(lista.fecha_entrega)
             }
 
 

@@ -28,6 +28,15 @@ interface VentaCocaPrix {
     suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
 
 
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 0 AND DATE(fecha_venta) >= DATE(:fechaInicio)")
+    suspend fun obtenerFilterIndividual(fechaInicio: String): List<VentaPrixCoca>
+
+
+
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 1 AND DATE(fecha_venta) >= DATE(:fechaInicio)")
+    suspend fun obtenerFilterCajilla(fechaInicio: String): List<VentaPrixCoca>
+
+
     @Update
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca)
 

@@ -76,7 +76,7 @@ class InventarioDatosFragment : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
 
         adapter = InventarioAdapter(
-            onClickDelete = { fecha, id -> eliminarItem(fecha, id) },
+            onClickDelete = { fecha-> eliminarItem(fecha) },
             onClickUpdate = { idFecha -> updateItem(idFecha) }
         )
         recyclerView.adapter = adapter
@@ -84,7 +84,7 @@ class InventarioDatosFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -119,7 +119,7 @@ class InventarioDatosFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun eliminarItem(fecha: String, id: Int) {
+    private fun eliminarItem(fecha: String) {
         AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estás seguro que deseas eliminarlo?")

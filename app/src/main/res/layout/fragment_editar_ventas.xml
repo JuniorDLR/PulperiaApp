@@ -9,6 +9,7 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarVentas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
@@ -16,6 +17,7 @@
         app:titleTextColor="@color/white" />
 
     <LinearLayout
+        android:id="@+id/ChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -78,6 +80,7 @@
 
 
         <LinearLayout
+            android:id="@+id/seleccionPro"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -119,6 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
 
@@ -216,9 +220,6 @@
             android:textSize="20sp" />
 
     </LinearLayout>
-
-
-
 
 
 </LinearLayout>

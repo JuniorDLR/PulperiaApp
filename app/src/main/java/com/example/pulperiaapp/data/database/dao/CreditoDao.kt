@@ -4,11 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
-import com.example.pulperiaapp.domain.amoroso.DetalleAmoroso
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
-import com.example.pulperiaapp.domain.venta.DetalleEditar
+
 
 
 @Dao
@@ -39,6 +37,9 @@ interface CreditoDao {
 
     @Query("SELECT * FROM tbl_credito WHERE cliente = :cliente AND estado_pago = 0")
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle>
+
+    @Query("SELECT * FROM tbl_credito WHERE  estado_pago = 1")
+    suspend fun obtenerFilterPago(): List<VentaAmorosoDetalle>
 
 
 }

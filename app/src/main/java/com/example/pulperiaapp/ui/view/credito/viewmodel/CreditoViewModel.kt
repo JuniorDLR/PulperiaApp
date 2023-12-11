@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
-import com.example.pulperiaapp.domain.amoroso.DetalleAmoroso
+
 import com.example.pulperiaapp.domain.amoroso.UseCaseAmoroso
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
-import com.example.pulperiaapp.domain.venta.DetalleEditar
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,8 +45,14 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
     }
 
 
-    suspend fun editarCredito(id: Int, producto: String, cantidad: Int, precio: Double,fecha:String) {
-        useCaseAmoroso.editarCredito(id, producto, cantidad, precio,fecha)
+    suspend fun editarCredito(
+        id: Int,
+        producto: String,
+        cantidad: Int,
+        precio: Double,
+        fecha: String
+    ) {
+        useCaseAmoroso.editarCredito(id, producto, cantidad, precio, fecha)
 
     }
 
@@ -59,6 +65,19 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
             e.printStackTrace()
         }
 
+    }
+
+    suspend fun obtenerFilterPago(): List<VentaAmorosoDetalle> {
+       return try {
+            val lista = useCaseAmoroso.obtenerFilterPago()
+            val groupClient = lista.groupBy { it.cliente }
+            _groupedAmorosoModel.postValue(groupClient)
+
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
     fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {

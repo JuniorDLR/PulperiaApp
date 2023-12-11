@@ -41,7 +41,7 @@ class SeguridadFragment : Fragment() {
         val client = OkHttpClient()
         val numero = binding.tvNumero.text.toString()
         val codigo = (10000..90000).random()
-        val mensaje = "Codigo de verificacion por JunaxerDev:$codigo"
+        val mensaje = "Codigo de verificacion por JunaxerDev: $codigo"
 
         val mediaType = "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull()
         val requestBody = "To=$numero&From=$TWILIO_NUMBER&Body=$mensaje".toRequestBody(mediaType)

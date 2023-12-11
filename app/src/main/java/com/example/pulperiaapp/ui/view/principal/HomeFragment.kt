@@ -48,8 +48,10 @@ class HomeFragment : Fragment() {
 
 
         toolbar.setOnMenuItemClickListener { item ->
+
             when (item.itemId) {
                 R.id.tablaPrix -> {
+
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.tablaPrixFragment)
                     true

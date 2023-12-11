@@ -44,7 +44,7 @@ class TablaPrixFragment : Fragment() {
                 R.color.white
             )
         )
-        prixViewModel.obtenerPrixTabla()
+
         prixViewModel.prixModel.observe(viewLifecycleOwner) { lists ->
             mostrarTabla(lists)
         }
@@ -57,7 +57,7 @@ class TablaPrixFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        prixViewModel.obtenerPrixTabla()
         binding.btnAgregarProductoPrix.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.agregarPrixFragment)
         }

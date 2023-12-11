@@ -151,6 +151,9 @@
         <argument
             android:name="esIndividual"
             app:argType="boolean" />
+        <argument
+            android:name="isMultiple"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/editarCreditoFragment"
@@ -171,5 +174,14 @@
         tools:layout="@layout/fragment_editar_inventario" >
         <argument android:name="idInventario"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/filtrarDatosFragment"
+        android:name="com.example.pulperiaapp.ui.view.filtrado.FiltrarDatosFragment"
+        android:label="fragment_filtrar_datos"
+        tools:layout="@layout/fragment_filtrar_datos" >
+        <action
+            android:id="@+id/action_filtrarDatosFragment_to_editarVentasFragment"
+            app:destination="@id/editarVentasFragment" />
     </fragment>
 </navigation>

@@ -1,5 +1,7 @@
 package com.example.pulperiaapp.ui.view.credito.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pulperiaapp.data.database.entitie.ClienteEntity
 import com.example.pulperiaapp.domain.amoroso.UseCaseCliente
@@ -9,6 +11,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ClienteViewModel @Inject constructor(private val useCaseCliente: UseCaseCliente) :
     ViewModel() {
+
+    private val _clienteModel = MutableLiveData<List<String>>()
+    val clienteModel: LiveData<List<String>> = _clienteModel
 
 
     suspend fun obtenerProductoPrix(): List<String> = useCaseCliente.obtenerProductoPrix()
@@ -26,6 +31,11 @@ class ClienteViewModel @Inject constructor(private val useCaseCliente: UseCaseCl
     suspend fun obtenerPrecioPrix(producto: String): Double =
         useCaseCliente.obtenerPrecioPrix(producto)
 
-    suspend fun obtenerAmoros(): List<String> = useCaseCliente.obtenerAmoroso()
+    suspend fun obtenerAmoros(): List<String> {
+        val lista = useCaseCliente.obtenerAmoroso()
+        _clienteModel.postValue(lista)
+
+        return lista
+    }
 
 }

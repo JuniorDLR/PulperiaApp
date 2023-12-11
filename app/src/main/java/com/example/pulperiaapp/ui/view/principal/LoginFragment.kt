@@ -22,7 +22,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val user = "Admin"
-    private val pw = "1234"
+    private val pw = "qwerty123"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

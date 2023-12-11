@@ -14,19 +14,35 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
     suspend fun insertarVenta(ventaPrixCoca: VentaPrixCoca) =
         ventaCocaPrix.insertatVenta(ventaPrixCoca)
 
-    suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
-        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaIndividual(fechaInicio, fechaFin)
+    suspend fun obtenerVentaIndividual(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> =
+            ventaCocaPrix.obtenerVentaIndividual(fechaInicio, fechaFin)
         return response.map { it.toDomain() }
     }
 
-    suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCocaDetalle> {
+    suspend fun obtenerVentaCajilla(
+        fechaInicio: String,
+        fechaFin: String
+    ): List<VentaPrixCocaDetalle> {
         val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerVentaCajilla(fechaInicio, fechaFin)
         return response.map { it.toDomain() }
     }
 
+    suspend fun obtenerFilterIndividual(fechaInicio: String): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerFilterIndividual(fechaInicio)
+        return response.map { it.toDomain() }
+    }
+
+    suspend fun obtenerFilterCajilla(fechaInicio: String): List<VentaPrixCocaDetalle> {
+        val response: List<VentaPrixCoca> = ventaCocaPrix.obtenerFilterCajilla(fechaInicio)
+        return response.map { it.toDomain() }
+    }
 
     suspend fun obtenerTotal(fechaInicio: String, fechaFin: String): Double {
-        return ventaCocaPrix.obtenerTotal(fechaInicio,fechaFin)
+        return ventaCocaPrix.obtenerTotal(fechaInicio, fechaFin)
     }
 
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =

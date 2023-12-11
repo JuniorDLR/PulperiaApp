@@ -26,6 +26,19 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
     }
 
 
+
+    suspend fun obtenerFilterIndividual(
+        fechaInicio: String
+    ): List<VentaPrixCocaDetalle> {
+        return repositorio.obtenerFilterIndividual(fechaInicio)
+    }
+
+    suspend fun obtenerFilterCajilla(
+        fechaInicio: String
+    ): List<VentaPrixCocaDetalle> {
+        return repositorio.obtenerFilterCajilla(fechaInicio)
+    }
+
     suspend fun obtenerTotal(fechaInicio: String, fechaFin: String): Double {
         return repositorio.obtenerTotal(fechaInicio,fechaFin)
     }

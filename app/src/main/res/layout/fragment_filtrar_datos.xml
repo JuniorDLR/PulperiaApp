@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.view.filtrado.FiltrarDatosFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        app:title="Filtrar datos"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_calendar_month_24"
+                android:drawablePadding="8dp"
+                android:inputType="none"
+                android:textStyle="bold"
+                tools:text=" yyyy-MM-dd" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <RadioGroup
+            android:id="@+id/radioGroupClientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/checkBoxPagado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clientes_que_ya_han_realizado_el_pago"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonTodos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filtrar_ventas_por_fechas"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mostrar_clientes_registrados"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+
+        <LinearLayout
+            android:id="@+id/SwitchVisible"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchIndividual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="@string/ventas_por_individual" />
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchCajilla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/venta_por_cajilla" />
+
+
+        </LinearLayout>
+
+
+        <!-- Botón para aplicar los filtros -->
+        <Button
+            android:id="@+id/btnAplicarFiltros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/aplicar_filtros"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+</LinearLayout>

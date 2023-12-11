@@ -35,13 +35,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
 import java.text.SimpleDateFormat
-
 import java.util.Calendar
 
 
@@ -64,6 +59,8 @@ class VentasFragment : Fragment() {
         initComponent()
         val fechaInicio = obtenerFechaInicioActual()
         val fechaFin = obtenerFechaFin()
+
+
 
         ventasModel.obtenerTotal(fechaInicio, fechaFin)
 
@@ -124,6 +121,7 @@ class VentasFragment : Fragment() {
                         when (it.position) {
                             0 -> {
                                 try {
+                                    Log.d("VentasFragment", "FechaInicio: $fechaInicio, FechaFin: $fechaFin")
 
                                     ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
                                     ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
@@ -138,6 +136,8 @@ class VentasFragment : Fragment() {
                             }
 
                             1 -> {
+                                Log.d("VentasFragment", "FechaInicio: $fechaInicio, FechaFin: $fechaFin")
+
                                 try {
                                     ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
                                     ventasModel.ventaModelCajilla.observe(viewLifecycleOwner) { lista ->
@@ -200,10 +200,10 @@ class VentasFragment : Fragment() {
     }
 
     private fun updateItem(fecha: String, idProducto: Int) {
-        Log.d("DebugID", "ID al hacer clic en Editar: $idProducto")
+
         findNavController().navigate(
             VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
-                idProducto = idProducto, idFecha = fecha, esIndividual = esIndividual
+                idProducto = idProducto, idFecha = fecha, esIndividual = esIndividual,isMultiple = false
             )
         )
 
@@ -255,6 +255,7 @@ class VentasFragment : Fragment() {
 
 
     // Función de extensión para obtener la fecha de inicio actual
+    @SuppressLint("SimpleDateFormat")
     private fun obtenerFechaInicioActual(): String {
         val fechaActual = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -266,13 +267,16 @@ class VentasFragment : Fragment() {
     }
 
 
+    @SuppressLint("SimpleDateFormat")
     private fun obtenerFechaFin(): String {
         val fechaActual = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 12)
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
         }
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaActual.time)
-
     }
+
 
     fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())

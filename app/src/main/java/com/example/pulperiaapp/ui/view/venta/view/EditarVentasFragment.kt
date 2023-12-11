@@ -12,6 +12,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -57,6 +58,15 @@ class EditarVentasFragment : Fragment() {
 
         iniComponent()
         initData(idEditar)
+        val isMultiple = args.isMultiple
+
+        if (isMultiple) {
+            binding.toolbarVentas.title = "Modo espectador - Ventas"
+            binding.ChipGroup.isVisible = false
+            binding.seleccionPro.isVisible = false
+            binding.btnEditarVenta.isVisible = false
+            binding.swVentaPorCajillaEditar.isVisible = false
+        }
 
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
 
@@ -135,7 +145,7 @@ class EditarVentasFragment : Fragment() {
                     if (cantidad > 0) {
                         insertarOVenta(venta)
                     } else {
-                        Log.d("Eliminacion","${venta.id}")
+                        Log.d("Eliminacion", "${venta.id}")
                         ventaModel.eliminarVenta(venta.id)
                     }
 
@@ -162,12 +172,12 @@ class EditarVentasFragment : Fragment() {
             ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
                 detalleList?.let {
                     it.forEach { j ->
+
                         if ((j.id == idEditar && !j.venta_por_cajilla) || (j.venta_por_cajilla)) {
-                            // Los datos se han actualizado, puedes proceder a visualizar la tabla
                             guardarDatoRecuperado(idEditar, j)
                         }
-
                     }
+
                     visualizarTabla(false)
                 }
             }
@@ -247,95 +257,115 @@ class EditarVentasFragment : Fragment() {
         precioView.text = total.toString()
 
         productoView.setOnClickListener {
-            if (cantidad >= 1) {
-                val nuevaCantidad = cantidad - 1
-                val newPrecio = nuevaCantidad * total / cantidad
-                if (idEditar != -1) {
-                    val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistent?.let {
-                        it.cantidad = nuevaCantidad
-                        it.total_venta = newPrecio
-                    }
 
-                    visualizarTabla(false)
-                } else {
-                    // Si es de productoAgregado
-                    val lista = mutableListOf(
-                        DetalleEditar(
-                            idProdcuto,
-                            producto,
-                            cantidad,
-                            total,
-                            esCajilla
-                        )
-                    )
-                    productoEditar[idEditar] = lista
-                    visualizarTabla(false)
-                }
+
+            if (args.isMultiple) {
+                Snackbar.make(
+                    requireView(),
+                    "No puedes editar, estas en modo espectador",
+                    Snackbar.LENGTH_LONG
+                ).show()
 
             } else {
-                if (idEditar != -1) {
-                    val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        productoEditar[idEditar]?.remove(it)
+                if (cantidad >= 1) {
+                    val nuevaCantidad = cantidad - 1
+                    val newPrecio = nuevaCantidad * total / cantidad
+                    if (idEditar != -1) {
+                        val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistent?.let {
+                            it.cantidad = nuevaCantidad
+                            it.total_venta = newPrecio
+                        }
 
+                        visualizarTabla(false)
+                    } else {
+                        // Si es de productoAgregado
+                        val lista = mutableListOf(
+                            DetalleEditar(
+                                idProdcuto,
+                                producto,
+                                cantidad,
+                                total,
+                                esCajilla
+                            )
+                        )
+                        productoEditar[idEditar] = lista
+                        visualizarTabla(false)
                     }
 
-                    visualizarTabla(false)
                 } else {
-                    val detalleExistente =
-                        productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        productoEditar[idEditar]?.remove(it)
+                    if (idEditar != -1) {
+                        val detalleExistente =
+                            productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistente?.let {
+                            productoEditar[idEditar]?.remove(it)
+
+                        }
+
+                        visualizarTabla(false)
+                    } else {
+                        val detalleExistente =
+                            productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistente?.let {
+                            productoEditar[idEditar]?.remove(it)
+                        }
                     }
+                    binding.tvTotalAmountEditar.text = 0.0.toString()
+                    visualizarTabla(false)
                 }
-                binding.tvTotalAmountEditar.text = 0.0.toString()
-                visualizarTabla(false)
             }
         }
 
         cantidadView.setOnClickListener {
-            if (cantidad >= 1) {
-                val nuevaCantidad = cantidad + 1
-                val newPrecio = nuevaCantidad * total / cantidad
-                if (idEditar != -1) {
-                    val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistent?.let {
-                        it.cantidad = nuevaCantidad
-                        it.total_venta = newPrecio
-                    }
-                    visualizarTabla(false)
-                } else {
-                    val lista = mutableListOf(
-                        DetalleEditar(
-                            idProdcuto,
-                            producto,
-                            cantidad,
-                            total,
-                            esCajilla
-                        )
-                    )
-                    productoEditar[idEditar] = lista
-                }
-                visualizarTabla(false)
+            if (args.isMultiple) {
+                Snackbar.make(
+                    requireView(),
+                    "No puedes editar, estas en modo espectador",
+                    Snackbar.LENGTH_LONG
+                ).show()
             } else {
-
-                if (idEditar != -1) {
-                    val detalleExistente =
-                        productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        productoEditar[idEditar]?.remove(it)
+                if (cantidad >= 1) {
+                    val nuevaCantidad = cantidad + 1
+                    val newPrecio = nuevaCantidad * total / cantidad
+                    if (idEditar != -1) {
+                        val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistent?.let {
+                            it.cantidad = nuevaCantidad
+                            it.total_venta = newPrecio
+                        }
+                        visualizarTabla(false)
+                    } else {
+                        val lista = mutableListOf(
+                            DetalleEditar(
+                                idProdcuto,
+                                producto,
+                                cantidad,
+                                total,
+                                esCajilla
+                            )
+                        )
+                        productoEditar[idEditar] = lista
                     }
                     visualizarTabla(false)
                 } else {
-                    val detalleExistente =
-                        productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        productoEditar[idEditar]?.remove(it)
+
+                    if (idEditar != -1) {
+                        val detalleExistente =
+                            productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistente?.let {
+                            productoEditar[idEditar]?.remove(it)
+                        }
+                        visualizarTabla(false)
+                    } else {
+                        val detalleExistente =
+                            productoEditar[idEditar]?.find { it.id == idProdcuto }
+                        detalleExistente?.let {
+                            productoEditar[idEditar]?.remove(it)
+                        }
                     }
+                    binding.tvTotalAmountEditar.text = 0.0.toString()
+                    visualizarTabla(false)
                 }
-                binding.tvTotalAmountEditar.text = 0.0.toString()
-                visualizarTabla(false)
             }
 
         }
