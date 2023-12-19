@@ -17,23 +17,23 @@ interface VentaCocaPrix {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertatVenta(ventaPrixCoca: VentaPrixCoca)
 
-    @Query("SELECT SUM(total_venta) FROM tbl_venta_prix_coca WHERE fecha_venta>=:fechaInicio AND fecha_venta<:fechaFin")
+    @Query("SELECT SUM(totalVenta) FROM tbl_venta_prix_coca WHERE fechaVenta>=:fechaInicio AND fechaVenta<:fechaFin")
     suspend fun obtenerTotal(fechaInicio: String, fechaFin: String): Double
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 0 AND fecha_venta >= :fechaInicio AND fecha_venta < :fechaFin")
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 0 AND fechaVenta >= :fechaInicio AND fechaVenta < :fechaFin")
     suspend fun obtenerVentaIndividual(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
 
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 1 AND fecha_venta>=:fechaInicio AND fecha_venta<:fechaFin")
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 1 AND fechaVenta>=:fechaInicio AND fechaVenta<:fechaFin")
     suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
 
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 0 AND DATE(fecha_venta) >= DATE(:fechaInicio)")
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 0 AND DATE(fechaVenta) >= DATE(:fechaInicio)")
     suspend fun obtenerFilterIndividual(fechaInicio: String): List<VentaPrixCoca>
 
 
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE venta_por_cajilla = 1 AND DATE(fecha_venta) >= DATE(:fechaInicio)")
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 1 AND DATE(fechaVenta) >= DATE(:fechaInicio)")
     suspend fun obtenerFilterCajilla(fechaInicio: String): List<VentaPrixCoca>
 
 
@@ -65,7 +65,7 @@ interface VentaCocaPrix {
     @Query("SELECT precio FROM tbl_bigcola WHERE producto=:producto")
     suspend fun obtenerPrecioBig(producto: String): Double
 
-    @Query("SELECT* FROM tbl_venta_prix_coca WHERE fecha_venta =:idFecha")
+    @Query("SELECT* FROM tbl_venta_prix_coca WHERE fechaVenta =:idFecha")
     suspend fun obtenerDetalleEditar(idFecha: String): List<DetalleEditar>
 
 

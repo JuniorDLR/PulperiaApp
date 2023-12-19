@@ -10,13 +10,11 @@ data class VentaPrixCoca(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id") var id: Int = 0,
     @ColumnInfo("producto") val producto: String,
-    @ColumnInfo("total_venta") val total: Double,
-    @ColumnInfo("fecha_venta") val fecha: String,
-    @ColumnInfo("fecha_editada") val fechaEditada: String? = null,
-    @ColumnInfo("venta_por_cajilla") val ventaPorCajilla: Boolean,
-    @ColumnInfo("cantidad") val cantidad: Int,
-
-    )
+    @ColumnInfo("totalVenta") val total: Double,
+    @ColumnInfo("fechaVenta") val fecha: String,
+    @ColumnInfo("fechaEditada") val fechaEditada: String? = null,
+    @ColumnInfo("ventaPorCajilla") val ventaPorCajilla: Boolean,
+    @ColumnInfo("cantidad") val cantidad: Int)
 
 
 

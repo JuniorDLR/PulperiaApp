@@ -70,7 +70,8 @@ class VentasProductoFragment : Fragment() {
                     "BigCola" -> ventaBigCola()
                     "Coca" -> ventaCoca()
                     else -> {
-                        false
+                        Toast.makeText(requireContext(), "Seleccion no valida", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
             }
@@ -125,7 +126,7 @@ class VentasProductoFragment : Fragment() {
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
+
                 }
 
             }

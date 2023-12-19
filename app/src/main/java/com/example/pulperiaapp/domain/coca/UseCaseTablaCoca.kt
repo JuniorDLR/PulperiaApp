@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.domain.coca
 
-import com.example.pulperiaapp.data.Repository.TablaCocaRepository
+import com.example.pulperiaapp.data.repository.TablaCocaRepository
 import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 import javax.inject.Inject
 
@@ -20,6 +20,7 @@ class UseCaseTablaCoca @Inject constructor(private val cocaRepository: TablaCoca
         cocaRepository.editarCocaTabla(id, precio)
 
     suspend fun eliminarProducto(id: Int) = cocaRepository.eliminarProducto(id)
+    suspend fun obtenerPrecioId(precioId: Int):Double = cocaRepository.obtenerPrecioId(precioId)
 
 
 }

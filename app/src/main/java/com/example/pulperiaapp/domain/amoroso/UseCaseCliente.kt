@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.domain.amoroso
 
-import com.example.pulperiaapp.data.Repository.ClienteRepositorio
+import com.example.pulperiaapp.data.repository.ClienteRepositorio
 import com.example.pulperiaapp.data.database.entitie.ClienteEntity
 import javax.inject.Inject
 

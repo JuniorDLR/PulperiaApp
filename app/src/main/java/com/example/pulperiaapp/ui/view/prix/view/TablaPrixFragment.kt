@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaPrixBinding
@@ -21,6 +22,7 @@ import com.example.pulperiaapp.domain.prix.TablaPrix
 import com.example.pulperiaapp.ui.view.prix.viewmodel.PrixViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -87,6 +89,8 @@ class TablaPrixFragment : Fragment() {
 
         })
 
+
+
     }
 
     private fun filterTableQuery(query: String?) {
@@ -139,11 +143,21 @@ class TablaPrixFragment : Fragment() {
 
         } else {
             val idInt = idEditar.toInt()
-            val precioInt = precioEditar.toDouble()
-            prixViewModel.editarPrixTabla(idInt, precioInt)
-            limpiarCampos()
-            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
-                .show()
+            val precioDouble = precioEditar.toDouble()
+            lifecycleScope.launch {
+                val obtenerPrecioId = prixViewModel.obtenerPrecioId(idInt)
+
+                if (precioDouble.equals(obtenerPrecioId)) {
+                    Snackbar.make(requireView(), "El precio es el mismo", Snackbar.LENGTH_SHORT)
+                        .show()
+                } else {
+                    prixViewModel.editarPrixTabla(idInt, precioDouble)
+                    limpiarCampos()
+
+                }
+
+
+            }
         }
     }
 
@@ -153,22 +167,44 @@ class TablaPrixFragment : Fragment() {
 
         tableLayout.removeAllViews()
         for (row in lists) {
-            val tableRow = LayoutInflater.from(requireContext())
-                .inflate(R.layout.tabla_row_item, null) as TableRow
+            val idProducto = row.id
+            val producto = row.producto
+            val precio = row.precio
+            actualizarTabla(idProducto, producto, precio)
 
-            val id = tableRow.findViewById<TextView>(R.id.tvIdR)
-            id.text = row.id.toString()
-
-            val producto = tableRow.findViewById<TextView>(R.id.tvProductoR)
-            producto.text = row.producto
-
-
-            val precio = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-            precio.text = row.precio.toString()
-
-
-            tableLayout.addView(tableRow)
         }
+    }
+
+
+    @SuppressLint("InflateParams")
+    private fun actualizarTabla(idProducto: Int, producto: String, precio: Double) {
+        val tableRow = LayoutInflater.from(requireContext())
+            .inflate(R.layout.tabla_row_item, null) as TableRow
+
+        val idView = tableRow.findViewById<TextView>(R.id.tvIdR)
+        idView.text = idProducto.toString()
+
+        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
+        productoView.text = producto
+
+
+        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
+        precioView.text = precio.toString()
+
+
+        idView.setOnClickListener {
+            binding.tvIdEditarPrix.setText(idProducto.toString())
+            binding.tvPrecioEditarPrix.setText("")
+        }
+
+
+        productoView.setOnClickListener {
+            binding.tvIdEditarPrix.setText(idProducto.toString())
+            binding.tvPrecioEditarPrix.setText(precio.toString())
+        }
+
+
+        tableLayout.addView(tableRow)
     }
 
     private fun eliminarProducto() {
@@ -182,7 +218,11 @@ class TablaPrixFragment : Fragment() {
 
         } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
 
-            Snackbar.make(requireView(), "Solo debes introducir el id para eliminar", Snackbar.LENGTH_LONG)
+            Snackbar.make(
+                requireView(),
+                "Solo debes introducir el id para eliminar",
+                Snackbar.LENGTH_LONG
+            )
                 .show()
 
         } else {

@@ -15,29 +15,43 @@
         app:titleTextColor="@color/white" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutProducto"
+        style="@style/MaterialAlertDialog.Material3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp">
+        app:counterEnabled="true"
+        app:counterMaxLength="18"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/baseline_error_24"
+        app:helperText="Solo se permite 18 caracteres*"
+        app:helperTextTextColor="@color/red"
+        app:startIconDrawable="@drawable/prix">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvProducoAgregar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ingrese_un_producto"
-            android:inputType="text">
+            android:inputType="text"
+            android:maxLength="18">
 
         </com.google.android.material.textfield.TextInputEditText>
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/MaterialAlertDialog.Material3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp">
+        app:startIconDrawable="@drawable/precio">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvAgregarPrecio"
@@ -51,6 +65,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+
         android:id="@+id/btnAgregarBig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

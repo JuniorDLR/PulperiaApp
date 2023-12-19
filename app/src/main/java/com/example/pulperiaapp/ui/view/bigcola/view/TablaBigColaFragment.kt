@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.bigcola.view
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaBigColaBinding
@@ -20,6 +22,7 @@ import com.example.pulperiaapp.domain.bigcola.TablaBig
 import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -38,7 +41,7 @@ class TablaBigColaFragment : Fragment() {
         bigColaViewModel.obtenerBigcola()
         tableLayout = binding.tlProductoBig
         bigColaViewModel.bigModdel.observe(viewLifecycleOwner) { lista ->
-            actualizarTabla(lista)
+            mostrarTabla(lista)
         }
         binding.btnAgregarProductoBig.setColorFilter(
             ContextCompat.getColor(
@@ -92,27 +95,51 @@ class TablaBigColaFragment : Fragment() {
     }
 
 
-    private fun actualizarTabla(lista: List<TablaBig>) {
+    private fun mostrarTabla(lista: List<TablaBig>) {
         tableLayout.removeAllViews()
 
 
         for (big in lista) {
+            val idProdcuto = big.id
+            val producto = big.producto
+            val precio = big.precio
+            actualizarTabla(idProdcuto, producto, precio)
 
-            val tableRow =
-                LayoutInflater.from(requireContext())
-                    .inflate(R.layout.tabla_row_item, null) as TableRow
-
-            val idView = tableRow.findViewById<TextView>(R.id.tvIdR)
-            idView.text = big.id.toString()
-
-            val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
-            productoView.text = big.producto
-
-            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-            precioView.text = big.precio.toString()
-            tableLayout.addView(tableRow)
         }
 
+
+    }
+
+    @SuppressLint("InflateParams")
+    private fun actualizarTabla(idProdcuto: Int, producto: String, precio: Double) {
+
+        val tableRow =
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.tabla_row_item, null) as TableRow
+
+        val idView = tableRow.findViewById<TextView>(R.id.tvIdR)
+        idView.text = idProdcuto.toString()
+
+        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
+        productoView.text = producto
+
+        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
+        precioView.text = precio.toString()
+
+
+
+        idView.setOnClickListener {
+            binding.tvIdEditarBig.setText(idProdcuto.toString())
+            binding.tvPrecioEditarBig.setText("")
+        }
+
+        productoView.setOnClickListener {
+            binding.tvIdEditarBig.setText(idProdcuto.toString())
+            binding.tvPrecioEditarBig.setText(precio.toString())
+        }
+
+
+        tableLayout.addView(tableRow)
 
     }
 
@@ -130,16 +157,27 @@ class TablaBigColaFragment : Fragment() {
         } else {
             val precioDouble = precio.toDouble()
             val idInt = id.toInt()
-            bigColaViewModel.editarBigCola(precioDouble, idInt)
-            limpiarCampos()
-            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
-                .show()
+
+            lifecycleScope.launch {
+                val obtenerIdPrecio = bigColaViewModel.obtenerPrecioId(idInt)
+                if (precioDouble.equals(obtenerIdPrecio)) {
+                    Snackbar.make(requireView(), "El precio es el mismo", Snackbar.LENGTH_SHORT)
+                        .show()
+                } else {
+                    bigColaViewModel.editarBigCola(precioDouble, idInt)
+                    limpiarCampos()
+                }
+
+
+            }
         }
     }
 
     private fun limpiarCampos() {
         binding.tvIdEditarBig.setText("")
         binding.tvPrecioEditarBig.setText("")
+        Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun eliminarBigCola() {
@@ -152,7 +190,11 @@ class TablaBigColaFragment : Fragment() {
 
         } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
 
-            Snackbar.make(requireView(), "Solo debes introducir el id para eliminar", Snackbar.LENGTH_LONG)
+            Snackbar.make(
+                requireView(),
+                "Solo debes introducir el id para eliminar",
+                Snackbar.LENGTH_LONG
+            )
                 .show()
         } else {
             AlertDialog.Builder(requireContext())

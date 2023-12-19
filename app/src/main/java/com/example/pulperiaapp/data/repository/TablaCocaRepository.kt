@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.data.Repository
+package com.example.pulperiaapp.data.repository
 
 import com.example.pulperiaapp.data.database.dao.CocaDao
 import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
@@ -20,5 +20,6 @@ class TablaCocaRepository @Inject constructor(private val cocaDao: CocaDao) {
 
     suspend fun editarCocaTabla(id: Int, precio: Double) = cocaDao.editarPrecioCoca(id, precio)
     suspend fun eliminarProducto(id: Int) = cocaDao.eliminarPrecioCoca(id)
+    suspend fun obtenerPrecioId(precioId: Int):Double = cocaDao.obtenerPrecioId(precioId)
 
 }

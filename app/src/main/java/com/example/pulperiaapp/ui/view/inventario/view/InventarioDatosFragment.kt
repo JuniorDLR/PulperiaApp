@@ -131,7 +131,7 @@ class InventarioDatosFragment : Fragment() {
 
                         // Filtra la lista para obtener solo los inventarios con la misma fecha
                         val inventariosAEliminar =
-                            inventariosCompletos.filter { it.fecha_entrega == fecha }
+                            inventariosCompletos.filter { it.fechaEntrega == fecha }
 
                         // Lógica de eliminación, podrías usar un bucle para eliminar uno por uno
                         for (inventario in inventariosAEliminar) {
@@ -193,6 +193,7 @@ class InventarioDatosFragment : Fragment() {
                     false
                 val navController = Navigation.findNavController(binding.root)
                 navController.popBackStack()
+                dialog.dismiss()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()

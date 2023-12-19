@@ -1,10 +1,10 @@
 package com.example.pulperiaapp.ui.view.credito.adapter
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +67,7 @@ class AdapterAmoroso(
                 val id = i.id
                 val producto = i.producto
                 val cantidad = i.cantidad
-                val precio = i.precio_total
+                val precio = i.precioTotal
 
                 val fecha = i.fecha
 
@@ -85,6 +85,7 @@ class AdapterAmoroso(
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun mostrarDialogoClienteDetalle(cliente: String, id: Int) {
         val dialog = AlertDialog.Builder(context)
         val scrollView = ScrollView(context)
@@ -94,7 +95,7 @@ class AdapterAmoroso(
 
         var totaPagar = 0.0
         datosItem[cliente]?.forEach { info ->
-            val precioTotal = info.precio_total
+            val precioTotal = info.precioTotal
             totaPagar += precioTotal
 
             val row = TableRow(context)
@@ -120,7 +121,7 @@ class AdapterAmoroso(
             fechaView.text = info.fecha
 
             val precioView = TextView(context)
-            precioView.text = info.precio_total.toString()
+            precioView.text = info.precioTotal.toString()
 
             row.addView(productoView)
             row.addView(cantidadView)
@@ -139,17 +140,17 @@ class AdapterAmoroso(
         }
 
 
-
-
         val total = contentView.findViewById<TextView>(R.id.tvTotalAmoroso)
         total.text = totaPagar.toString()
 
         if (!isEspecter) {
             dialog.setPositiveButton("Realizar pago") { diag, _ ->
                 onClickUpdate(cliente)
+                diag.dismiss()
             }
             dialog.setNegativeButton("Editar") { diag, _ ->
                 onClickSee(cliente, id)
+                diag.dismiss()
             }
         }
 
@@ -159,7 +160,7 @@ class AdapterAmoroso(
 
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
     fun setLista(lista: Map<String, List<VentaAmorosoDetalle>>) {
         listaAmoroso = lista
         filterable = lista
@@ -187,6 +188,7 @@ class AdapterAmoroso(
 
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
             }

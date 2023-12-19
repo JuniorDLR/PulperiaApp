@@ -12,9 +12,9 @@ data class CreditoEntity(
     @ColumnInfo("cliente") val cliente: String,
     @ColumnInfo("producto") val producto: String,
     @ColumnInfo("cantidad") val cantidad: Int,
-    @ColumnInfo("precio_total") val precioTotal: Double,
+    @ColumnInfo("precioTotal") val precioTotal: Double,
     @ColumnInfo("fecha") val fecha: String,
-    @ColumnInfo("estado_pago") var estado_pago: Boolean
+    @ColumnInfo("estadoPago") var estadoPago: Boolean
 )
 
 

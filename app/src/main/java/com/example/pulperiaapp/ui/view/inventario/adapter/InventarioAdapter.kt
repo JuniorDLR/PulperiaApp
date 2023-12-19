@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.inventario.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,12 +31,12 @@ class InventarioAdapter
         val binding = InventarioItemBinding.bind(view)
 
         fun bind(lista: InventarioModel) {
-            binding.tvFechaInventario.text = lista.fecha_entrega
+            binding.tvFechaInventario.text = lista.fechaEntrega
             binding.btnEditarInventario.setOnClickListener {
-                onClickUpdate(lista.fecha_entrega)
+                onClickUpdate(lista.fechaEntrega)
             }
             binding.btnEliminarInventario.setOnClickListener {
-                onClickDelete(lista.fecha_entrega)
+                onClickDelete(lista.fechaEntrega)
             }
 
 
@@ -63,6 +64,7 @@ class InventarioAdapter
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(lista: Map<String, List<InventarioModel>>) {
         listaModel = lista
         listaModelFilter = lista
@@ -80,8 +82,8 @@ class InventarioAdapter
                 listaModelFilter = if (queryTex.isEmpty()) {
                     listaModel
                 } else {
-                    listaModel.filter { (key, lista) ->
-                        lista.any { it.fecha_entrega.contains(queryTex, ignoreCase = true) }
+                    listaModel.filter { (_, lista) ->
+                        lista.any { it.fechaEntrega.contains(queryTex, ignoreCase = true) }
                     }
                 }
 
@@ -91,6 +93,7 @@ class InventarioAdapter
                 return filterResult
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
             }

@@ -1,6 +1,7 @@
 package com.example.pulperiaapp.ui.view.venta.adapter
 
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,16 +31,16 @@ class AdapterVenta(
 
 
         fun bind(venta: VentaPrixCocaDetalle) {
-            binding.tvFecha.text = venta.fecha_venta
+            binding.tvFecha.text = venta.fechaVenta
             binding.tvListProducto.text =
                 if (!venta.ventaPorCajilla) "${venta.producto} - ${venta.cantidad}" else "Venta por cajilla"
-            binding.tvTotal.text = venta.total_venta.toString()
+            binding.tvTotal.text = venta.totalVenta.toString()
 
             binding.btnEliminarVenta.setOnClickListener {
-                onDeleteClickListener(venta.id, adapterPosition, venta.fecha_venta)
+                onDeleteClickListener(venta.id, adapterPosition, venta.fechaVenta)
             }
             binding.btnEditarVenta.setOnClickListener {
-                onUpdateClickListener(venta.fecha_venta, venta.id)
+                onUpdateClickListener(venta.fechaVenta, venta.id)
             }
         }
     }
@@ -62,12 +63,14 @@ class AdapterVenta(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setListCajilla(newList: Map<String, List<VentaPrixCocaDetalle>>) {
         listaVenta = newList
         filterList = newList
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setListIndividual(newList: List<VentaPrixCocaDetalle>) {
         filterList = newList.associate { it.id.toString() to listOf(it) }
         notifyDataSetChanged()
@@ -88,7 +91,7 @@ class AdapterVenta(
                         }
                     } else {
                         listaVenta.filter { (_, ventas) ->
-                            ventas.any { it.fecha_venta.contains(productoQuery, ignoreCase = true) }
+                            ventas.any { it.fechaVenta.contains(productoQuery, ignoreCase = true) }
                         }
                     }
 
@@ -100,6 +103,7 @@ class AdapterVenta(
                 return result
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
             }
@@ -108,6 +112,7 @@ class AdapterVenta(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun verificacion(contexto: String) {
         ventaContext = contexto
         notifyDataSetChanged()

@@ -9,7 +9,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ActivityMainBinding
-
 import dagger.hilt.android.AndroidEntryPoint
 
 

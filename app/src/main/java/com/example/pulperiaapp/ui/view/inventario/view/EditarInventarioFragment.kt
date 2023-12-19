@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.ui.view.inventario.view
 
-import ImageAdapter
+
 import android.annotation.SuppressLint
 import android.app.Activity.*
 import android.content.Context
@@ -9,7 +9,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +28,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
 import com.example.pulperiaapp.databinding.FragmentEditarInventarioBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
+import com.example.pulperiaapp.ui.view.inventario.adapter.ImageAdapter
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -54,9 +54,6 @@ class EditarInventarioFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val inventarioRecuperado = mutableMapOf<String, MutableList<InventarioModel>>()
     private lateinit var imageAdapter: ImageAdapter
-    private var ruta1Editar: String? = null
-    private var ruta2Editar: String? = null
-    private var ruta3Editar: String? = null
     private val MAX = 3
     private var imageToken = 0
     private val bitmapList = mutableListOf<Bitmap>()
@@ -99,7 +96,7 @@ class EditarInventarioFragment : Fragment() {
         val idInventario = args.idInventario
         inventarioModel.inventarioModel.observe(viewLifecycleOwner) { lista ->
             tableLayout.removeAllViews()
-            lista.forEach { (i, item) ->
+            lista.forEach { (_, item) ->
                 item.forEach { j ->
                     agregarFila(j)
                 }
@@ -124,80 +121,48 @@ class EditarInventarioFragment : Fragment() {
 
     private fun guardarInventarioEditado() {
         val idInventario = args.idInventario
+
         val totalRegistros = inventarioRecuperado[idInventario]?.size ?: 0
 
-        val cantidadMinimaImagenes = 3
-        if ((imageAdapter.getItemCount() < cantidadMinimaImagenes)) {
-
-            Toast.makeText(requireContext(), "Debes de ingresar 3 imaganes", Toast.LENGTH_LONG)
-                .show()
-            return
-        } else {
-            inventarioRecuperado[idInventario]?.forEachIndexed { index, lista ->
-                val id = lista.id
-                val nombre = lista.nombre_producto
-                val tamano = lista.tamano
-                val fecha = lista.fecha_entrega
-                val fechaEditada =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-                val cantidadCajilla = lista.cantidad_cajilla
-                val cantidad = lista.cantidad
-                val importe = lista.importe
 
 
-                val imagen1: String? = if (index == totalRegistros - 1) {
-                    if (!imageAdapter.hasImageAtPosition(0)) {
-                        null
-                    } else {
-                        lista.imagen1
-                    }
-                } else {
-                    null
-                }
+        inventarioRecuperado[idInventario]?.mapIndexed { index, lista ->
+            val id = lista.id
+            val nombre = lista.nombreProducto
+            val tamano = lista.tamano
+            val fecha = lista.fechaEntrega
+            val fechaEditada =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val cantidadCajilla = lista.cantidadCajilla
+            val cantidad = lista.cantidad
+            val importe = lista.importe
 
-                val imagen2: String? = if (index == totalRegistros - 1) {
-                    if (!imageAdapter.hasImageAtPosition(1)) {
-                        null
-                    } else {
-                        lista.imagen2
-                    }
-                } else {
-                    null
-                }
+            val imagen1: String? = if (index == totalRegistros - 1) lista.imagen1 else null
+            val imagen2: String? = if (index == totalRegistros - 1) lista.imagen2 else null
+            val imagen3: String? = if (index == totalRegistros - 1) lista.imagen3 else null
 
-                val imagen3: String? = if (index == totalRegistros - 1) {
-                    if (!imageAdapter.hasImageAtPosition(2)) {
-                        null
-                    } else {
-                        lista.imagen3
-                    }
-                } else {
-                    null
-                }
-                val entity = InventarioEntity(
-                    id,
-                    nombre,
-                    tamano,
-                    fecha,
-                    fechaEditada,
-                    cantidadCajilla,
-                    cantidad,
-                    importe,
-                    imagen1,
-                    imagen2,
-                    imagen3
-                )
 
-                lifecycleScope.launch {
-                    inventarioModel.editarInventario(entity)
-                }
+            val entity = InventarioEntity(
+                id,
+                nombre,
+                tamano,
+                fecha,
+                fechaEditada,
+                cantidadCajilla,
+                cantidad,
+                importe,
+                imagen1,
+                imagen2,
+                imagen3
+            )
+
+            lifecycleScope.launch {
+                inventarioModel.editarInventario(entity)
             }
-
-            requireActivity().supportFragmentManager.popBackStack()
-            Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_SHORT)
-                .show()
         }
 
+        requireActivity().supportFragmentManager.popBackStack()
+        Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_SHORT).show()
     }
 
     private fun editarTabla() {
@@ -255,12 +220,10 @@ class EditarInventarioFragment : Fragment() {
             } else {
                 inventarioRecuperado[idInventario]?.find { it.id == productoSeleccionado }?.apply {
                     this.importe = import.toDouble()
-                    this.nombre_producto = nombre
+                    this.nombreProducto = nombre
                     this.tamano = tamano
                     this.cantidad = cantidad.toInt()
-                    this.cantidad_cajilla = cantidadCajilla.toInt()
-
-
+                    this.cantidadCajilla = cantidadCajilla.toInt()
                     actulizarTabla()
                 }
             }
@@ -277,12 +240,26 @@ class EditarInventarioFragment : Fragment() {
             override fun onImageAdd(imageCount: Int) {
                 actualizarConteo(imageCount)
             }
+            override fun onImageDelete(imageCount: Int, deletedImage: Bitmap?) {
+                val idInventario = args.idInventario
+                val listaInventario: MutableList<InventarioModel>? = inventarioRecuperado[idInventario]
 
-            override fun onImageDelete(imageCount: Int) {
+                if (listaInventario != null && deletedImage != null) {
+                    for (inventario in listaInventario) {
+                        if (deletedImage.sameAs(BitmapFactory.decodeFile(inventario.imagen1))) {
+                            inventario.imagen1 = null
+
+                        } else if (deletedImage.sameAs(BitmapFactory.decodeFile(inventario.imagen2))) {
+                            inventario.imagen2 = null
+
+                        } else if (deletedImage.sameAs(BitmapFactory.decodeFile(inventario.imagen3))) {
+                            inventario.imagen3 = null
+
+                        }
+                    }
+                }
                 actualizarConteo(imageCount)
-
             }
-
         })
 
         viewPager = binding.vpFotoEditar
@@ -293,11 +270,6 @@ class EditarInventarioFragment : Fragment() {
     private fun actualizarConteo(imageCount: Int) {
         val count = "$imageCount/$MAX"
         binding.contadorImage.text = count
-
-
-        if (imageCount < MAX) {
-            Toast.makeText(requireContext(), "Imagen eliminada", Toast.LENGTH_SHORT).show()
-        }
 
         binding.btnTomarFotoEditar.visibility = if (imageCount < MAX) View.VISIBLE else View.GONE
         imageToken = imageCount
@@ -311,7 +283,6 @@ class EditarInventarioFragment : Fragment() {
             inventarioModel.groupInventario.observe(viewLifecycleOwner) { lista ->
                 lista?.let {
                     it.forEach { j ->
-                        Log.d("lista", lista.toString())
                         guardarDatosRecuperados(j, idInventario)
                     }
 
@@ -323,10 +294,10 @@ class EditarInventarioFragment : Fragment() {
 
     private fun guardarDatosRecuperados(inventario: InventarioModel, idFecha: String) {
         if (inventario.cantidad > 0) {
-
             inventarioRecuperado.getOrPut(idFecha) { mutableListOf() }.add(inventario)
         }
     }
+
 
     private fun actulizarTabla() {
         tableLayout.removeAllViews()
@@ -351,7 +322,7 @@ class EditarInventarioFragment : Fragment() {
 
 
         val nombreView = table.findViewById<TextView>(R.id.tvProductoRow)
-        nombreView.text = inventario.nombre_producto
+        nombreView.text = inventario.nombreProducto
 
         val tamanoView = table.findViewById<TextView>(R.id.tvTamanoR)
         tamanoView.text = inventario.tamano
@@ -360,33 +331,33 @@ class EditarInventarioFragment : Fragment() {
         cantidadView.text = inventario.cantidad.toString()
 
         val cantidadCajillaView = table.findViewById<TextView>(R.id.tvCajillaR)
-        cantidadCajillaView.text = inventario.cantidad_cajilla.toString()
+        cantidadCajillaView.text = inventario.cantidadCajilla.toString()
 
 
-        ruta1Editar = inventario.imagen1
-        ruta2Editar = inventario.imagen2
-        ruta3Editar = inventario.imagen3
 
-        if (!ruta1Editar.isNullOrEmpty()) {
-            val bitmap1 = BitmapFactory.decodeFile(ruta1Editar)
+
+
+        if (!inventario.imagen1.isNullOrEmpty()) {
+            val bitmap1 = BitmapFactory.decodeFile(inventario.imagen1)
             if (bitmap1 != null) {
                 bitmapList.add(bitmap1)
             }
         }
 
-        if (!ruta2Editar.isNullOrEmpty()) {
-            val bitmap2 = BitmapFactory.decodeFile(ruta2Editar)
+        if (!inventario.imagen2.isNullOrEmpty()) {
+            val bitmap2 = BitmapFactory.decodeFile(inventario.imagen2)
             if (bitmap2 != null) {
                 bitmapList.add(bitmap2)
             }
         }
 
-        if (!ruta3Editar.isNullOrEmpty()) {
-            val bitmap3 = BitmapFactory.decodeFile(ruta3Editar)
+        if (!inventario.imagen3.isNullOrEmpty()) {
+            val bitmap3 = BitmapFactory.decodeFile(inventario.imagen3)
             if (bitmap3 != null) {
                 bitmapList.add(bitmap3)
             }
         }
+
 
         imageAdapter.notifyDataSetChanged()
         binding.btnTomarFotoEditar.visibility =
@@ -395,10 +366,10 @@ class EditarInventarioFragment : Fragment() {
 
         nombreView.setOnClickListener {
             productoSeleccionado = inventario.id
-            binding.tvNombreProductoEditar.setText(inventario.nombre_producto)
+            binding.tvNombreProductoEditar.setText(inventario.nombreProducto)
             binding.tvTamanoEnvaseEditar.setText(inventario.tamano)
             binding.tvCantidadCajillasEditar.setText(inventario.cantidad.toString())
-            binding.tvCantidadPorCajillaEditar.setText(inventario.cantidad_cajilla.toString())
+            binding.tvCantidadPorCajillaEditar.setText(inventario.cantidadCajilla.toString())
             binding.tvPrecioUnitarioEditar.setText(inventario.importe.toString())
         }
 
@@ -406,7 +377,7 @@ class EditarInventarioFragment : Fragment() {
     }
 
 
-    fun openGallery() {
+    private fun openGallery() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -421,28 +392,18 @@ class EditarInventarioFragment : Fragment() {
             val bitmap = getBitmapFromUri(fromUri)
             if (bitmap != null) {
                 val bitmapUri = bitmapList.any { it.sameAs(bitmap) }
-                val posicion = imageAdapter.getDeletedPosition()
                 if (!bitmapUri) {
-                    when (imageToken) {
-                        1 -> {
-                            ruta1Editar = saveImageToInternalStorage(bitmap)
-
-                        }
-
-                        2 -> {
-                            ruta2Editar = saveImageToInternalStorage(bitmap)
-
-                        }
-
-                        3 -> {
-                            ruta3Editar = saveImageToInternalStorage(bitmap)
-
-                        }
+                    val position = imageToken - 1
+                    Log.d("EditarInventario", "ImageToken $imageToken")
+                    val ruta = saveImageToInternalStorage(bitmap)
+                    if (ruta != null) {
+                        updateInventarioImages(ruta, position)
+                        imageAdapter.addImage(bitmap)
+                    } else {
+                        Toast.makeText(
+                            requireContext(), "Error al guardar la imagen", Toast.LENGTH_LONG
+                        ).show()
                     }
-
-
-
-                    imageAdapter.addImage(bitmap, posicion)
                 } else {
                     Toast.makeText(
                         requireContext(), "Esta imagen ya ha sido seleccionada", Toast.LENGTH_LONG
@@ -453,11 +414,24 @@ class EditarInventarioFragment : Fragment() {
                     requireContext(), "No se puede cargar la imagen", Toast.LENGTH_LONG
                 ).show()
             }
-
         } else {
             Toast.makeText(
                 requireContext(), "Ya no se puede seleccionar más fotos", Toast.LENGTH_LONG
             ).show()
+        }
+    }
+
+    private fun updateInventarioImages(ruta: String?, position: Int) {
+        val idInventario = args.idInventario
+        val listaInventario: MutableList<InventarioModel>? = inventarioRecuperado[idInventario]
+
+        if (listaInventario != null) {
+            val ultimoInventario = listaInventario.lastOrNull()
+            when (position) {
+                0 -> ultimoInventario?.imagen1 = ruta
+                1 -> ultimoInventario?.imagen2 = ruta
+                2 -> ultimoInventario?.imagen3 = ruta
+            }
         }
     }
 

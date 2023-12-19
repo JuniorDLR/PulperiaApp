@@ -121,7 +121,10 @@ class VentasFragment : Fragment() {
                         when (it.position) {
                             0 -> {
                                 try {
-                                    Log.d("VentasFragment", "FechaInicio: $fechaInicio, FechaFin: $fechaFin")
+                                    Log.d(
+                                        "VentasFragment",
+                                        "FechaInicio: $fechaInicio, FechaFin: $fechaFin"
+                                    )
 
                                     ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
                                     ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
@@ -136,7 +139,10 @@ class VentasFragment : Fragment() {
                             }
 
                             1 -> {
-                                Log.d("VentasFragment", "FechaInicio: $fechaInicio, FechaFin: $fechaFin")
+                                Log.d(
+                                    "VentasFragment",
+                                    "FechaInicio: $fechaInicio, FechaFin: $fechaFin"
+                                )
 
                                 try {
                                     ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
@@ -203,11 +209,15 @@ class VentasFragment : Fragment() {
 
         findNavController().navigate(
             VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
-                idProducto = idProducto, idFecha = fecha, esIndividual = esIndividual,isMultiple = false
+                idProducto = idProducto,
+                idFecha = fecha,
+                esIndividual = esIndividual,
+                isMultiple = false
             )
         )
 
     }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteItem(idProducto: Int, position: Int, fechaAgrupada: String) {
         val fechaInicio = obtenerFechaInicioActual()
@@ -225,7 +235,7 @@ class VentasFragment : Fragment() {
                             val ventasCajilla =
                                 ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
                             val ventasFiltradas =
-                                ventasCajilla.filter { it.fecha_venta == fechaAgrupada }
+                                ventasCajilla.filter { it.fechaVenta == fechaAgrupada }
                             for (venta in ventasFiltradas) {
                                 ventasModel.eliminarVenta(venta.id)
                             }
@@ -278,7 +288,7 @@ class VentasFragment : Fragment() {
     }
 
 
-    fun cerrarSesion() {
+    private fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estas seguro que desea cerrar sesion?")
@@ -288,6 +298,7 @@ class VentasFragment : Fragment() {
 
                 val navController = Navigation.findNavController(binding.root)
                 navController.popBackStack()
+                dialog.dismiss()
             }
 
             .setNegativeButton("Cancelar") { dialog, _ ->

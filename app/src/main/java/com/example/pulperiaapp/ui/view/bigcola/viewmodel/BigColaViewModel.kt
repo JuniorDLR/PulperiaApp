@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BigColaViewModel @Inject constructor(val useBig: UseCaseBigCola) : ViewModel() {
+class BigColaViewModel @Inject constructor(private val useBig: UseCaseBigCola) : ViewModel() {
 
 
     private val _bigModel = MutableLiveData<List<TablaBig>>()
@@ -54,5 +54,9 @@ class BigColaViewModel @Inject constructor(val useBig: UseCaseBigCola) : ViewMod
             _bigModel.value = esNo
         }
 
+    }
+
+    suspend fun obtenerPrecioId(precioId: Int): Double {
+        return useBig.obtenerPrecioId(precioId)
     }
 }

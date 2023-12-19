@@ -22,4 +22,7 @@ interface BigDao {
 
     @Query("DELETE FROM tbl_bigcola WHERE id=:id ")
     suspend fun eliminarPrecioBig(id: Int)
+
+    @Query("SELECT precio  FROM tbl_bigcola WHERE id=:idPrecio")
+    suspend fun obtenerPrecioId(idPrecio:Int):Double
 }

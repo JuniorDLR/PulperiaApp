@@ -5,6 +5,7 @@
     <color name="white">#ffffff</color>
     <color name="darkGrey">#858585</color>
     <color name="mediaGrey">#DEDEDE</color>
+    <color name="red">#FF0909</color>
 
     <color name="buscador">#D9D9D9</color>
     <color name="fondo">#275457</color>

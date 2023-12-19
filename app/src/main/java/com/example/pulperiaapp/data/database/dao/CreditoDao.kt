@@ -22,7 +22,7 @@ interface CreditoDao {
     @Query("DELETE FROM tbl_credito WHERE id =:id")
     suspend fun eliminarCredito(id: Int)
 
-    @Query("UPDATE tbl_credito SET producto=:producto, cantidad=:cantidad, precio_total=:precio,fecha=:fecha WHERE id=:id")
+    @Query("UPDATE tbl_credito SET producto=:producto, cantidad=:cantidad, precioTotal=:precio,fecha=:fecha WHERE id=:id")
     suspend fun editarCredito(
         id: Int,
         producto: String,
@@ -32,13 +32,13 @@ interface CreditoDao {
     )
 
 
-    @Query("UPDATE tbl_credito SET estado_pago =:nuevoEstado WHERE cliente =:cliente")
+    @Query("UPDATE tbl_credito SET estadoPago =:nuevoEstado WHERE cliente =:cliente")
     suspend fun estadoPago(nuevoEstado: Boolean, cliente: String)
 
-    @Query("SELECT * FROM tbl_credito WHERE cliente = :cliente AND estado_pago = 0")
+    @Query("SELECT * FROM tbl_credito WHERE cliente = :cliente AND estadoPago = 0")
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle>
 
-    @Query("SELECT * FROM tbl_credito WHERE  estado_pago = 1")
+    @Query("SELECT * FROM tbl_credito WHERE  estadoPago = 1")
     suspend fun obtenerFilterPago(): List<VentaAmorosoDetalle>
 
 

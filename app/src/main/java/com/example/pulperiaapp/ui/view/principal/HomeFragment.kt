@@ -106,7 +106,7 @@ class HomeFragment : Fragment() {
                     false
                 val navController = Navigation.findNavController(binding.root)
                 navController.popBackStack()
-
+                dialog.dismiss()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.dismiss()

@@ -56,4 +56,8 @@ class PrixViewModel @Inject constructor(
             _prixModel.postValue(lista)
         }
     }
+
+    suspend fun obtenerPrecioId(precioId: Int): Double {
+        return useCasePrix.obtenerPrecioId(precioId)
+    }
 }

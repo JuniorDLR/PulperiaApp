@@ -1,12 +1,15 @@
 package com.example.pulperiaapp.ui.view.prix.view
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarPrixBinding
@@ -24,12 +27,26 @@ class AgregarPrixFragment : Fragment() {
     ): View {
         binding = FragmentAgregarPrixBinding.inflate(inflater, container, false)
 
-        binding.btnAgregarPrix.setOnClickListener {
-            agregarProductoPrix()
-        }
+
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnAgregarPrix.setOnClickListener {
+            agregarProductoPrix()
+        }
+
+
+        binding.tvProducoAgregarP.doOnTextChanged { text, _, _, _ ->
+            if (text!!.length >= 18) {
+                binding.textInputLayoutProducto.error = "Limite de caracteres alcanzado"
+            } else {
+                binding.textInputLayoutProducto.error = null
+            }
+        }
+    }
 
     private fun agregarProductoPrix() {
 
@@ -48,10 +65,16 @@ class AgregarPrixFragment : Fragment() {
             val precioPrixEntity = PrecioPrixEntity(0, producto, precioDouble)
             prixModel.insertraPrixTabla(precioPrixEntity)
             requireActivity().supportFragmentManager.popBackStack()
+            ocultarTeclado()
             Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT)
                 .show()
         }
 
+    }
+
+    private fun ocultarTeclado() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
     }
 
 }

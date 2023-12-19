@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.credito.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +38,7 @@ class EditarCreditoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentEditarCreditoBinding.inflate(inflater, container, false)
 
@@ -70,7 +71,7 @@ class EditarCreditoFragment : Fragment() {
             productoRecuperado[cliente]?.forEach { detalle ->
                 val producto = detalle.producto
                 val cantidad = detalle.cantidad
-                val precio = detalle.precio_total
+                val precio = detalle.precioTotal
                 val id = detalle.id
 
                 if (cantidad > 0) {
@@ -95,12 +96,12 @@ class EditarCreditoFragment : Fragment() {
 
             creditoModel.groupedAmorosoModel.observe(viewLifecycleOwner) { observer ->
                 observer?.let {
-                    for ((i, info) in observer) {
+                    for ((_, info) in observer) {
                         for (j in info) {
                             val id = j.id
                             val producto = j.producto
                             val cantidad = j.cantidad
-                            val precio = j.precio_total
+                            val precio = j.precioTotal
 
                             guardarDetalleRecuperado(id, producto, cantidad, precio)
                         }
@@ -148,7 +149,7 @@ class EditarCreditoFragment : Fragment() {
         productoRecuperado[cliente]?.filter { it.cantidad > 0 }?.forEach { map ->
             val producto = map.producto
             val cantidad = map.cantidad
-            val precio = map.precio_total
+            val precio = map.precioTotal
             agregarFila(producto, cantidad, precio, cliente, map.id)
             totaRecuperado += precio
         }
@@ -156,6 +157,7 @@ class EditarCreditoFragment : Fragment() {
     }
 
 
+    @SuppressLint("InflateParams")
     private fun agregarFila(
         producto: String,
         cantidad: Int,
@@ -187,7 +189,7 @@ class EditarCreditoFragment : Fragment() {
                 val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     it.cantidad = nuevaCantidad
-                    it.precio_total = nuevoPrecio
+                    it.precioTotal = nuevoPrecio
                 }
 
                 actualizarTabla()
@@ -210,7 +212,7 @@ class EditarCreditoFragment : Fragment() {
                 val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
                 detalleExistente?.let {
                     it.cantidad = nuevaCantidad
-                    it.precio_total = nuevoPrecio
+                    it.precioTotal = nuevoPrecio
                 }
 
                 actualizarTabla()

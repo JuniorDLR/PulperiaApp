@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.venta.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -77,7 +78,8 @@ class EditarVentasFragment : Fragment() {
                     "BigCola" -> ventaBigCola()
                     "Coca" -> ventaCoca()
                     else -> {
-                        false
+                        Toast.makeText(requireContext(), "Seleccion no valida", Toast.LENGTH_LONG)
+                            .show()
                     }
 
                 }
@@ -122,7 +124,7 @@ class EditarVentasFragment : Fragment() {
                     val id = info.id
                     val producto = info.producto
                     val cantidad = info.cantidad
-                    val precio = info.total_venta
+                    val precio = info.totalVenta
                     val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
                     // Obtener la fecha actual dentro del bucle para cada venta
@@ -173,7 +175,7 @@ class EditarVentasFragment : Fragment() {
                 detalleList?.let {
                     it.forEach { j ->
 
-                        if ((j.id == idEditar && !j.venta_por_cajilla) || (j.venta_por_cajilla)) {
+                        if ((j.id == idEditar && !j.ventaPorCajilla) || (j.ventaPorCajilla)) {
                             guardarDatoRecuperado(idEditar, j)
                         }
                     }
@@ -208,8 +210,8 @@ class EditarVentasFragment : Fragment() {
                 val idProdcuto = lista.id
                 val producto = lista.producto
                 val cantidad = lista.cantidad
-                val total = lista.total_venta
-                val esCajilla = lista.venta_por_cajilla
+                val total = lista.totalVenta
+                val esCajilla = lista.ventaPorCajilla
                 totalView += total
                 if (esCajilla) binding.swVentaPorCajillaEditar.isChecked = true
 
@@ -223,8 +225,8 @@ class EditarVentasFragment : Fragment() {
                 val idAgregado = info.id
                 val producto = info.producto
                 val cantidad = info.cantidad
-                val total = info.total_venta
-                val esCajilla = info.venta_por_cajilla
+                val total = info.totalVenta
+                val esCajilla = info.ventaPorCajilla
                 totalView += total
                 agregarFila(producto, cantidad, total, -1, esCajilla, idAgregado)
             }
@@ -233,6 +235,7 @@ class EditarVentasFragment : Fragment() {
         binding.tvTotalAmountEditar.text = totalView.toString()
     }
 
+    @SuppressLint("InflateParams")
     private fun agregarFila(
         producto: String,
         cantidad: Int,
@@ -274,7 +277,7 @@ class EditarVentasFragment : Fragment() {
                         val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
                         detalleExistent?.let {
                             it.cantidad = nuevaCantidad
-                            it.total_venta = newPrecio
+                            it.totalVenta = newPrecio
                         }
 
                         visualizarTabla(false)
@@ -331,7 +334,7 @@ class EditarVentasFragment : Fragment() {
                         val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
                         detalleExistent?.let {
                             it.cantidad = nuevaCantidad
-                            it.total_venta = newPrecio
+                            it.totalVenta = newPrecio
                         }
                         visualizarTabla(false)
                     } else {
@@ -393,7 +396,7 @@ class EditarVentasFragment : Fragment() {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    Id: Long
+                    id: Long
                 ) {
                     val productoSeleccionado = opcion[position]
                     binding.btnEditarProducto.setOnClickListener {
@@ -430,7 +433,7 @@ class EditarVentasFragment : Fragment() {
             val spinner = binding.spProductosEditar
 
             val adapter =
-                ArrayAdapter<String>(requireContext(), R.layout.simple_spinner_item, opcion)
+                ArrayAdapter(requireContext(), R.layout.simple_spinner_item, opcion)
             adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
 
@@ -536,7 +539,7 @@ class EditarVentasFragment : Fragment() {
                     val nuevaCantidad = detalleExistente.cantidad + cantidadInicial
                     val nuevoPrecio = nuevaCantidad * precioProducto
                     detalleExistente.cantidad = nuevaCantidad
-                    detalleExistente.total_venta = nuevoPrecio
+                    detalleExistente.totalVenta = nuevoPrecio
                 } else {
                     val nuevoPrecio = cantidadInicial * precioProducto
                     val nuevoDetalle = DetalleEditar(
@@ -573,7 +576,7 @@ class EditarVentasFragment : Fragment() {
                     val nuevaCantidad = detalleExistente.cantidad + cantidadInicial
                     val nuevoPrecio = nuevaCantidad * precioProducto
                     detalleExistente.cantidad = nuevaCantidad
-                    detalleExistente.total_venta = nuevoPrecio
+                    detalleExistente.totalVenta = nuevoPrecio
                 } else {
                     val detalle =
                         DetalleEditar(

@@ -175,7 +175,7 @@ class FiltrarDatosFragment : Fragment() {
             }
         }
 
-        switchIndividual.setOnCheckedChangeListener { view, idChecked ->
+        switchIndividual.setOnCheckedChangeListener { _, idChecked ->
             if (idChecked)
                 binding.switchCajilla.isChecked = false
             isCajilla = false
@@ -183,7 +183,7 @@ class FiltrarDatosFragment : Fragment() {
 
         }
 
-        switchCajilla.setOnCheckedChangeListener { view, idChecked ->
+        switchCajilla.setOnCheckedChangeListener { _, idChecked ->
             if (idChecked) {
                 binding.switchIndividual.isChecked = false
                 isCajilla = true
@@ -280,7 +280,7 @@ class FiltrarDatosFragment : Fragment() {
             }.show()
     }
 
-    fun cerrarSesion() {
+    private fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estas seguro que desea cerrar sesion?")
@@ -290,6 +290,7 @@ class FiltrarDatosFragment : Fragment() {
 
                 val navController = Navigation.findNavController(binding.root)
                 navController.popBackStack()
+                dialog.dismiss()
             }
 
             .setNegativeButton("Cancelar") { dialog, _ ->

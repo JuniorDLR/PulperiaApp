@@ -1,6 +1,7 @@
 package com.example.pulperiaapp.ui.view.coca.view
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaCocaBinding
@@ -23,6 +25,7 @@ import com.example.pulperiaapp.domain.coca.TablaCoca
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -172,11 +175,24 @@ class TablaCocaFragment : Fragment() {
         } else {
             val idInt = id.toInt()
             val precioDouble = precio.toDouble()
-            cocaViewModel.editarCocaTabla(idInt, precioDouble)
-            limpiarCampos()
-            Toast.makeText(requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT)
-                .show()
 
+            lifecycleScope.launch {
+                val obtenerPrecio = cocaViewModel.obtenerPrecioId(idInt)
+                if (precioDouble.equals(obtenerPrecio)) {
+                    Snackbar.make(requireView(), "El precio es el mismo", Snackbar.LENGTH_SHORT)
+                        .show()
+
+                } else {
+                    cocaViewModel.editarCocaTabla(idInt, precioDouble)
+                    limpiarCampos()
+                    Toast.makeText(
+                        requireContext(),
+                        "Datos editado exitosamente!!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
         }
 
 
@@ -188,26 +204,46 @@ class TablaCocaFragment : Fragment() {
     }
 
 
+    @SuppressLint("InflateParams")
     private fun mostrarTabla(lists: List<TablaCoca>) {
 
-        tableLayout.removeAllViews() // Limpiar la tabla antes de agregar nuevas filas
+        tableLayout.removeAllViews()
 
         for (row in lists) {
-            val tableRow = LayoutInflater.from(requireContext())
-                .inflate(R.layout.tabla_row_item, null) as TableRow
-
-            val id = tableRow.findViewById<TextView>(R.id.tvIdR)
-            id.text = row.id.toString()
-
-            val producto = tableRow.findViewById<TextView>(R.id.tvProductoR)
-            producto.text = row.producto
-
-            val precio = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-            precio.text = row.precio.toString()
-
-            // Agregar la fila a la tabla
-            tableLayout.addView(tableRow)
+            val idProdcuto = row.id
+            val producto = row.producto
+            val precio = row.precio
+            actualizarTabla(idProdcuto, producto, precio)
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun actualizarTabla(idProdcuto: Int, producto: String, precio: Double) {
+        val tableRow = LayoutInflater.from(requireContext())
+            .inflate(R.layout.tabla_row_item, null) as TableRow
+
+        val idView = tableRow.findViewById<TextView>(R.id.tvIdR)
+        idView.text = idProdcuto.toString()
+
+        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
+        productoView.text = producto
+
+        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
+        precioView.text = precio.toString()
+
+
+        idView.setOnClickListener {
+            binding.tvIdEditarCoca.setText(idProdcuto.toString())
+            binding.tvPrecioEditarCoca.setText("")
+        }
+
+        productoView.setOnClickListener {
+            binding.tvIdEditarCoca.setText(idProdcuto.toString())
+            binding.tvPrecioEditarCoca.setText(precio.toString())
+        }
+
+        // Agregar la fila a la tabla
+        tableLayout.addView(tableRow)
     }
 
 

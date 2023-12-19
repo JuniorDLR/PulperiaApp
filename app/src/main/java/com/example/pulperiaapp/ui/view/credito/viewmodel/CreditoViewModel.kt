@@ -83,7 +83,7 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
     fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {
         viewModelScope.launch {
             val listaVentas = lista ?: useCaseAmoroso.obtenerCredito()
-            val ventasFiltradas = listaVentas.filter { !it.estado_pago }
+            val ventasFiltradas = listaVentas.filter { !it.estadoPago }
             _groupedAmorosoModel.value = ventasFiltradas.groupBy { it.cliente }
         }
     }

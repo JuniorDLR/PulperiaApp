@@ -2,10 +2,7 @@ package com.example.pulperiaapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.pulperiaapp.data.Repository.VentaRepositorio
-import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.Database
-import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

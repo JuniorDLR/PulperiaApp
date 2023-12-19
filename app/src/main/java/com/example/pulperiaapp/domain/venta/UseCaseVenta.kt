@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.domain.venta
 
-import com.example.pulperiaapp.data.Repository.VentaRepositorio
+import com.example.pulperiaapp.data.repository.VentaRepositorio
 
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 

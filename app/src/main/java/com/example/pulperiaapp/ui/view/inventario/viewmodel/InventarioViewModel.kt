@@ -45,10 +45,10 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
         }
     }
 
-    fun actualizarDatos(lista: List<InventarioModel>? = null) {
+    private fun actualizarDatos(lista: List<InventarioModel>? = null) {
         viewModelScope.launch {
             val response = lista ?: useCaseInventario.obtenerInventario()
-            _inventarioModel.value = response.groupBy { it.fecha_entrega }
+            _inventarioModel.value = response.groupBy { it.fechaEntrega }
         }
     }
 

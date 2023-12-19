@@ -9,9 +9,6 @@ import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 @Dao
 interface PrixDao {
 
-
-
-    //Precio
     @Query("SELECT * FROM tbl_precio_prix ")
     suspend fun obtenerPrecioPrix(): List<PrecioPrixEntity>
 
@@ -23,4 +20,7 @@ interface PrixDao {
 
     @Query("DELETE  FROM  tbl_precio_prix WHERE id =:id")
     suspend fun eliminarPrecioPrix(id: Int)
+
+    @Query("SELECT precio  FROM tbl_precio_prix WHERE id=:idPrecio")
+    suspend fun obtenerPrecioId(idPrecio:Int):Double
 }

@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.filtrado
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.example.pulperiaapp.databinding.ItemFilterBinding
 class AdapterCliente
     : RecyclerView.Adapter<AdapterCliente.ViewHolder>() {
 
-    var listaCliente: List<String> = emptyList()
+    private var listaCliente: List<String> = emptyList()
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -38,6 +39,7 @@ class AdapterCliente
         holder.bind(diag)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(lista: List<String>) {
         listaCliente = lista
         notifyDataSetChanged()

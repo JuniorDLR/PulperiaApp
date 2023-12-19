@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.data.Repository
+package com.example.pulperiaapp.data.repository
 
 import com.example.pulperiaapp.data.database.dao.BigDao
 import com.example.pulperiaapp.data.database.entitie.PrecioBigCola
@@ -19,6 +19,7 @@ class TablaBigRepositorio @Inject constructor(private val bigDao: BigDao) {
 
     suspend fun editarBigCola(precio: Double, id: Int) = bigDao.editarPrecioBig(precio, id)
     suspend fun eliminarBigCola(id: Int) = bigDao.eliminarPrecioBig(id)
+    suspend fun obtenerPrecioId(precioId: Int):Double = bigDao.obtenerPrecioId(precioId)
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.pulperiaapp.data.Repository
+package com.example.pulperiaapp.data.repository
 
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca

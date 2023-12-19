@@ -20,33 +20,34 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:background="@color/white"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
+        android:background="@color/white"
         app:cardCornerRadius="16dp">
 
 
         <LinearLayout
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ingresa_tus_credenciales"
-                android:textStyle="bold"
                 android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:text="@string/ingresa_tus_credenciales"
                 android:textSize="18sp"
-                android:gravity="center_horizontal" />
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp">
+                android:layout_marginVertical="10dp"
+                app:startIconDrawable="@drawable/baseline_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvUser"
@@ -65,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/baseline_lock_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvPw"
@@ -121,8 +123,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:src="@drawable/hacker"
-        android:contentDescription="@string/logojunior" />
+        android:contentDescription="@string/logojunior"
+        android:src="@drawable/hacker" />
 
 </LinearLayout>
 

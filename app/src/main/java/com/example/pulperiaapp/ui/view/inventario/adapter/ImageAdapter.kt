@@ -1,20 +1,22 @@
-import android.graphics.Bitmap
+package com.example.pulperiaapp.ui.view.inventario.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.example.pulperiaapp.R
-import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
+
 
 class ImageAdapter(
     private val image: MutableList<Bitmap>,
-    val imageCounterListener: ImageCounterListener
+    private val imageCounterListener: ImageCounterListener
 ) :
     PagerAdapter() {
 
     private var deletePosition: Int = -1
+
 
     // Se utiliza para crear y agregar vistas al ViewPager.
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -36,28 +38,31 @@ class ImageAdapter(
         return itemView
     }
 
+    // Dentro de la función onClickDelete en ImageAdapter
     private fun onClickDelete(position: Int) {
         if (position >= 0 && position < image.size) {
             deletePosition = position
-            image.removeAt(position)
+            val deletedImage = image.removeAt(position)
             notifyDataSetChanged()
             val tamano = image.size
-            imageCounterListener.onImageDelete(tamano)
+            imageCounterListener.onImageDelete(tamano, deletedImage)
         }
     }
 
-    fun getDeletedPosition(): Int {
-        return deletePosition
-    }
 
 
-    fun addImage(image: Bitmap, position: Int) {
-        if (position >= 0 && position <= this.image.size) {
-            this.image.add(position, image)
-            notifyDataSetChanged()
-            imageCounterListener.onImageAdd(this.image.size)
+    fun addImage(image: Bitmap) {
+        // Si se eliminó una imagen, inserta la nueva imagen en esa posición
+        if (deletePosition != -1) {
+            this.image.add(deletePosition, image)
+        } else {
+            this.image.add(image)
         }
+
+        notifyDataSetChanged()
+        imageCounterListener.onImageAdd(this.image.size)
     }
+
 
 
     override fun getItemPosition(`object`: Any): Int {
@@ -81,12 +86,6 @@ class ImageAdapter(
     // Si la vista que está siendo mostrada actualmente es la misma que el objeto que se le está pasando.
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
-    }
-
-    fun getItemCount(): Int = image.size
-
-    fun hasImageAtPosition(position: Int): Boolean {
-        return position >= 0 && position < image.size
     }
 
 }

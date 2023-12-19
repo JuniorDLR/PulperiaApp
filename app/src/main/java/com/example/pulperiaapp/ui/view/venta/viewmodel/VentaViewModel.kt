@@ -28,7 +28,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         _ventaModelIndividual
 
 
-    val _obtenerTotal = MutableLiveData<Double?>()
+    private val _obtenerTotal = MutableLiveData<Double?>()
     val obtenerTotal: LiveData<Double?> = _obtenerTotal
 
     private val _data = MutableLiveData<List<DetalleEditar>>()
@@ -79,7 +79,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
             val lista =
                 useCaseVenta.obtenerVentaCajilla(fechaInicio = fechaInicio, fechaFin = fechaFin)
-            _ventaModelCajilla.value = lista.groupBy { it.fecha_venta }
+            _ventaModelCajilla.value = lista.groupBy { it.fechaVenta }
             lista
 
         } catch (e: Exception) {
@@ -117,7 +117,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
             val lista =
                 useCaseVenta.obtenerFilterCajilla(fechaInicio = fechaInicio)
-            _ventaModelCajilla.value = lista.groupBy { it.fecha_venta }
+            _ventaModelCajilla.value = lista.groupBy { it.fechaVenta }
             lista
 
         } catch (e: Exception) {

@@ -21,7 +21,7 @@ interface InventarioDao {
     @Query("DELETE FROM tbl_inventario WHERE id=:id")
     suspend fun eliminarInventario(id: Int)
 
-    @Query("SELECT * FROM tbl_inventario WHERE fecha_entrega =:idInventario")
+    @Query("SELECT * FROM tbl_inventario WHERE fechaEntrega =:idInventario")
     suspend fun obtenerDetalleInventario(idInventario: String): List<InventarioModel>
 
     @Update

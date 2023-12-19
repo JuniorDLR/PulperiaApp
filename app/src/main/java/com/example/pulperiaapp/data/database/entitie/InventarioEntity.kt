@@ -10,11 +10,11 @@ import androidx.room.PrimaryKey
 data class InventarioEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id") val id: Int = 0,
-    @ColumnInfo("nombre_producto") val nombreProducto: String,
+    @ColumnInfo("nombreProducto") val nombreProducto: String,
     @ColumnInfo("tamano") val tamano: String,
-    @ColumnInfo("fecha_entrega") val fechaEntrega: String,
-    @ColumnInfo("fecha_editada") var fechaEditada: String? = null,
-    @ColumnInfo("cantidad_cajilla") val cantidadCajilla: Int,
+    @ColumnInfo("fechaEntrega") val fechaEntrega: String,
+    @ColumnInfo("fechaEditada") var fechaEditada: String? = null,
+    @ColumnInfo("cantidadCajilla") val cantidadCajilla: Int,
     @ColumnInfo("cantidad") val cantidad: Int,
     @ColumnInfo("importe") val precio: Double,
     @ColumnInfo("imagen1") var ruta1: String? = null,

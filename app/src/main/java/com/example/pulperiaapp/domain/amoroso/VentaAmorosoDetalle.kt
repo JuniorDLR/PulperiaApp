@@ -8,9 +8,9 @@ data class VentaAmorosoDetalle(
     val cliente: String,
     val producto: String,
     val cantidad: Int,
-    val precio_total: Double,
+    val precioTotal: Double,
     val fecha: String,
-    var estado_pago: Boolean
+    var estadoPago: Boolean
 )
 
 
@@ -20,9 +20,9 @@ fun CreditoEntity.toDomain(): VentaAmorosoDetalle {
         cliente = this.cliente,
         producto = this.producto,
         cantidad = this.cantidad,
-        precio_total = this.precioTotal,
+        precioTotal = this.precioTotal,
         fecha = this.fecha,
-        estado_pago = this.estado_pago
+        estadoPago = this.estadoPago
     )
 }
 

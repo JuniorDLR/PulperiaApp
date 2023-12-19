@@ -49,12 +49,16 @@ class CocaViewModel @Inject constructor(private val useCaseTablaCoca: UseCaseTab
 
     }
 
-    fun eliminarProducto(id:Int){
+    fun eliminarProducto(id: Int) {
         viewModelScope.launch {
             useCaseTablaCoca.eliminarProducto(id)
             val lista: List<TablaCoca> = useCaseTablaCoca.obtenerCocaTabla()
             _cocaViewModel.postValue(lista)
         }
+    }
+
+    suspend fun obtenerPrecioId(precioId: Int): Double {
+        return useCaseTablaCoca.obtenerPrecioId(precioId)
     }
 
 

@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.domain.inventario
 
-import com.example.pulperiaapp.data.Repository.InventarioRepository
+import com.example.pulperiaapp.data.repository.InventarioRepository
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
 import javax.inject.Inject
 

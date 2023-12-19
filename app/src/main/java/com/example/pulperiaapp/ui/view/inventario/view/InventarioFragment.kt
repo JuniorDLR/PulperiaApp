@@ -1,6 +1,6 @@
 package com.example.pulperiaapp.ui.view.inventario.view
 
-import ImageAdapter
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +27,7 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
 import com.example.pulperiaapp.databinding.FragmentInventarioBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
+import com.example.pulperiaapp.ui.view.inventario.adapter.ImageAdapter
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
 
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
@@ -62,7 +62,7 @@ class InventarioFragment : Fragment() {
     private var ruta2: String? = null
     private var ruta3: String? = null
 
-    val galleryLaucnher =
+    private val galleryLaucnher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intentClip: Intent? = result.data
@@ -97,20 +97,18 @@ class InventarioFragment : Fragment() {
 
                     when (imageToken) {
                         1 -> {
-
-
                             ruta1 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap, 0)
+                            imageAdapter.addImage(bitmap)
                         }
 
                         2 -> {
                             ruta2 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap, 1)
+                            imageAdapter.addImage(bitmap)
                         }
 
                         3 -> {
                             ruta3 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap, 2)
+                            imageAdapter.addImage(bitmap)
                         }
                     }
 
@@ -200,7 +198,7 @@ class InventarioFragment : Fragment() {
 
             }
 
-            override fun onImageDelete(imageCount: Int) {
+            override fun onImageDelete(imageCount: Int, deletedImage: Bitmap?) {
                 actualizarConteo()
 
             }
@@ -262,20 +260,15 @@ class InventarioFragment : Fragment() {
 
         if (productoIngresado.isNotEmpty()) {
             for ((index, entry) in productoIngresado.entries.withIndex()) {
-                val (fecha, lista) = entry
+                val (_, lista) = entry
                 for (producto in lista) {
-                    val nombre = producto.nombre_producto
+                    val nombre = producto.nombreProducto
                     val tamano = producto.tamano
-                    val cantidadCajilla = producto.cantidad_cajilla
+                    val cantidadCajilla = producto.cantidadCajilla
                     val cantidad = producto.cantidad
                     val importe = producto.importe
 
-                    // Use separate variables for the last record
 
-                    Log.d(
-                        "inventario",
-                        "Index: $index, Last Index: ${productoIngresado.entries.size - 1}"
-                    )
                     val lastRecordRuta1 = if (index == productoIngresado.size - 1) ruta1 else null
                     val lastRecordRuta2 = if (index == productoIngresado.size - 1) ruta2 else null
                     val lastRecordRuta3 = if (index == productoIngresado.size - 1) ruta3 else null
@@ -380,22 +373,22 @@ class InventarioFragment : Fragment() {
             listaInventario.add(inventario)
 
             productoIngresado[fechaFormateada] = listaInventario
-            limpiarTexto()
+            cleanText()
             actualizarTabla()
         }
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "InflateParams")
     private fun actualizarTabla() {
         var precioSuperTotal = 0.0
         tableLayout.removeAllViews()
-        for ((fecha, listaInventario) in productoIngresado) {
+        for ((_, listaInventario) in productoIngresado) {
 
             for (lista in listaInventario) {
-                val nombre = lista.nombre_producto
+                val nombre = lista.nombreProducto
                 val tamano = lista.tamano
-                val cantidadCajilla = lista.cantidad_cajilla
+                val cantidadCajilla = lista.cantidadCajilla
                 val cantidad = lista.cantidad
                 val precio = lista.importe
 
@@ -425,7 +418,7 @@ class InventarioFragment : Fragment() {
         binding.tvPrecioPagar.text = "Precio Total: $precioSuperTotal"
     }
 
-    fun limpiarTexto() {
+    private fun cleanText() {
         binding.tvNombreProducto.setText("")
         binding.tvTamanoEnvase.setText("")
         binding.tvCantidadPorCajilla.setText("")
