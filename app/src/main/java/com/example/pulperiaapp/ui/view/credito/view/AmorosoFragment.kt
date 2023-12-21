@@ -141,42 +141,58 @@ class AmorosoFragment : Fragment() {
 
     private fun guardarVentaAmoroso() {
 
-        val fechaFormateada =
-            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        val amoroso = binding.atvMoroso.text.toString()
-        val amorosoEntities = mutableListOf<CreditoEntity>()
-        if (amoroso.isNotEmpty() && productoSeleccionados.isNotEmpty()) {
+        lifecycleScope.launch {
+            val amorosoEntities = mutableListOf<CreditoEntity>()
+
+            val fechaFormateada =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val amoroso = binding.atvMoroso.text.toString()
+
+            val lista: List<String> = clienteViewModel.obtenerAmoros()
 
 
-            for ((producto, info) in productoSeleccionados) {
-                val cantidad = info.first
-                val precio = info.second
 
-                val amorosoEntity = CreditoEntity(
-                    0,
-                    amoroso,
-                    producto,
-                    cantidad,
-                    precio,
-                    fechaFormateada,
-                    false
-                )
+                val nombreEnMinuscula = amoroso.lowercase(Locale.ROOT)
+                val filtrado = lista.any { it.lowercase(Locale.ROOT) == nombreEnMinuscula }
+                if (filtrado && productoSeleccionados.isNotEmpty()) {
 
-                amorosoEntities.add(amorosoEntity)
-            }
 
-            // Insertar los créditos en el ViewModel
-            creditoViewModel.insertarCredito(amorosoEntities)
+                    for ((producto, info) in productoSeleccionados) {
+                        val cantidad = info.first
+                        val precio = info.second
 
-            requireActivity().supportFragmentManager.popBackStack()
-            Toast.makeText(requireContext(), "Datos guardados exitosamente", Toast.LENGTH_LONG)
-                .show()
-        } else {
-            Snackbar.make(
-                requireView(),
-                "No has ingresado un amoroso o la tabla esta vacia",
-                Snackbar.LENGTH_LONG
-            ).show()
+                        val amorosoEntity = CreditoEntity(
+                            0,
+                            amoroso,
+                            producto,
+                            cantidad,
+                            precio,
+                            fechaFormateada,
+                            false
+                        )
+
+                        amorosoEntities.add(amorosoEntity)
+                    }
+
+
+                    creditoViewModel.insertarCredito(amorosoEntities)
+
+                    requireActivity().supportFragmentManager.popBackStack()
+                    Toast.makeText(
+                        requireContext(),
+                        "Datos guardados exitosamente",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                } else {
+                    Snackbar.make(
+                        requireView(),
+                        "No has ingresado un amoroso o la tabla esta vacia",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+
         }
     }
 

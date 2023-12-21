@@ -25,7 +25,7 @@
         android:layout_margin="10dp"
         app:counterEnabled="true"
         app:counterMaxLength="18"
-        app:endIconDrawable="@drawable/baseline_error_24"
+        app:errorIconDrawable="@drawable/baseline_error_24"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:helperText="Solo se permiten 18 caracteres*"

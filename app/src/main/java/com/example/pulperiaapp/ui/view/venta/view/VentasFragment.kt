@@ -36,8 +36,12 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -56,23 +60,11 @@ class VentasFragment : Fragment() {
     ): View {
         binding = FragmentVentasBinding.inflate(inflater, container, false)
 
-        initComponent()
-        val fechaInicio = obtenerFechaInicioActual()
-        val fechaFin = obtenerFechaFin()
 
-
-
-        ventasModel.obtenerTotal(fechaInicio, fechaFin)
 
         binding.root.postDelayed({
             tabLayout.getTabAt(1)?.select()
         }, 100)
-
-
-        ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
-            val ganancia = "Ganacia: $total"
-            binding.tvTotalVenta.text = ganancia
-        }
 
 
         binding.btnAgregarVenta.setColorFilter(
@@ -80,7 +72,6 @@ class VentasFragment : Fragment() {
                 requireContext(), R.color.white
             )
         )
-
 
 
         return binding.root
@@ -91,7 +82,22 @@ class VentasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initComponent()
+        val fechaInicio = obtenerFechaInicioActual()
+        val fechaFin = obtenerFechaFin()
 
+        ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
+            val totalComoBigDecimal = total?.let { BigDecimal.valueOf(it) }
+            val formato = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+
+            val totalFormateado = formato.format(totalComoBigDecimal)
+            val ganancia = "Ganancia: $totalFormateado"
+            binding.tvTotalVenta.text = ganancia
+        }
+
+
+
+        ventasModel.obtenerTotal(fechaInicio, fechaFin)
         binding.btnAgregarVenta.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.ventasProductoFragment)
         }

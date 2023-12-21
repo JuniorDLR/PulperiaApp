@@ -28,14 +28,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="10dp">
+                android:layout_marginVertical="10dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="19"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/baseline_error_24"
+                app:helperText="Solo se permiten 19 caracteres*"
+                app:helperTextTextColor="@color/red">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvNombreProducto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/nombre_del_producto"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="19" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,36 +51,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="5dp">
+                android:layout_marginVertical="5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="10"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/baseline_error_24"
+                app:helperText="Solo se permiten 10 caracteres*"
+                app:helperTextTextColor="@color/red">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvTamanoEnvase"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/tama_o_del_envase_ejemplo_1l"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="10" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@drawable/baseline_error_24"
+                    app:helperTextTextColor="@color/red">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tvCantidadPorCajilla"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cantidad_por_cajilla"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,14 +103,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="10"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@drawable/baseline_error_24">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tvCantidadCajillas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cantidad_de_cajillas"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -102,7 +131,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tvPrecioUnitario"
@@ -245,7 +275,7 @@
                     android:layout_weight="1"
                     android:background="?attr/colorPrimary"
                     android:text="@string/agregar_foto"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/btnGuardar"

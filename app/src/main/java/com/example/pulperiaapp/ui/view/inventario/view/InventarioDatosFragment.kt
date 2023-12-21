@@ -7,6 +7,7 @@ import android.os.Build
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -52,19 +53,14 @@ class InventarioDatosFragment : Fragment() {
         binding = FragmentInventarioDatosBinding.inflate(inflater, container, false)
 
 
-        inventarioModel.obtenerInventario()
-        inventarioModel.inventarioModel.observe(viewLifecycleOwner) { lista ->
-            adapter.setList(lista)
-        }
+
+
+
         binding.btnAgregarInventario.setColorFilter(
             ContextCompat.getColor(
                 requireContext(), R.color.white
             )
         )
-        binding.etFecha.setOnClickListener { showDatePicker() }
-
-
-
         return binding.root
     }
 
@@ -76,13 +72,12 @@ class InventarioDatosFragment : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
 
         adapter = InventarioAdapter(
-            onClickDelete = { fecha-> eliminarItem(fecha) },
+            onClickDelete = { fecha -> eliminarItem(fecha) },
             onClickUpdate = { idFecha -> updateItem(idFecha) }
         )
         recyclerView.adapter = adapter
 
     }
-
 
 
     private fun showDatePicker() {
@@ -154,10 +149,16 @@ class InventarioDatosFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()
+
+        inventarioModel.obtenerInventario()
+        inventarioModel.inventarioModel.observe(viewLifecycleOwner) { lista ->
+            adapter.setList(lista)
+        }
+
+        binding.etFecha.setOnClickListener { showDatePicker() }
         binding.btnAgregarInventario.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.inventarioFragment)
         }
@@ -166,6 +167,8 @@ class InventarioDatosFragment : Fragment() {
             cerrarSesion()
         }
         callBck.isEnabled = true
+
+        binding.etFecha.inputType = InputType.TYPE_NULL
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

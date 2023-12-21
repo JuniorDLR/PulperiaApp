@@ -62,7 +62,7 @@
     <string name="nombre_del_producto">Nombre del Producto</string>
     <string name="editar_venta">Editar venta</string>
     <string name="fecha">FECHA</string>
-    <string name="editar_inventario">Editar inventario</string>
+    <string name="editar_inventario">Editar tabla</string>
     <string name="ventas_individuales">Ventas individuales</string>
     <string name="ventas_por_cajilla">Ventas por cajilla</string>
     <string name="buscar">Buscar</string>

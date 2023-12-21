@@ -59,7 +59,7 @@ class AgregarCocaFragment : Fragment() {
         if (producto.isEmpty() || precio.isEmpty()) {
             AlertDialog.Builder(requireContext())
                 .setTitle("ADVERTENCIA")
-                .setMessage("Los campos no pueden quedar vaciones")
+                .setMessage("Los campos no pueden quedar vacios")
                 .setPositiveButton("Continuar") { dialog, _ ->
                     dialog.dismiss()
                 }.show()

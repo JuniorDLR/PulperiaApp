@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ItemVentaBinding
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import kotlin.collections.List
 
 
@@ -34,7 +38,15 @@ class AdapterVenta(
             binding.tvFecha.text = venta.fechaVenta
             binding.tvListProducto.text =
                 if (!venta.ventaPorCajilla) "${venta.producto} - ${venta.cantidad}" else "Venta por cajilla"
-            binding.tvTotal.text = venta.totalVenta.toString()
+
+
+            val bigDecimal = BigDecimal.valueOf(venta.totalVenta)
+            val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+
+            val bigFormateado = format.format(bigDecimal)
+
+
+            binding.tvTotal.text = bigFormateado.toString()
 
             binding.btnEliminarVenta.setOnClickListener {
                 onDeleteClickListener(venta.id, adapterPosition, venta.fechaVenta)

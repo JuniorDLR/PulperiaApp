@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -143,6 +145,7 @@ class FiltrarDatosFragment : Fragment() {
             cerrarSesion()
         }
         callBack.isEnabled = true
+        binding.etFecha.inputType = InputType.TYPE_NULL
 
         binding.etFecha.setOnClickListener { showDatePicker() }
 
@@ -218,13 +221,12 @@ class FiltrarDatosFragment : Fragment() {
                 initComponent(2)
                 binding.btnAplicarFiltros.setOnClickListener {
                     val fecha = binding.etFecha.text.toString().trim()
-                    if (fecha.isEmpty() && !binding.switchCajilla.isChecked && !binding.switchIndividual.isChecked
-                    ) {
+
+                    if (fecha.isEmpty() || (!binding.switchCajilla.isChecked && !binding.switchIndividual.isChecked)) {
                         showAlertDialog(
                             "ADVERTENCIA",
-                            "No has ingresado una fecha o no has elegido una opcion de ventas"
+                            "No has ingresado una fecha o no has elegido una opción de ventas"
                         )
-
                     } else {
                         val viewModelJob = SupervisorJob()
                         val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)

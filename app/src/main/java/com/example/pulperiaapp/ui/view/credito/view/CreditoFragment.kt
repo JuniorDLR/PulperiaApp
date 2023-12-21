@@ -42,9 +42,7 @@ class CreditoFragment : Fragment() {
         binding = FragmentCreditoBinding.inflate(layoutInflater, container, false)
         initComponent()
 
-        amorosoModel.groupedAmorosoModel.observe(viewLifecycleOwner) { lista ->
-            adapter.setLista(lista)
-        }
+
 
 
         return binding.root
@@ -61,6 +59,10 @@ class CreditoFragment : Fragment() {
                 R.color.white
             )
         )
+
+        amorosoModel.groupedAmorosoModel.observe(viewLifecycleOwner) { lista ->
+            adapter.setLista(lista)
+        }
         binding.btnRegistrarMoroso.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_creditoFragment_to_amorosoFragment)

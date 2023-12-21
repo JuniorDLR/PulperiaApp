@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/baseline_calendar_month_24"
                 android:drawablePadding="8dp"
-                android:inputType="none"
                 android:textStyle="bold"
                 tools:text=" yyyy-MM-dd" />
 
