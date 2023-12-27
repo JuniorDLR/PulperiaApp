@@ -15,8 +15,11 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
 import com.example.pulperiaapp.databinding.FragmentVentasProductoBinding
@@ -78,6 +81,11 @@ class VentasProductoFragment : Fragment() {
 
         }
         binding.btnGuardarVenta.setOnClickListener { guardarProducto() }
+
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            Navigation.findNavController(binding.root).navigate(R.id.action_ventasProductoFragment_to_ventasFragment)
+        }
 
 
     }
@@ -168,7 +176,11 @@ class VentasProductoFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Datos guardados exitosamente!!", Toast.LENGTH_LONG)
                 .show()
-            requireActivity().supportFragmentManager.popBackStack()
+            val action =
+                VentasProductoFragmentDirections.actionVentasProductoFragmentToVentasFragment()
+            Navigation.findNavController(binding.root).navigate(action)
+
+
         }
     }
 

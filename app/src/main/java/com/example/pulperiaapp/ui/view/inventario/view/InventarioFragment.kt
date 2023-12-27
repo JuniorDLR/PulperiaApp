@@ -5,12 +5,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +20,10 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
@@ -50,17 +52,22 @@ class InventarioFragment : Fragment() {
     private val inventarioModel: InventarioViewModel by viewModels()
     private lateinit var tableLayout: TableLayout
     private lateinit var tableRow: TableRow
-    private val productoIngresado = mutableMapOf<String, List<InventarioModel>>()
+    private val productoIngresado = mutableMapOf<String, MutableList<InventarioModel>>()
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var viewPager: ViewPager
     private val MAX = 3
     private var imageToken = 0
     private val bitmapList = mutableListOf<Bitmap>()
+    private var productoSeleccionado: Int = 0
+    private var ultimoId = 1
+    private val key = "Producto"
+
 
     // Variables para las rutas de las imágenes
     private var ruta1: String? = null
     private var ruta2: String? = null
     private var ruta3: String? = null
+    private var esEdicion: Boolean = false
 
     private val galleryLaucnher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -114,11 +121,8 @@ class InventarioFragment : Fragment() {
 
                 } else {
                     Toast.makeText(
-                        requireContext(),
-                        "Esta imagen ya a sido seleccionada",
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                        requireContext(), "Esta imagen ya a sido seleccionada", Toast.LENGTH_LONG
+                    ).show()
                 }
 
 
@@ -128,9 +132,7 @@ class InventarioFragment : Fragment() {
             }
         } else {
             Toast.makeText(
-                requireContext(),
-                "Ya no se puede agregar mas imagenes",
-                Toast.LENGTH_LONG
+                requireContext(), "Ya no se puede agregar mas imagenes", Toast.LENGTH_LONG
             ).show()
         }
 
@@ -143,16 +145,13 @@ class InventarioFragment : Fragment() {
 
         try {
             val dir = wrapper.getDir(
-                "imagen",
-                Context.MODE_PRIVATE
+                "imagen", Context.MODE_PRIVATE
             ) // accedemos al directorio y le indicamos que solo la app pueda acceder  a el
             file = File(dir, "${System.currentTimeMillis()}.jpg")
             val stream: OutputStream =
                 FileOutputStream(file) //Se crea un flujo de salida (OutputStream) que apunta al archivo recién creado.
             bitmap.compress(
-                Bitmap.CompressFormat.JPEG,
-                100,
-                stream
+                Bitmap.CompressFormat.JPEG, 100, stream
             )//Se utiliza el método compress del objeto Bitmap para comprimir la imagen en formato JPEG con calidad 100 y escribir los datos en el flujo de salida (stream).
             stream.flush() //Se vacía el búfer del flujo de salida para asegurarse de que todos los datos se han escrito en el archivo.
             stream.close()// Se cierra el flujo de salida para liberar recursos y finalizar la operación de escritura en el archivo.
@@ -228,7 +227,6 @@ class InventarioFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -240,6 +238,11 @@ class InventarioFragment : Fragment() {
         }
         binding.btnTomarFoto.setOnClickListener {
             openGalery()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_inventarioFragment_to_inventarioDatosFragment)
         }
 
     }
@@ -290,11 +293,11 @@ class InventarioFragment : Fragment() {
                 }
             }
 
-            requireActivity().supportFragmentManager.popBackStack()
+            val action =
+                InventarioFragmentDirections.actionInventarioFragmentToInventarioDatosFragment()
+            Navigation.findNavController(binding.root).navigate(action)
             Toast.makeText(
-                requireContext(),
-                "Inventario Guardado exitosamente!!",
-                Toast.LENGTH_LONG
+                requireContext(), "Inventario Guardado exitosamente!!", Toast.LENGTH_LONG
             ).show()
         } else {
             Toast.makeText(requireContext(), "Los campos están vacíos", Toast.LENGTH_LONG).show()
@@ -352,71 +355,136 @@ class InventarioFragment : Fragment() {
             val primerCampoVacio = camposVacios[0]
             primerCampoVacio.requestFocus()
         } else {
-            val precioDouble = precioUnitario.toDouble()
-            val cantidadInt = cantidad.toInt()
 
-            val cantidadCajillaInt = cantidadCajilla.toInt()
+            if (esEdicion) {
 
-            val inventario = InventarioModel(
-                0,
-                nombreProducto,
-                tamano,
-                fechaFormateada,
-                null,
-                cantidadCajillaInt,
-                cantidadInt,
-                precioDouble
-            )
 
-            val listaInventario: MutableList<InventarioModel> =
-                productoIngresado[fechaFormateada]?.toMutableList() ?: mutableListOf()
-            listaInventario.add(inventario)
+                val precioDouble = precioUnitario.toDouble()
+                val cantidadInt = cantidad.toInt()
+                val cantidadCajillaInt = cantidadCajilla.toInt()
 
-            productoIngresado[fechaFormateada] = listaInventario
-            cleanText()
-            actualizarTabla()
+                Log.e("Edicion", "Entrando a modo edicion $productoSeleccionado")
+                productoIngresado[key]?.find { it.id == productoSeleccionado }?.apply {
+                    this.nombreProducto = nombreProducto
+                    this.tamano = tamano
+                    this.cantidadCajilla = cantidadCajillaInt
+                    this.cantidad = cantidadInt
+                    this.importe = precioDouble
+                    cleanText()
+                    actualizarTabla()
+                }
+                esEdicion = false
+
+            } else {
+
+                val nuevoId = ultimoId++
+                val precioDouble = precioUnitario.toDouble()
+                val cantidadInt = cantidad.toInt()
+
+                val cantidadCajillaInt = cantidadCajilla.toInt()
+
+                val inventario = InventarioModel(
+                    nuevoId,
+                    nombreProducto,
+                    tamano,
+                    fechaFormateada,
+                    null,
+                    cantidadCajillaInt,
+                    cantidadInt,
+                    precioDouble
+                )
+
+                val listaInventario: MutableList<InventarioModel> =
+                    productoIngresado[key]?.toMutableList() ?: mutableListOf()
+                listaInventario.add(inventario)
+
+                productoIngresado[key] = listaInventario
+                cleanText()
+                actualizarTabla()
+            }
+
         }
     }
 
 
     @SuppressLint("SetTextI18n", "InflateParams")
     private fun actualizarTabla() {
-        var precioSuperTotal = 0.0
         tableLayout.removeAllViews()
-        for ((_, listaInventario) in productoIngresado) {
-
-            for (lista in listaInventario) {
-                val nombre = lista.nombreProducto
-                val tamano = lista.tamano
-                val cantidadCajilla = lista.cantidadCajilla
-                val cantidad = lista.cantidad
-                val precio = lista.importe
-
-
-                val tableRow = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.table_row_inventario, null) as TableRow
-
-                val nombreView = tableRow.findViewById<TextView>(R.id.tvProductoRow)
-                nombreView.text = nombre
-
-                val tamanoView = tableRow.findViewById<TextView>(R.id.tvTamanoR)
-                tamanoView.text = tamano
-
-                val cantidadCajillaView = tableRow.findViewById<TextView>(R.id.tvCajillaR)
-                cantidadCajillaView.text = cantidadCajilla.toString()
-
-                val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadR)
-                cantidadView.text = cantidad.toString()
-
-
-                tableLayout.addView(tableRow)
-                precioSuperTotal += precio
-
-            }
+        var precioSuperTotal = 0.0
+        productoIngresado[key]?.forEach { lista ->
+            precioSuperTotal += lista.importe
+            visualizarTabla(lista)
 
         }
         binding.tvPrecioPagar.text = "Precio Total: $precioSuperTotal"
     }
+
+
+    @SuppressLint("InflateParams")
+    private fun visualizarTabla(inventarioModel: InventarioModel) {
+        val tableRow = LayoutInflater.from(requireContext())
+            .inflate(R.layout.table_row_inventario, null) as TableRow
+
+
+        val nombreView = tableRow.findViewById<TextView>(R.id.tvProductoRow)
+        nombreView.text = inventarioModel.nombreProducto
+
+        val tamanoView = tableRow.findViewById<TextView>(R.id.tvTamanoR)
+        tamanoView.text = inventarioModel.tamano
+
+        val cantidadCajillaView = tableRow.findViewById<TextView>(R.id.tvCajillaR)
+        cantidadCajillaView.text = inventarioModel.cantidadCajilla.toString()
+
+        val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadR)
+        cantidadView.text = inventarioModel.cantidad.toString()
+
+        val opciones = arrayOf("Editar", "Eliminar")
+
+        nombreView.setOnClickListener {
+            productoSeleccionado = inventarioModel.id
+
+
+            val alert = AlertDialog.Builder(requireContext()).setTitle("Eligue una opcion")
+                .setItems(opciones) { _, switch ->
+                    when (switch) {
+                        0 -> {
+
+                            editarTabla(inventarioModel)
+                        }
+
+                        1 -> {
+
+                            eliminarTabla(inventarioModel)
+                        }
+                    }
+                }
+            alert.show()
+        }
+
+
+        tableLayout.addView(tableRow)
+    }
+
+    private fun eliminarTabla(idExistente: InventarioModel?) {
+        idExistente?.let {
+            productoIngresado[key]?.remove(it)
+        }
+        actualizarTabla()
+
+    }
+
+    private fun editarTabla(idExistente: InventarioModel?) {
+        esEdicion = true
+        idExistente?.let {
+            binding.tvNombreProducto.setText(it.nombreProducto)
+            binding.tvTamanoEnvase.setText(it.tamano)
+            binding.tvCantidadPorCajilla.setText(it.cantidadCajilla.toString())
+            binding.tvCantidadCajillas.setText(it.cantidad.toString())
+            binding.tvPrecioUnitario.setText(it.importe.toString())
+        }
+
+    }
+
 
     private fun cleanText() {
         binding.tvNombreProducto.setText("")

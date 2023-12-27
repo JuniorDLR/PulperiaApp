@@ -1,7 +1,6 @@
 package com.example.pulperiaapp.ui.view.credito.view
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,8 +12,10 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 import com.example.pulperiaapp.databinding.FragmentAmorosoBinding
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.coroutines.cancellation.CancellationException
+
 
 @AndroidEntryPoint
 class AmorosoFragment : Fragment() {
@@ -77,7 +78,7 @@ class AmorosoFragment : Fragment() {
                     "BigCola" -> bigItem()
                     "Coca" -> cocaItem()
                     else -> {
-                        false
+                        Toast.makeText(requireContext(),"Seleccion no valida",Toast.LENGTH_LONG).show()
                     }
 
 
@@ -88,7 +89,9 @@ class AmorosoFragment : Fragment() {
         binding.btnGuardarAmoroso.setOnClickListener {
             guardarVentaAmoroso()
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            Navigation.findNavController(binding.root).navigate(R.id.action_amorosoFragment_to_creditoFragment)
+        }
     }
 
     private fun bigItem() {
@@ -177,7 +180,8 @@ class AmorosoFragment : Fragment() {
 
                     creditoViewModel.insertarCredito(amorosoEntities)
 
-                    requireActivity().supportFragmentManager.popBackStack()
+                    val action = AmorosoFragmentDirections.actionAmorosoFragmentToCreditoFragment()
+                    Navigation.findNavController(binding.root).navigate(action)
                     Toast.makeText(
                         requireContext(),
                         "Datos guardados exitosamente",

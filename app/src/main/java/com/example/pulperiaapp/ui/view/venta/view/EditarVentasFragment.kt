@@ -13,9 +13,11 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.VentaPrixCoca
@@ -94,6 +96,11 @@ class EditarVentasFragment : Fragment() {
         }
 
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_editarVentasFragment_to_ventasFragment)
+        }
+
     }
 
     private suspend fun insertarOVenta(venta: VentaPrixCoca) {
@@ -154,7 +161,9 @@ class EditarVentasFragment : Fragment() {
                 }
                 Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
                     .show()
-                requireActivity().supportFragmentManager.popBackStack()
+                val action =
+                    EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
+                Navigation.findNavController(binding.root).navigate(action)
             }
 
         }

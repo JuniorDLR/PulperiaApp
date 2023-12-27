@@ -3,7 +3,7 @@ package com.example.pulperiaapp.ui.view.inventario.view
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.os.Build
+
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.annotation.RequiresApi
+
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -46,7 +47,6 @@ class InventarioDatosFragment : Fragment() {
     private lateinit var adapter: InventarioAdapter
     private lateinit var recyclerView: RecyclerView
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -135,6 +135,11 @@ class InventarioDatosFragment : Fragment() {
 
                         // Notificar al adaptador que los datos han cambiado
                         adapter.notifyDataSetChanged()
+                        Toast.makeText(
+                            requireContext(),
+                            "Datos eliminado exitosamente!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -160,7 +165,9 @@ class InventarioDatosFragment : Fragment() {
 
         binding.etFecha.setOnClickListener { showDatePicker() }
         binding.btnAgregarInventario.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.inventarioFragment)
+            val action =
+                InventarioDatosFragmentDirections.actionInventarioDatosFragmentToInventarioFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
 
         val callBck = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

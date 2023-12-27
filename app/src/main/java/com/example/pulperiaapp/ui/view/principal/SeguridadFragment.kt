@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.navigation.Navigation
+import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentSeguridadBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +34,10 @@ class SeguridadFragment : Fragment() {
 
         binding.btnEnviarCodigo.setOnClickListener {
             seguridad()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_seguridadFragment_to_loginFragment)
         }
 
 

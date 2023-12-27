@@ -11,19 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
-
-
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-
 import androidx.fragment.app.viewModels
-
 import androidx.lifecycle.lifecycleScope
-
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
@@ -43,14 +37,13 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-
 @AndroidEntryPoint
 class VentasFragment : Fragment() {
 
     private val ventasModel: VentaViewModel by viewModels()
     private lateinit var binding: FragmentVentasBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapterVenta: AdapterVenta
+    lateinit var adapterVenta: AdapterVenta
     private lateinit var tabLayout: TabLayout
     private var esIndividual: Boolean = false
 
@@ -98,8 +91,12 @@ class VentasFragment : Fragment() {
 
 
         ventasModel.obtenerTotal(fechaInicio, fechaFin)
+
+
+
         binding.btnAgregarVenta.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.ventasProductoFragment)
+            val action = VentasFragmentDirections.actionVentasFragmentToVentasProductoFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
 
 
@@ -120,18 +117,10 @@ class VentasFragment : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    val fechaInicio = obtenerFechaInicioActual()
-                    val fechaFin = obtenerFechaFin()
-
                     lifecycleScope.launch {
                         when (it.position) {
                             0 -> {
                                 try {
-                                    Log.d(
-                                        "VentasFragment",
-                                        "FechaInicio: $fechaInicio, FechaFin: $fechaFin"
-                                    )
-
                                     ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
                                     ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
                                         adapterVenta.setListIndividual(lista)
@@ -190,85 +179,34 @@ class VentasFragment : Fragment() {
 
 
     private fun initComponent() {
+
+
         recyclerView = binding.rvVentas
         tabLayout = binding.tabLayout
         val linear = LinearLayoutManager(requireContext())
         linear.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linear
-        adapterVenta =
-            AdapterVenta(
-                onDeleteClickListener = { idProducto, position, fechaAgrupada ->
-                    deleteItem(
-                        idProducto,
-                        position,
-                        fechaAgrupada
-                    )
-                },
-                onUpdateClickListener = { fecha, idProducto -> updateItem(fecha, idProducto) }
-            )
+
+
+
+        adapterVenta = AdapterVenta(
+            onUpdateClickListener = { fecha, idProducto ->
+                onUpdateItem(
+                    fecha,
+                    idProducto
+                )
+            },
+            onDeleteClickListener = { idProducto, position, fecha ->
+                onDeleteItem(
+                    idProducto,
+                    position,
+                    fecha
+                )
+            })
         recyclerView.adapter = adapterVenta
 
 
     }
-
-    private fun updateItem(fecha: String, idProducto: Int) {
-
-        findNavController().navigate(
-            VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
-                idProducto = idProducto,
-                idFecha = fecha,
-                esIndividual = esIndividual,
-                isMultiple = false
-            )
-        )
-
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun deleteItem(idProducto: Int, position: Int, fechaAgrupada: String) {
-        val fechaInicio = obtenerFechaInicioActual()
-        val fechaFin = obtenerFechaFin()
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("ADVERTENCIA")
-            .setMessage("¿Desea eliminar esta venta?")
-            .setPositiveButton("Si") { dialog, _ ->
-                lifecycleScope.launch {
-                    try {
-                        if (esIndividual) {
-                            ventasModel.eliminarVenta(idProducto)
-                        } else {
-                            val ventasCajilla =
-                                ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
-                            val ventasFiltradas =
-                                ventasCajilla.filter { it.fechaVenta == fechaAgrupada }
-                            for (venta in ventasFiltradas) {
-                                ventasModel.eliminarVenta(venta.id)
-                            }
-                        }
-                        // Eliminar el elemento de la lista de datos del adaptador
-                        adapterVenta.removeItem(position)
-                        // Notificar al adaptador sobre el cambio específico
-                        adapterVenta.notifyItemRemoved(position)
-                        Toast.makeText(
-                            requireContext(),
-                            "Venta eliminada exitosamente",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        ventasModel.obtenerTotal(fechaInicio, fechaFin)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        // Manejar la excepción según tus necesidades
-                    }
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton("No") { diag, _ ->
-                diag.dismiss()
-            }
-            .show()
-    }
-
 
     // Función de extensión para obtener la fecha de inicio actual
     @SuppressLint("SimpleDateFormat")
@@ -312,6 +250,61 @@ class VentasFragment : Fragment() {
             }
 
         alert.show()
+    }
+
+    private fun onDeleteItem(idProducto: Int, position: Int, fechaAgrupada: String) {
+        val fechaInicio = obtenerFechaInicioActual()
+        val fechaFin = obtenerFechaFin()
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("ADVERTENCIA")
+            .setMessage("¿Desea eliminar esta venta?")
+            .setPositiveButton("Si") { dialog, _ ->
+                lifecycleScope.launch {
+                    try {
+                        if (esIndividual) {
+                            ventasModel.eliminarVenta(idProducto)
+                        } else {
+                            val ventasCajilla =
+                                ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
+                            val ventasFiltradas =
+                                ventasCajilla.filter { it.fechaVenta == fechaAgrupada }
+                            for (venta in ventasFiltradas) {
+                                ventasModel.eliminarVenta(venta.id)
+                            }
+                        }
+                        // Eliminar el elemento de la lista de datos del adaptador
+                        adapterVenta.removeItem(position)
+                        // Notificar al adaptador sobre el cambio específico
+                        adapterVenta.notifyItemRemoved(position)
+                        Toast.makeText(
+                            requireContext(),
+                            "Venta eliminada exitosamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ventasModel.obtenerTotal(fechaInicio, fechaFin)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // Manejar la excepción según tus necesidades
+                    }
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { diag, _ ->
+                diag.dismiss()
+            }
+            .show()
+    }
+
+    private fun onUpdateItem(fechaVenta: String, idProducto: Int) {
+        findNavController().navigate(
+            VentasFragmentDirections.actionVentasFragmentToEditarVentasFragment(
+                idProducto = idProducto,
+                idFecha = fechaVenta,
+                esIndividual = esIndividual,
+                isMultiple = false
+            )
+        )
     }
 
 }

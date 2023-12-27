@@ -18,10 +18,12 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.example.pulperiaapp.R
@@ -117,6 +119,11 @@ class EditarInventarioFragment : Fragment() {
         binding.btnGuardar.setOnClickListener {
             guardarInventarioEditado()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_editarInventarioFragment_to_inventarioDatosFragment)
+        }
     }
 
     private fun guardarInventarioEditado() {
@@ -161,7 +168,9 @@ class EditarInventarioFragment : Fragment() {
             }
         }
 
-        requireActivity().supportFragmentManager.popBackStack()
+        val action =
+            EditarInventarioFragmentDirections.actionEditarInventarioFragmentToInventarioDatosFragment()
+        Navigation.findNavController(binding.root).navigate(action)
         Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_SHORT).show()
     }
 
@@ -240,9 +249,11 @@ class EditarInventarioFragment : Fragment() {
             override fun onImageAdd(imageCount: Int) {
                 actualizarConteo(imageCount)
             }
+
             override fun onImageDelete(imageCount: Int, deletedImage: Bitmap?) {
                 val idInventario = args.idInventario
-                val listaInventario: MutableList<InventarioModel>? = inventarioRecuperado[idInventario]
+                val listaInventario: MutableList<InventarioModel>? =
+                    inventarioRecuperado[idInventario]
 
                 if (listaInventario != null && deletedImage != null) {
                     for (inventario in listaInventario) {

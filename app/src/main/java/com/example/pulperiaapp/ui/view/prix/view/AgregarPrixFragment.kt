@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarPrixBinding
 import com.example.pulperiaapp.ui.view.prix.viewmodel.PrixViewModel
@@ -64,10 +65,12 @@ class AgregarPrixFragment : Fragment() {
             val precioDouble = precio.toDouble()
             val precioPrixEntity = PrecioPrixEntity(0, producto, precioDouble)
             prixModel.insertraPrixTabla(precioPrixEntity)
-            requireActivity().supportFragmentManager.popBackStack()
+
+
+            Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT).show()
+            val action = AgregarPrixFragmentDirections.actionAgregarPrixFragmentToTablaPrixFragment()
+            Navigation.findNavController(binding.root).navigate(action)
             ocultarTeclado()
-            Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT)
-                .show()
         }
 
     }
@@ -75,6 +78,8 @@ class AgregarPrixFragment : Fragment() {
     private fun ocultarTeclado() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
+
+
     }
 
 }

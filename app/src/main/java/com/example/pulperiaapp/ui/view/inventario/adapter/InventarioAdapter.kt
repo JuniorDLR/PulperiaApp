@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.apachat.swipereveallayout.core.SwipeLayout
+import com.apachat.swipereveallayout.core.ViewBinder
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.InventarioItemBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
@@ -25,17 +27,19 @@ class InventarioAdapter
     var listaModelFilter: Map<String, List<InventarioModel>> = emptyMap()
     var nombre: String = ""
 
+    private val viewBinderHelper: ViewBinder = ViewBinder()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val binding = InventarioItemBinding.bind(view)
+        val swipeLayout: SwipeLayout = binding.swipeLayout
 
         fun bind(lista: InventarioModel) {
             binding.tvFechaInventario.text = lista.fechaEntrega
-            binding.btnEditarInventario.setOnClickListener {
+            binding.btnEdit.setOnClickListener {
                 onClickUpdate(lista.fechaEntrega)
             }
-            binding.btnEliminarInventario.setOnClickListener {
+            binding.btnDel.setOnClickListener {
                 onClickDelete(lista.fechaEntrega)
             }
 
@@ -58,7 +62,11 @@ class InventarioAdapter
         nombre = "Inventario: $position"
         holder.binding.NombreInventario.text = nombre
         if (lista != null) {
-            holder.bind(lista[0])
+            val venta = lista[0]
+            holder.bind(venta)
+            viewBinderHelper.setOpenOnlyOne(true)
+            viewBinderHelper.bind(holder.swipeLayout,venta.fechaEntrega)
+            viewBinderHelper.closeLayout(venta.fechaEntrega)
         }
 
 
@@ -71,7 +79,6 @@ class InventarioAdapter
         notifyDataSetChanged()
 
     }
-
 
 
     override fun getFilter(): Filter {

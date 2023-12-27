@@ -24,13 +24,19 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_tablaProductoFragment"
-            app:destination="@id/TablaCocaFragment" />
+            app:destination="@id/TablaCocaFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_homeFragment_to_tablaPrixFragment"
-            app:destination="@id/tablaPrixFragment" />
+            app:destination="@id/tablaPrixFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_homeFragment_to_tablaBigColaFragment"
-            app:destination="@id/tablaBigColaFragment" />
+            app:destination="@id/tablaBigColaFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/ventasFragment"
@@ -39,10 +45,14 @@
         tools:layout="@layout/fragment_ventas">
         <action
             android:id="@+id/action_ventasFragment_to_ventasProductoFragment"
-            app:destination="@id/ventasProductoFragment" />
+            app:destination="@id/ventasProductoFragment"
+            app:popUpTo="@id/ventasFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_ventasFragment_to_editarVentasFragment"
-            app:destination="@id/editarVentasFragment" />
+            app:destination="@id/editarVentasFragment"
+            app:popUpTo="@id/ventasFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/creditoFragment"
@@ -51,27 +61,43 @@
         tools:layout="@layout/fragment_credito">
         <action
             android:id="@+id/action_creditoFragment_to_amorosoFragment"
-            app:destination="@id/amorosoFragment" />
+            app:destination="@id/amorosoFragment"
+            app:popUpTo="@id/creditoFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_creditoFragment_to_editarCreditoFragment"
-            app:destination="@id/editarCreditoFragment" />
+            app:destination="@id/editarCreditoFragment"
+            app:popUpTo="@id/creditoFragment"
+            app:popUpToInclusive="true" />
 
     </fragment>
     <fragment
         android:id="@+id/amorosoFragment"
         android:name="com.example.pulperiaapp.ui.view.credito.view.AmorosoFragment"
         android:label="fragment_amoroso"
-        tools:layout="@layout/fragment_amoroso" />
+        tools:layout="@layout/fragment_amoroso" >
+        <action
+            android:id="@+id/action_amorosoFragment_to_creditoFragment"
+            app:destination="@id/creditoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/inventarioFragment"
         android:name="com.example.pulperiaapp.ui.view.inventario.view.InventarioFragment"
         android:label="fragment_inventario"
-        tools:layout="@layout/fragment_inventario" />
+        tools:layout="@layout/fragment_inventario" >
+        <action
+            android:id="@+id/action_inventarioFragment_to_inventarioDatosFragment"
+            app:destination="@id/inventarioDatosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ventasProductoFragment"
         android:name="com.example.pulperiaapp.ui.view.venta.view.VentasProductoFragment"
         android:label="fragment_ventas_producto"
-        tools:layout="@layout/fragment_ventas_producto" />
+        tools:layout="@layout/fragment_ventas_producto" >
+        <action
+            android:id="@+id/action_ventasProductoFragment_to_ventasFragment"
+            app:destination="@id/ventasFragment" />
+    </fragment>
     <fragment
         android:id="@+id/TablaCocaFragment"
         android:name="com.example.pulperiaapp.ui.view.coca.view.TablaCocaFragment"
@@ -80,6 +106,9 @@
         <action
             android:id="@+id/action_TablaCocaFragment_to_agregarCocaFragment"
             app:destination="@id/agregarCocaFragment" />
+        <action
+            android:id="@+id/action_TablaCocaFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/tablaPrixFragment"
@@ -89,22 +118,35 @@
         <action
             android:id="@+id/action_tablaPrixFragment_to_agregarPrixFragment"
             app:destination="@id/agregarPrixFragment" />
+        <action
+            android:id="@+id/action_tablaPrixFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/agregarCocaFragment"
         android:name="com.example.pulperiaapp.ui.view.coca.view.AgregarCocaFragment"
         android:label="fragment_agregar_coca"
-        tools:layout="@layout/fragment_agregar_coca" />
+        tools:layout="@layout/fragment_agregar_coca" >
+        <action
+            android:id="@+id/action_agregarCocaFragment_to_TablaCocaFragment"
+            app:destination="@id/TablaCocaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/agregarPrixFragment"
         android:name="com.example.pulperiaapp.ui.view.prix.view.AgregarPrixFragment"
         android:label="fragment_agregar_prix"
-        tools:layout="@layout/fragment_agregar_prix" />
+        tools:layout="@layout/fragment_agregar_prix" >
+        <action
+            android:id="@+id/action_agregarPrixFragment_to_tablaPrixFragment"
+            app:destination="@id/tablaPrixFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registrarClienteFragment"
         android:name="com.example.pulperiaapp.ui.view.cliente.RegistrarClienteFragment"
         android:label="fragment_registrar_cliente"
-        tools:layout="@layout/fragment_registrar_cliente" />
+        tools:layout="@layout/fragment_registrar_cliente" >
+
+    </fragment>
     <fragment
         android:id="@+id/tablaBigColaFragment"
         android:name="com.example.pulperiaapp.ui.view.bigcola.view.TablaBigColaFragment"
@@ -113,17 +155,28 @@
         <action
             android:id="@+id/action_tablaBigColaFragment_to_agregandoBigFragment"
             app:destination="@id/agregandoBigFragment" />
+        <action
+            android:id="@+id/action_tablaBigColaFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/agregandoBigFragment"
         android:name="com.example.pulperiaapp.ui.view.bigcola.view.AgregandoBigFragment"
         android:label="fragment_agregando_big"
-        tools:layout="@layout/fragment_agregando_big" />
+        tools:layout="@layout/fragment_agregando_big" >
+        <action
+            android:id="@+id/action_agregandoBigFragment_to_tablaBigColaFragment"
+            app:destination="@id/tablaBigColaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/seguridadFragment"
         android:name="com.example.pulperiaapp.ui.view.principal.SeguridadFragment"
         android:label="fragment_seguridad"
-        tools:layout="@layout/fragment_seguridad" />
+        tools:layout="@layout/fragment_seguridad" >
+        <action
+            android:id="@+id/action_seguridadFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
 
         android:id="@+id/inventarioDatosFragment"
@@ -132,10 +185,14 @@
         tools:layout="@layout/fragment_inventario_datos">
         <action
             android:id="@+id/action_inventarioDatosFragment_to_inventarioFragment"
-            app:destination="@id/inventarioFragment" />
+            app:destination="@id/inventarioFragment"
+            app:popUpTo="@id/inventarioDatosFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_inventarioDatosFragment_to_editarInventarioFragment"
-            app:destination="@id/editarInventarioFragment" />
+            app:destination="@id/editarInventarioFragment"
+            app:popUpTo="@id/inventarioDatosFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/editarVentasFragment"
@@ -154,32 +211,42 @@
         <argument
             android:name="isMultiple"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_editarVentasFragment_to_ventasFragment"
+            app:destination="@id/ventasFragment" />
     </fragment>
     <fragment
         android:id="@+id/editarCreditoFragment"
         android:name="com.example.pulperiaapp.ui.view.credito.view.EditarCreditoFragment"
         android:label="fragment_editar_credito"
-        tools:layout="@layout/fragment_editar_credito" >
+        tools:layout="@layout/fragment_editar_credito">
         <argument
             android:name="cliente"
             app:argType="string" />
         <argument
             android:name="idProducto"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_editarCreditoFragment_to_creditoFragment"
+            app:destination="@id/creditoFragment" />
     </fragment>
     <fragment
         android:id="@+id/editarInventarioFragment"
         android:name="com.example.pulperiaapp.ui.view.inventario.view.EditarInventarioFragment"
         android:label="fragment_editar_inventario"
-        tools:layout="@layout/fragment_editar_inventario" >
-        <argument android:name="idInventario"
+        tools:layout="@layout/fragment_editar_inventario">
+        <argument
+            android:name="idInventario"
             app:argType="string" />
+        <action
+            android:id="@+id/action_editarInventarioFragment_to_inventarioDatosFragment"
+            app:destination="@id/inventarioDatosFragment" />
     </fragment>
     <fragment
         android:id="@+id/filtrarDatosFragment"
         android:name="com.example.pulperiaapp.ui.view.filtrado.FiltrarDatosFragment"
         android:label="fragment_filtrar_datos"
-        tools:layout="@layout/fragment_filtrar_datos" >
+        tools:layout="@layout/fragment_filtrar_datos">
         <action
             android:id="@+id/action_filtrarDatosFragment_to_editarVentasFragment"
             app:destination="@id/editarVentasFragment" />

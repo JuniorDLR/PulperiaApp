@@ -23,6 +23,8 @@ import com.example.pulperiaapp.ui.view.prix.viewmodel.PrixViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -61,7 +63,9 @@ class TablaPrixFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         prixViewModel.obtenerPrixTabla()
         binding.btnAgregarProductoPrix.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.agregarPrixFragment)
+            val action = TablaPrixFragmentDirections.actionTablaPrixFragmentToAgregarPrixFragment()
+            Navigation.findNavController(binding.root).navigate(action)
+
         }
 
         binding.btnEditarProductoPrix.setOnClickListener {
@@ -69,6 +73,9 @@ class TablaPrixFragment : Fragment() {
 
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_tablaPrixFragment_to_homeFragment)
+        }
         binding.btnEliminarProductoPrix.setOnClickListener {
             eliminarProducto()
         }
@@ -88,7 +95,6 @@ class TablaPrixFragment : Fragment() {
             }
 
         })
-
 
 
     }

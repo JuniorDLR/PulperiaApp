@@ -71,4 +71,9 @@
     <string name="mostrar_clientes_registrados">Mostrar clientes registrados</string>
     <string name="ventas_por_individual">Ventas por individual</string>
     <string name="aplicar_filtros">Aplicar Filtros</string>
+    <string name="total_0_00">Total: $0.00</string>
+    <string name="inventario1">Inventario1</string>
+    <string name="_2023_12_12">2023-12-12</string>
+    <string name="_30">30</string>
+    <string name="_20_05_21">20-05-21</string>
 </resources>

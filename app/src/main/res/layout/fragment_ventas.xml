@@ -22,9 +22,9 @@
                 android:id="@+id/Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Ventas"
+                android:text="@string/ventas"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -33,11 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:text="Total: $0.00"
+                android:text="@string/total_0_00"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
@@ -65,7 +63,8 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/fondo"
-            android:src="@drawable/baseline_add_24" />
+            android:src="@drawable/baseline_add_24"
+            android:contentDescription="@string/agregar" />
 
     </LinearLayout>
 
@@ -94,6 +93,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVentas"
+
+            tools:listitem="@layout/item_venta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </ScrollView>

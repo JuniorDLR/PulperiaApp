@@ -36,18 +36,17 @@
                     android:id="@+id/etFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/baseline_calendar_month_24"
+                    android:drawableStart="@drawable/baseline_calendar_month_24"
                     android:drawablePadding="8dp"
                     android:textStyle="bold"
-                    tools:hint="yyyy-MM-dd"
-                    android:drawableStart="@drawable/baseline_calendar_month_24">
+                    tools:hint="yyyy-MM-dd">
 
                 </com.google.android.material.textfield.TextInputEditText>
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <!-- Puedes cambiar el icono de calendario (ic_calendario) con el que desees -->
+
 
         </RelativeLayout>
 
@@ -56,10 +55,11 @@
             android:id="@+id/btnAgregarInventario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-       android:layout_marginVertical="15dp"
+            android:layout_marginVertical="15dp"
             android:layout_weight="1"
             android:backgroundTint="@color/fondo"
-            android:src="@drawable/baseline_add_24" />
+            android:src="@drawable/baseline_add_24"
+            android:contentDescription="@string/agregar" />
 
     </LinearLayout>
 
@@ -71,7 +71,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvInventario"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/inventario_item" />
     </ScrollView>
 
 </LinearLayout>

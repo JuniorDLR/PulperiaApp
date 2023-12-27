@@ -12,6 +12,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -57,7 +58,10 @@ class TablaBigColaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnAgregarProductoBig.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.agregandoBigFragment)
+
+            val action =
+                TablaBigColaFragmentDirections.actionTablaBigColaFragmentToAgregandoBigFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
         binding.btnEditarProductoBig.setOnClickListener { editarBigCola() }
         binding.btnElimimarProductoBig.setOnClickListener { eliminarBigCola() }
@@ -74,6 +78,10 @@ class TablaBigColaFragment : Fragment() {
             }
 
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            Navigation.findNavController(binding.root).navigate(R.id.action_tablaBigColaFragment_to_homeFragment)
+        }
     }
 
     private fun filterTextTable(query: String?) {

@@ -10,8 +10,10 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentEditarCreditoBinding
@@ -46,6 +48,7 @@ class EditarCreditoFragment : Fragment() {
         return binding.root
     }
 
+
     private fun initComponent() {
         tableLayout = binding.tlProductoEditarCredito
         tableRow = binding.trProducto
@@ -59,6 +62,10 @@ class EditarCreditoFragment : Fragment() {
         binding.tvVisualizarCliente.text = cliente
         binding.btnEditarCredito.setOnClickListener {
             editarCredito()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            Navigation.findNavController(binding.root).navigate(R.id.action_editarCreditoFragment_to_creditoFragment)
         }
     }
 
@@ -84,7 +91,9 @@ class EditarCreditoFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Datos editados exitosamente!!!", Toast.LENGTH_LONG)
                 .show()
-            requireActivity().supportFragmentManager.popBackStack()
+            val action =
+                EditarCreditoFragmentDirections.actionEditarCreditoFragmentToCreditoFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
     }
 
@@ -119,7 +128,7 @@ class EditarCreditoFragment : Fragment() {
         cantidad: Int,
         precio: Double,
 
-    ) {
+        ) {
         val cliente = args.cliente
 
         if (cantidad > 0) {
@@ -134,7 +143,7 @@ class EditarCreditoFragment : Fragment() {
                         cantidad,
                         precio,
 
-                    )
+                        )
                 )
             }
         }

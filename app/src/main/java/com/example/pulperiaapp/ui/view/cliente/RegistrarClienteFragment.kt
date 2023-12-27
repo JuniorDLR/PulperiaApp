@@ -36,6 +36,7 @@ class RegistrarClienteFragment : Fragment() {
 
 
         binding.btnAgregarMoroso.setOnClickListener { guardarCliente() }
+
     }
     private fun guardarCliente() {
         lifecycleScope.launch {

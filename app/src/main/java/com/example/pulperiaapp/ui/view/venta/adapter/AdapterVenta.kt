@@ -3,14 +3,17 @@ package com.example.pulperiaapp.ui.view.venta.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
+
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 
+import com.apachat.swipereveallayout.core.ViewBinder
+
 import androidx.recyclerview.widget.RecyclerView
+import com.apachat.swipereveallayout.core.SwipeLayout
 //_+uqd<nK-@NK$R8GT2i&
-import com.example.pulperiaapp.R
+
 import com.example.pulperiaapp.databinding.ItemVentaBinding
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import java.math.BigDecimal
@@ -23,17 +26,20 @@ import kotlin.collections.List
 class AdapterVenta(
     private val onDeleteClickListener: (Int, Int, String) -> Unit = { _, _, _ -> },
     private val onUpdateClickListener: (String, Int) -> Unit = { _, _ -> }
+
 ) : RecyclerView.Adapter<AdapterVenta.ViewHolder>(),
     Filterable {
     var listaVenta: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
     var filterList: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
     var ventaContext: String = "individual"
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val binding = ItemVentaBinding.bind(view)
+    private val viewBinderHelper: ViewBinder = ViewBinder()
 
 
+    inner class ViewHolder(private val binding: ItemVentaBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+
+        val swipeLayout: SwipeLayout = binding.swipeLayout
         fun bind(venta: VentaPrixCocaDetalle) {
             binding.tvFecha.text = venta.fechaVenta
             binding.tvListProducto.text =
@@ -48,22 +54,29 @@ class AdapterVenta(
 
             binding.tvTotal.text = bigFormateado.toString()
 
-            binding.btnEliminarVenta.setOnClickListener {
-                onDeleteClickListener(venta.id, adapterPosition, venta.fechaVenta)
+            binding.btnDel.setOnClickListener {
+                onDeleteClickListener(venta.id, bindingAdapterPosition, venta.fechaVenta)
             }
-            binding.btnEditarVenta.setOnClickListener {
+            binding.btnEdit.setOnClickListener {
                 onUpdateClickListener(venta.fechaVenta, venta.id)
             }
+
         }
+
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflate = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_venta, parent, false
+
+        return ViewHolder(
+            ItemVentaBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-        return ViewHolder(inflate)
     }
+
 
     override fun getItemCount(): Int = filterList.size
 
@@ -71,9 +84,14 @@ class AdapterVenta(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diagKey = filterList.values.elementAt(position)
         if (diagKey.isNotEmpty()) {
-            holder.bind(diagKey[0])
+            val venta = diagKey[0]  // Asegúrate de tener la referencia correcta al elemento
+            holder.bind(venta)
+            viewBinderHelper.setOpenOnlyOne(true)
+            viewBinderHelper.bind(holder.swipeLayout, venta.id.toString())
+            viewBinderHelper.closeLayout(venta.id.toString())
         }
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun setListCajilla(newList: Map<String, List<VentaPrixCocaDetalle>>) {

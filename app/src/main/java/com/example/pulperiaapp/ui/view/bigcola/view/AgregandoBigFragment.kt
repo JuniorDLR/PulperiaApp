@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.pulperiaapp.data.database.entitie.PrecioBigCola
 import com.example.pulperiaapp.databinding.FragmentAgregandoBigBinding
 import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
@@ -66,13 +67,18 @@ class AgregandoBigFragment : Fragment() {
             Toast.makeText(requireContext(), "Datos guardado exitosamente", Toast.LENGTH_LONG)
                 .show()
             ocultarTeclado()
-            requireActivity().supportFragmentManager.popBackStack()
+            val action =
+                AgregandoBigFragmentDirections.actionAgregandoBigFragmentToTablaBigColaFragment()
+            Navigation.findNavController(binding.root).navigate(action)
+
         }
     }
 
     private fun ocultarTeclado() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
+
+
     }
 
 }

@@ -64,8 +64,9 @@ class CreditoFragment : Fragment() {
             adapter.setLista(lista)
         }
         binding.btnRegistrarMoroso.setOnClickListener {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_creditoFragment_to_amorosoFragment)
+            val action = CreditoFragmentDirections.actionCreditoFragmentToAmorosoFragment()
+            Navigation.findNavController(binding.root).navigate(action)
+
         }
         binding.shAmoroso.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -129,11 +130,12 @@ class CreditoFragment : Fragment() {
     }
 
 
+
     fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estas seguro qeu desea cerrar sesion?")
-            .setPositiveButton("Aceptar") { dialog, _ ->
+            .setPositiveButton("Aceptar") { _, _ ->
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
 

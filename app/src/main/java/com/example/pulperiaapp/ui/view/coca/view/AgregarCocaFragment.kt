@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.pulperiaapp.data.database.entitie.PrecioCocaEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarCocaBinding
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
@@ -67,17 +68,22 @@ class AgregarCocaFragment : Fragment() {
             val precioDouble = precio.toDouble()
             val precioCocaEntity = PrecioCocaEntity(0, producto = producto, precio = precioDouble)
             cocaViewModel.insertarCocaTabla(precioCocaEntity)
-            requireActivity().supportFragmentManager.popBackStack()
-            ocultarTeclado()
+
             Toast.makeText(requireContext(), "Datos agregado exitosamente!!", Toast.LENGTH_SHORT)
                 .show()
+            ocultarTeclado()
+            val action = AgregarCocaFragmentDirections.actionAgregarCocaFragmentToTablaCocaFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
 
     }
 
-    private fun ocultarTeclado(){
+    private fun ocultarTeclado() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken,0)
+        imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
+
+
+
     }
 
 }

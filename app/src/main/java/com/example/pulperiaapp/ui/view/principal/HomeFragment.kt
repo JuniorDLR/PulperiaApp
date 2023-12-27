@@ -1,14 +1,12 @@
 package com.example.pulperiaapp.ui.view.principal
 
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -25,7 +23,7 @@ class HomeFragment : Fragment() {
     private lateinit var animationView: LottieAnimationView
 
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -52,13 +50,16 @@ class HomeFragment : Fragment() {
             when (item.itemId) {
                 R.id.tablaPrix -> {
 
-                    Navigation.findNavController(binding.root)
-                        .navigate(R.id.tablaPrixFragment)
+                    val action = HomeFragmentDirections.actionHomeFragmentToTablaPrixFragment()
+                    Navigation.findNavController(binding.root).navigate(action)
+
                     true
                 }
 
                 R.id.tablaCoca -> {
-                    Navigation.findNavController(binding.root).navigate(R.id.TablaCocaFragment)
+
+                    val action = HomeFragmentDirections.actionHomeFragmentToTablaProductoFragment()
+                    Navigation.findNavController(binding.root).navigate(action)
                     true
                 }
 
@@ -69,7 +70,8 @@ class HomeFragment : Fragment() {
                 }
 
                 R.id.tablaBigCola -> {
-                    Navigation.findNavController(binding.root).navigate(R.id.tablaBigColaFragment)
+                    val action = HomeFragmentDirections.actionHomeFragmentToTablaBigColaFragment()
+                    Navigation.findNavController(binding.root).navigate(action)
                     true
                 }
 
