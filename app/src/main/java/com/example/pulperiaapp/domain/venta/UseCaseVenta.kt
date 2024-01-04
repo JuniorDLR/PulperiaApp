@@ -26,7 +26,6 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
     }
 
 
-
     suspend fun obtenerFilterIndividual(
         fechaInicio: String
     ): List<VentaPrixCocaDetalle> {
@@ -40,7 +39,7 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
     }
 
     suspend fun obtenerTotal(fechaInicio: String, fechaFin: String): Double {
-        return repositorio.obtenerTotal(fechaInicio,fechaFin)
+        return repositorio.obtenerTotal(fechaInicio, fechaFin)
     }
 
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) =
@@ -76,6 +75,8 @@ class UseCaseVenta @Inject constructor(private val repositorio: VentaRepositorio
 
     suspend fun obtenerDetalleEditar(idFecha: String): List<DetalleEditar> =
         repositorio.obtenerDetalleEditar(idFecha)
+
+
 
 
 }

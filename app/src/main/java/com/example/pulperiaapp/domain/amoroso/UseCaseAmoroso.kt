@@ -21,7 +21,7 @@ class UseCaseAmoroso @Inject constructor(private val creditoRepository: CreditoR
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle> =
         creditoRepository.obtenerDetalleAmoroso(cliente)
 
-    suspend fun obtenerFilterPago():List<VentaAmorosoDetalle> = creditoRepository.obtenerFilterPago()
+    suspend fun obtenerFilterPago(fechaFilter: String):List<VentaAmorosoDetalle> = creditoRepository.obtenerFilterPago(fechaFilter)
 
     suspend fun obtenerCredito(): List<VentaAmorosoDetalle> {
         return creditoRepository.obtenerCredito()

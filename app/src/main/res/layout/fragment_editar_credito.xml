@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="CLIENTE"
         android:textSize="20sp"
-        android:padding="10dp"
         android:textStyle="bold" />
 
     <TableRow
@@ -114,11 +114,13 @@
 
     <Button
         android:id="@+id/btnEditarCredito"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.MaterialTimePicker.Button"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/fondo"
         android:text="Editar credito"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
 

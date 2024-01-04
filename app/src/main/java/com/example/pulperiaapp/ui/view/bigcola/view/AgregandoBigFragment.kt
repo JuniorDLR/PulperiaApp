@@ -11,11 +11,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.data.database.entitie.PrecioBigCola
 import com.example.pulperiaapp.databinding.FragmentAgregandoBigBinding
 import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -50,7 +53,7 @@ class AgregandoBigFragment : Fragment() {
     }
 
     private fun agregarBigCola() {
-        val producto = binding.tvProducoAgregar.text.toString()
+        val producto = binding.tvProducoAgregar.text.toString().lowercase(Locale.ROOT).trim()
         val precio = binding.tvAgregarPrecio.text.toString()
 
         if (producto.isEmpty() || precio.isEmpty()) {
@@ -63,15 +66,62 @@ class AgregandoBigFragment : Fragment() {
         } else {
             val precioDouble = precio.toDouble()
             val entitie = PrecioBigCola(0, producto, precioDouble)
-            viewModelBig.insertarBigCola(entitie)
-            Toast.makeText(requireContext(), "Datos guardado exitosamente", Toast.LENGTH_LONG)
-                .show()
-            ocultarTeclado()
-            val action =
-                AgregandoBigFragmentDirections.actionAgregandoBigFragmentToTablaBigColaFragment()
-            Navigation.findNavController(binding.root).navigate(action)
+
+
+            lifecycleScope.launch {
+                val productoLista = obtenerProducto(producto)
+                if (productoLista.isNotEmpty()) {
+                    showAlertDialog(
+                        "ADVERTENCIA",
+                        "Este producto ya esta registrado en la tabla",
+                        "Continuar"
+                    )
+                } else {
+                    viewModelBig.insertarBigCola(entitie)
+                    Toast.makeText(
+                        requireContext(),
+                        "Datos guardado exitosamente",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    ocultarTeclado()
+
+                    val action =
+                        AgregandoBigFragmentDirections.actionAgregandoBigFragmentToTablaBigColaFragment()
+                    Navigation.findNavController(binding.root).navigate(action)
+                }
+
+            }
 
         }
+    }
+
+    private suspend fun obtenerProducto(producto: String): String {
+
+        return try {
+            val lista = viewModelBig.obtenerBigcola()
+            for (filtrtado in lista) {
+                if (filtrtado.producto.lowercase(Locale.ROOT).trim() == producto) {
+                    return producto
+                }
+            }
+            ""
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+
+    }
+
+    private fun showAlertDialog(titulo: String, mensaje: String, boton: String) {
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle(titulo)
+            .setMessage(mensaje)
+            .setPositiveButton(boton) { dialog, _ ->
+                dialog.dismiss()
+            }
+        builder.show()
+
     }
 
     private fun ocultarTeclado() {
@@ -82,3 +132,5 @@ class AgregandoBigFragment : Fragment() {
     }
 
 }
+
+

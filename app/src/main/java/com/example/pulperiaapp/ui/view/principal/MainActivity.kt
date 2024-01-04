@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         navView.isVisible = false
 
 
-
         savedInstanceState?.let { bundle ->
             val isNavViewVisible = bundle.getBoolean("isNavViewVisible",true)
             binding.NavigationBottom.isVisible = isNavViewVisible

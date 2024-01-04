@@ -47,7 +47,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/fondo"
-                    android:src="@drawable/baseline_add_24" />
+                    android:src="@drawable/baseline_add_24"
+                    android:contentDescription="@string/agregar" />
 
             </LinearLayout>
 
@@ -172,35 +173,34 @@
 
 
                 <Button
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:id="@+id/btnEditarProductoPrix"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
+
                     android:backgroundTint="@color/fondo"
                     android:text="@string/editar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    tools:targetApi="lollipop" />
+             />
 
 
                 <Button
                     android:id="@+id/btnEliminarProductoPrix"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="150dp"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:backgroundTint="@color/fondo"
                     android:text="@string/eliminar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    tools:targetApi="lollipop" />
+                   />
 
             </LinearLayout>
 

@@ -25,9 +25,9 @@
         android:layout_margin="10dp"
         app:counterEnabled="true"
         app:counterMaxLength="18"
-        app:errorIconDrawable="@drawable/baseline_error_24"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/baseline_error_24"
         app:helperText="Solo se permiten 18 caracteres*"
         app:helperTextTextColor="@color/red"
         app:startIconDrawable="@drawable/prix">
@@ -65,11 +65,13 @@
 
     <Button
         android:id="@+id/btnAgregarCoca"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.MaterialTimePicker.Button"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/fondo"
         android:text="@string/agregar_producto"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 

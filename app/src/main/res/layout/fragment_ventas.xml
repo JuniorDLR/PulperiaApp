@@ -46,27 +46,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <SearchView
-            android:id="@+id/shVentas"
-            android:layout_width="0dp"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etFechaVentasCajilla"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="5"
-            android:background="@color/buscador" />
+            app:endIconMode="clear_text">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/baseline_calendar_month_24"
+                android:drawablePadding="8dp"
+                android:textStyle="bold"
+                tools:hint=" yyyy-MM-dd">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAgregarVenta"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
+            android:layout_marginTop="15dp"
             android:backgroundTint="@color/fondo"
-            android:src="@drawable/baseline_add_24"
-            android:contentDescription="@string/agregar" />
-
+            android:contentDescription="@string/agregar"
+            android:src="@drawable/baseline_add_24" />
     </LinearLayout>
+
 
     <!-- Agregar el TabLayout -->
     <com.google.android.material.tabs.TabLayout
@@ -85,6 +98,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/ventas_por_cajilla" />
+
+
     </com.google.android.material.tabs.TabLayout>
 
     <ScrollView
@@ -94,9 +109,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVentas"
 
-            tools:listitem="@layout/item_venta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_venta" />
     </ScrollView>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator

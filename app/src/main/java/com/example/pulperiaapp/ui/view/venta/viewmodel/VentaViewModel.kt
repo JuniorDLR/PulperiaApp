@@ -22,10 +22,8 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     val ventaModelCajilla: LiveData<Map<String, List<VentaPrixCocaDetalle>>> = _ventaModelCajilla
 
 
-    private val _ventaModelIndividual =
-        MutableLiveData<List<VentaPrixCocaDetalle>>(emptyList())
-    val ventaModelIndividual: LiveData<List<VentaPrixCocaDetalle>> =
-        _ventaModelIndividual
+    private val _ventaModelIndividual = MutableLiveData<List<VentaPrixCocaDetalle>>(emptyList())
+    val ventaModelIndividual: LiveData<List<VentaPrixCocaDetalle>> = _ventaModelIndividual
 
 
     private val _obtenerTotal = MutableLiveData<Double?>()
@@ -53,8 +51,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     suspend fun editarVenta(ventaPrixCoca: VentaPrixCoca) = useCaseVenta.editarVenta(ventaPrixCoca)
 
     suspend fun obtenerVentaIndividual(
-        fechaInicio: String,
-        fechaFin: String
+        fechaInicio: String, fechaFin: String
     ): List<VentaPrixCocaDetalle> {
 
         return try {
@@ -71,8 +68,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     }
 
     suspend fun obtenerVentaCajilla(
-        fechaInicio: String,
-        fechaFin: String
+        fechaInicio: String, fechaFin: String
     ): List<VentaPrixCocaDetalle> {
 
         return try {
@@ -90,15 +86,13 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     }
 
 
-
     suspend fun obtenerFilterIndividual(
         fechaInicio: String
 
     ): List<VentaPrixCocaDetalle> {
 
         return try {
-            val lista =
-                useCaseVenta.obtenerFilterIndividual(fechaInicio = fechaInicio)
+            val lista = useCaseVenta.obtenerFilterIndividual(fechaInicio = fechaInicio)
             _ventaModelIndividual.postValue(lista)
             lista
         } catch (e: Exception) {
@@ -115,8 +109,7 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
 
         return try {
 
-            val lista =
-                useCaseVenta.obtenerFilterCajilla(fechaInicio = fechaInicio)
+            val lista = useCaseVenta.obtenerFilterCajilla(fechaInicio = fechaInicio)
             _ventaModelCajilla.value = lista.groupBy { it.fechaVenta }
             lista
 
@@ -136,6 +129,17 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         return useCaseVenta.obtenerProdcutoCoca()
     }
 
+    suspend fun obtenerProductoBig(): List<String> {
+        return useCaseVenta.obtenerProductoBig()
+    }
+
+    suspend fun obtenerTodosLosProductos(): List<String> {
+        val listaBig = useCaseVenta.obtenerProductoBig()
+        val listaCoca = useCaseVenta.obtenerProdcutoCoca()
+        val listaPrix = useCaseVenta.obtenerProductoPrix()
+        return listaBig + listaCoca + listaPrix
+    }
+
     fun eliminarVenta(id: Int) {
         viewModelScope.launch {
             useCaseVenta.eliminarVenta(id)
@@ -143,18 +147,19 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
     }
 
 
-    suspend fun obtenerProductoBig(): List<String> {
-        return useCaseVenta.obtenerProductoBig()
-    }
-
-    suspend fun obtenerPrecioPrix(producto: String): Double {
+    suspend fun obtenerPrecioPrix(producto: String): Double? {
         return useCaseVenta.obtenerPrecioPrix(producto)
     }
 
 
-    suspend fun obtenerPrecioCoca(producto: String): Double {
+    suspend fun obtenerPrecioCoca(producto: String): Double? {
         return useCaseVenta.obtenerPrecioCoca(producto)
     }
+
+    suspend fun obtenerPrecioBig(producto: String): Double? {
+        return useCaseVenta.obtenerPrecioBig(producto)
+    }
+
 
     suspend fun obtenerDetalleEditarLiveData(idFecha: String): List<DetalleEditar> {
         return try {
@@ -167,9 +172,28 @@ class VentaViewModel @Inject constructor(private val useCaseVenta: UseCaseVenta)
         }
     }
 
-    suspend fun obtenerPrecioBig(producto: String): Double {
-        return useCaseVenta.obtenerPrecioBig(producto)
+    suspend fun obtenerPrecio(producto: String): Double {
+
+        val precioPrix = obtenerPrecioPrix(producto)
+        if (precioPrix != null) {
+            return precioPrix
+        }
+
+        val precioCoca = obtenerPrecioCoca(producto)
+        if (precioCoca != null) {
+            return precioCoca
+        }
+
+        val precioBig = obtenerPrecioBig(producto)
+        if (precioBig != null) {
+            return precioBig
+        }
+
+
+        throw NoSuchElementException("El producto $producto no se encuentra en ninguna lista.")
     }
+
+
 
 
 }

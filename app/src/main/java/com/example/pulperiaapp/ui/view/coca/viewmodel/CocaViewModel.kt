@@ -32,11 +32,17 @@ class CocaViewModel @Inject constructor(private val useCaseTablaCoca: UseCaseTab
 
     }
 
-    fun obtenerCocaTabla() {
-        viewModelScope.launch {
+    suspend fun obtenerCocaTabla(): List<TablaCoca> {
+
+        return try {
             val lista = useCaseTablaCoca.obtenerCocaTabla()
             _cocaViewModel.postValue(lista)
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
+
     }
 
     fun editarCocaTabla(id: Int, precio: Double) {

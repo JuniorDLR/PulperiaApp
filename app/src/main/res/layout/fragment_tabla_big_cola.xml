@@ -176,31 +176,28 @@
 
                 <Button
                     android:id="@+id/btnEditarProductoBig"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="150dp"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:backgroundTint="@color/fondo"
                     android:text="@string/editar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:targetApi="lollipop" />
+                    android:textStyle="bold"/>
 
                 <Button
                     android:id="@+id/btnElimimarProductoBig"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="150dp"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:backgroundTint="@color/fondo"
                     android:text="@string/eliminar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:targetApi="lollipop" />
+                    android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>
 

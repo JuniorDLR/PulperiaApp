@@ -3,7 +3,6 @@ package com.example.pulperiaapp.ui.view.filtrado
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,10 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -105,13 +104,13 @@ class FiltrarDatosFragment : Fragment() {
                 idProducto = idProducto,
                 idFecha = fecha,
                 esIndividual = esIndividual,
-                isMultiple = esMultiple
+                isMultiple = esMultiple,
+                esFilter = true
             )
         )
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -137,7 +136,6 @@ class FiltrarDatosFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -145,21 +143,20 @@ class FiltrarDatosFragment : Fragment() {
             cerrarSesion()
         }
         callBack.isEnabled = true
-        binding.etFecha.inputType = InputType.TYPE_NULL
 
+
+        binding.etFecha.inputType = InputType.TYPE_NULL
         binding.etFecha.setOnClickListener { showDatePicker() }
 
         val switchIndividual = binding.switchIndividual
         val switchCajilla = binding.switchCajilla
 
-        binding.radioGroupClientes.setOnCheckedChangeListener { group, idCheck ->
+        binding.radioGroupClientes.setOnCheckedChangeListener { _, idCheck ->
 
             when (idCheck) {
                 R.id.checkBoxPagado -> {
-                    binding.etFecha.isEnabled = false
                     binding.SwitchVisible.isVisible = false
                     filtrarDato(1)
-                    binding.btnAplicarFiltros.isVisible = false
                 }
 
                 R.id.radioButtonTodos -> {
@@ -198,21 +195,24 @@ class FiltrarDatosFragment : Fragment() {
 
     private fun filtrarDato(numberFilter: Int) {
 
-
         when (numberFilter) {
             1 -> {
                 initComponent(1)
-                val viewModelJob = SupervisorJob()
-                val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                binding.btnAplicarFiltros.setOnClickListener {
+                    val viewModelJob = SupervisorJob()
+                    val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+                    try {
+                        val fecha = binding.etFecha.text.toString().trim()
 
-                viewModelScope.launch {
-                    val lista = creditoViewModel.obtenerFilterPago()
-                    Log.e("BUG", "OBTENIENDO DATOS DE ROOM  $lista")
-                }
-                creditoViewModel.groupedAmorosoModel.observe(viewLifecycleOwner) { lista ->
-                    Log.e("BUG", "AGREGANDO AL ADAPTER  $lista")
-                    adapterCredito.setLista(lista)
+                        viewModelScope.launch { creditoViewModel.obtenerFilterPago(fecha) }
+                        creditoViewModel.groupedAmorosoModel.observe(viewLifecycleOwner) { listaFiltrada ->
+                            adapterCredito.setLista(listaFiltrada)
+
+                        }
+                    } catch (e: Exception) {
+                        showAlertDialog("Error", "Hubo un error al obtener los datos")
+                    }
                 }
 
             }
@@ -290,8 +290,7 @@ class FiltrarDatosFragment : Fragment() {
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
 
-                val navController = Navigation.findNavController(binding.root)
-                navController.popBackStack()
+                findNavController().navigate(R.id.action_filtrarDatosFragment_to_loginFragment)
                 dialog.dismiss()
             }
 

@@ -1,18 +1,24 @@
 package com.example.pulperiaapp.ui.view.credito.view
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -78,7 +84,8 @@ class AmorosoFragment : Fragment() {
                     "BigCola" -> bigItem()
                     "Coca" -> cocaItem()
                     else -> {
-                        Toast.makeText(requireContext(),"Seleccion no valida",Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Seleccion no valida", Toast.LENGTH_LONG)
+                            .show()
                     }
 
 
@@ -89,8 +96,9 @@ class AmorosoFragment : Fragment() {
         binding.btnGuardarAmoroso.setOnClickListener {
             guardarVentaAmoroso()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            Navigation.findNavController(binding.root).navigate(R.id.action_amorosoFragment_to_creditoFragment)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_amorosoFragment_to_creditoFragment)
         }
     }
 
@@ -154,47 +162,46 @@ class AmorosoFragment : Fragment() {
             val lista: List<String> = clienteViewModel.obtenerAmoros()
 
 
-
-                val nombreEnMinuscula = amoroso.lowercase(Locale.ROOT)
-                val filtrado = lista.any { it.lowercase(Locale.ROOT) == nombreEnMinuscula }
-                if (filtrado && productoSeleccionados.isNotEmpty()) {
-
-
-                    for ((producto, info) in productoSeleccionados) {
-                        val cantidad = info.first
-                        val precio = info.second
-
-                        val amorosoEntity = CreditoEntity(
-                            0,
-                            amoroso,
-                            producto,
-                            cantidad,
-                            precio,
-                            fechaFormateada,
-                            false
-                        )
-
-                        amorosoEntities.add(amorosoEntity)
-                    }
+            val nombreEnMinuscula = amoroso.lowercase(Locale.ROOT)
+            val filtrado = lista.any { it.lowercase(Locale.ROOT) == nombreEnMinuscula }
+            if (filtrado && productoSeleccionados.isNotEmpty()) {
 
 
-                    creditoViewModel.insertarCredito(amorosoEntities)
+                for ((producto, info) in productoSeleccionados) {
+                    val cantidad = info.first
+                    val precio = info.second
 
-                    val action = AmorosoFragmentDirections.actionAmorosoFragmentToCreditoFragment()
-                    Navigation.findNavController(binding.root).navigate(action)
-                    Toast.makeText(
-                        requireContext(),
-                        "Datos guardados exitosamente",
-                        Toast.LENGTH_LONG
+                    val amorosoEntity = CreditoEntity(
+                        0,
+                        amoroso,
+                        producto,
+                        cantidad,
+                        precio,
+                        fechaFormateada,
+                        false
                     )
-                        .show()
-                } else {
-                    Snackbar.make(
-                        requireView(),
-                        "No has ingresado un amoroso o la tabla esta vacia",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+
+                    amorosoEntities.add(amorosoEntity)
                 }
+
+
+                creditoViewModel.insertarCredito(amorosoEntities)
+
+                val action = AmorosoFragmentDirections.actionAmorosoFragmentToCreditoFragment()
+                Navigation.findNavController(binding.root).navigate(action)
+                Toast.makeText(
+                    requireContext(),
+                    "Datos guardados exitosamente",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    "No has ingresado un amoroso o la tabla esta vacia",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
 
 
         }
@@ -350,7 +357,12 @@ class AmorosoFragment : Fragment() {
             }
 
             cantidadView.setOnClickListener {
-                if (cantidad > 0) {
+                /*
+                *
+                *
+                *
+                *
+                *    if (cantidad > 0) {
                     val nuevaCantidad = cantidad + 1
                     val nuevoPrecio = nuevaCantidad * precio / cantidad
                     productoSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
@@ -359,7 +371,9 @@ class AmorosoFragment : Fragment() {
                 } else {
                     productoSeleccionados.remove(producto)
                     actualizarTabla()
-                }
+                }*/
+
+                showQuantityDialog(cantidadView, precio, producto, cantidad)
             }
 
             tableLayout.addView(tableRow)
@@ -369,6 +383,40 @@ class AmorosoFragment : Fragment() {
 
         }
         binding.tvTotalAmount.text = precioTotal.toString()
+
+
+    }
+
+
+
+    private fun showQuantityDialog(
+        cantidadView: TextView,
+        precio: Double,
+        producto: String,
+        cantidad: Int
+    ) {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("Modificar cantidad")
+        val input = EditText(requireContext())
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        input.setText(cantidadView.text)
+        builder.setView(input)
+
+        builder.setPositiveButton("Aceptar") { _, _ ->
+
+            val nuevaCantidad = input.text.toString().toInt()
+            val operacion = nuevaCantidad * precio / cantidad
+            productoSeleccionados[producto] = Pair(nuevaCantidad, operacion)
+
+            actualizarTabla()
+
+        }
+
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.cancel()
+        }
+        builder.show()
 
     }
 

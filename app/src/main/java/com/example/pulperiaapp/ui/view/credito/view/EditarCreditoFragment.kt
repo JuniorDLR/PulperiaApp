@@ -1,11 +1,14 @@
 package com.example.pulperiaapp.ui.view.credito.view
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -64,8 +67,9 @@ class EditarCreditoFragment : Fragment() {
             editarCredito()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            Navigation.findNavController(binding.root).navigate(R.id.action_editarCreditoFragment_to_creditoFragment)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_editarCreditoFragment_to_creditoFragment)
         }
     }
 
@@ -215,28 +219,65 @@ class EditarCreditoFragment : Fragment() {
         }
 
         cantidadView.setOnClickListener {
-            if (cantidad >= 1) {
-                val nuevaCantidad = cantidad + 1
-                val nuevoPrecio = nuevaCantidad * precio / cantidad
-                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
-                detalleExistente?.let {
-                    it.cantidad = nuevaCantidad
-                    it.precioTotal = nuevoPrecio
+            /*
+            *
+            *     if (cantidad >= 1) {
+                    val nuevaCantidad = cantidad + 1
+                    val nuevoPrecio = nuevaCantidad * precio / cantidad
+                    val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
+                    detalleExistente?.let {
+                        it.cantidad = nuevaCantidad
+                        it.precioTotal = nuevoPrecio
+                    }
+
+                    actualizarTabla()
                 }
 
-                actualizarTabla()
-            } else {
-                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
-                detalleExistente?.let {
-                    productoRecuperado[pro]?.remove(it)
-                }
-                binding.tvTotalAmount.text = 0.0.toString()
-                actualizarTabla()
-            }
+            *
+            * */
+
+            showQuantityDialog(cantidadView, precio, cantidad, idCliente)
         }
 
 
         tableLayout.addView(tableRow)
+
+    }
+
+    private fun showQuantityDialog(
+        cantidadView: TextView,
+        precio: Double,
+
+        cantidad: Int,
+        idCliente: Int
+    ) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Modificar cantidad")
+        val input = EditText(requireContext())
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        input.setText(cantidadView.text)
+
+        builder.setView(input)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            val cliente = args.cliente
+            val nuevaCantidad = input.text.toString().toInt()
+            val nuevoPrecio = nuevaCantidad * precio / cantidad
+
+            productoRecuperado[cliente]?.find { it.id == idCliente }?.apply {
+                this.cantidad = nuevaCantidad
+                this.precioTotal = nuevoPrecio
+
+            }
+
+            actualizarTabla()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
 
     }
 

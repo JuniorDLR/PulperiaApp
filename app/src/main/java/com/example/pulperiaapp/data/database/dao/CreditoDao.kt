@@ -8,7 +8,6 @@ import com.example.pulperiaapp.data.database.entitie.CreditoEntity
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
 
 
-
 @Dao
 interface CreditoDao {
 
@@ -38,8 +37,8 @@ interface CreditoDao {
     @Query("SELECT * FROM tbl_credito WHERE cliente = :cliente AND estadoPago = 0")
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle>
 
-    @Query("SELECT * FROM tbl_credito WHERE  estadoPago = 1")
-    suspend fun obtenerFilterPago(): List<VentaAmorosoDetalle>
+    @Query("SELECT * FROM tbl_credito WHERE  estadoPago = 1 AND DATE(fecha)>=DATE(:fechaFilter)")
+    suspend fun obtenerFilterPago(fechaFilter: String): List<VentaAmorosoDetalle>
 
 
 }

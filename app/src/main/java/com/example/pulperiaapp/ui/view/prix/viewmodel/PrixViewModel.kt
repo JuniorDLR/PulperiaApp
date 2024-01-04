@@ -31,12 +31,17 @@ class PrixViewModel @Inject constructor(
         }
     }
 
-    fun obtenerPrixTabla() {
+    suspend fun obtenerPrixTabla(): List<TablaPrix> {
+        return try {
 
-        viewModelScope.launch {
             val lista = useCasePrix.obtenerPrixTabla()
             _prixModel.postValue(lista)
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
+
 
     }
 

@@ -130,7 +130,6 @@ class CreditoFragment : Fragment() {
     }
 
 
-
     fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
@@ -139,8 +138,7 @@ class CreditoFragment : Fragment() {
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
 
-                val navControllet = Navigation.findNavController(binding.root)
-                navControllet.popBackStack()
+                findNavController().navigate(R.id.action_creditoFragment_to_loginFragment)
             }
 
             .setNegativeButton("Cancelar") { dialog, _ ->

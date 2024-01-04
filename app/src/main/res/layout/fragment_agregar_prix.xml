@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
-        app:title="Producto Prix"
+        app:title="Producto Prix cola "
         app:titleTextColor="@color/white" />
 
 
@@ -67,11 +67,13 @@
 
     <Button
         android:id="@+id/btnAgregarPrix"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.MaterialTimePicker.Button"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/fondo"
         android:text="@string/agregar_producto"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 

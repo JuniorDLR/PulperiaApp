@@ -39,11 +39,7 @@ class TablaBigColaFragment : Fragment() {
     ): View {
         binding = FragmentTablaBigColaBinding.inflate(inflater, container, false)
 
-        bigColaViewModel.obtenerBigcola()
-        tableLayout = binding.tlProductoBig
-        bigColaViewModel.bigModdel.observe(viewLifecycleOwner) { lista ->
-            mostrarTabla(lista)
-        }
+
         binding.btnAgregarProductoBig.setColorFilter(
             ContextCompat.getColor(
                 requireContext(),
@@ -56,7 +52,11 @@ class TablaBigColaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+      lifecycleScope.launch {   bigColaViewModel.obtenerBigcola() }
+        tableLayout = binding.tlProductoBig
+        bigColaViewModel.bigModdel.observe(viewLifecycleOwner) { lista ->
+            mostrarTabla(lista)
+        }
         binding.btnAgregarProductoBig.setOnClickListener {
 
             val action =
@@ -79,8 +79,9 @@ class TablaBigColaFragment : Fragment() {
 
         })
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            Navigation.findNavController(binding.root).navigate(R.id.action_tablaBigColaFragment_to_homeFragment)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_tablaBigColaFragment_to_homeFragment)
         }
     }
 

@@ -3,7 +3,11 @@ package com.example.pulperiaapp.ui.view.venta.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -79,6 +83,9 @@ class VentasFragment : Fragment() {
         val fechaInicio = obtenerFechaInicioActual()
         val fechaFin = obtenerFechaFin()
 
+        binding.etFecha.inputType = InputType.TYPE_NULL
+        binding.etFecha.setOnClickListener { showDateTimePicker() }
+
         ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
             val totalComoBigDecimal = total?.let { BigDecimal.valueOf(it) }
             val formato = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
@@ -91,67 +98,70 @@ class VentasFragment : Fragment() {
 
 
         ventasModel.obtenerTotal(fechaInicio, fechaFin)
-
-
-
         binding.btnAgregarVenta.setOnClickListener {
             val action = VentasFragmentDirections.actionVentasFragmentToVentasProductoFragment()
             Navigation.findNavController(binding.root).navigate(action)
         }
 
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-        binding.shVentas.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
             }
 
-            override fun onQueryTextChange(textoFiltrado: String?): Boolean {
-                adapterVenta.filter.filter(textoFiltrado)
-                return true
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                adapterVenta.filter.filter(p0)
             }
 
-        })
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        }
+
+        binding.etFecha.addTextChangedListener(textWatcher)
 
 
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
+                    val currentTabPosition = it.position
+                    adapterVenta.verificacion(currentTabPosition)
                     lifecycleScope.launch {
                         when (it.position) {
+
                             0 -> {
                                 try {
+                                    binding.etFecha.setText("")
                                     ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
                                     ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
                                         adapterVenta.setListIndividual(lista)
                                     }
-
                                     esIndividual = true
-                                    adapterVenta.verificacion("individual")
                                 } catch (e: Exception) {
                                     Log.e("TAG", "Error al obtener venta individual: ${e.message}")
                                 }
+
+
                             }
 
                             1 -> {
-                                Log.d(
-                                    "VentasFragment",
-                                    "FechaInicio: $fechaInicio, FechaFin: $fechaFin"
-                                )
 
                                 try {
+                                    binding.etFecha.setText("")
                                     ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
                                     ventasModel.ventaModelCajilla.observe(viewLifecycleOwner) { lista ->
                                         adapterVenta.setListCajilla(lista)
                                     }
                                     esIndividual = false
-                                    adapterVenta.verificacion("Cajilla")
+
                                 } catch (e: Exception) {
                                     Log.e(
                                         "TAG",
                                         "Error al obtener venta de la cajilla: ${e.message}"
                                     )
                                 }
+
                             }
                         }
                     }
@@ -169,6 +179,7 @@ class VentasFragment : Fragment() {
             }
 
         })
+
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             cerrarSesion()
@@ -208,7 +219,7 @@ class VentasFragment : Fragment() {
 
     }
 
-    // Función de extensión para obtener la fecha de inicio actual
+
     @SuppressLint("SimpleDateFormat")
     private fun obtenerFechaInicioActual(): String {
         val fechaActual = Calendar.getInstance().apply {
@@ -233,16 +244,18 @@ class VentasFragment : Fragment() {
 
 
     private fun cerrarSesion() {
+
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estas seguro que desea cerrar sesion?")
             .setPositiveButton("Aceptar") { dialog, _ ->
+
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
 
-                val navController = Navigation.findNavController(binding.root)
-                navController.popBackStack()
+                findNavController().navigate(R.id.action_ventasFragment_to_loginFragment)
                 dialog.dismiss()
+
             }
 
             .setNegativeButton("Cancelar") { dialog, _ ->
@@ -250,6 +263,7 @@ class VentasFragment : Fragment() {
             }
 
         alert.show()
+
     }
 
     private fun onDeleteItem(idProducto: Int, position: Int, fechaAgrupada: String) {
@@ -302,9 +316,38 @@ class VentasFragment : Fragment() {
                 idProducto = idProducto,
                 idFecha = fechaVenta,
                 esIndividual = esIndividual,
-                isMultiple = false
+                isMultiple = false,
+                esFilter = false
             )
         )
+    }
+
+    private fun showDateTimePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            R.style.MyDatePickerDialogTheme,
+            { _, selectedHour, selectedMinute ->
+                val selectedDateTime = Calendar.getInstance()
+                selectedDateTime.set(year, month, day, selectedHour, selectedMinute)
+
+                // Formatear la fecha y hora según tus necesidades
+                val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                val formattedDateTime = dateTimeFormat.format(selectedDateTime.time)
+
+                // Establecer el resultado en tu EditText u otro componente de interfaz de usuario
+                binding.etFecha.setText(formattedDateTime)
+
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        )
+        timePickerDialog.show()
     }
 
 }

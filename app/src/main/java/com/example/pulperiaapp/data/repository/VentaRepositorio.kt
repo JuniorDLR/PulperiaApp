@@ -80,5 +80,7 @@ class VentaRepositorio @Inject constructor(private val ventaCocaPrix: VentaCocaP
     suspend fun obtenerDetalleEditar(idFecha: String): List<DetalleEditar> =
         ventaCocaPrix.obtenerDetalleEditar(idFecha)
 
+
+
 }
 

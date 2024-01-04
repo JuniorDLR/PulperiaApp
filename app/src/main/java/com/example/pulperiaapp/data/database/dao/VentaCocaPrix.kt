@@ -69,4 +69,6 @@ interface VentaCocaPrix {
     suspend fun obtenerDetalleEditar(idFecha: String): List<DetalleEditar>
 
 
+
+
 }

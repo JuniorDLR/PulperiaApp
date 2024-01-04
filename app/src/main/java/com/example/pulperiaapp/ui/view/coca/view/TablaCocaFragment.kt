@@ -37,23 +37,18 @@ class TablaCocaFragment : Fragment() {
     private lateinit var tableLayout: TableLayout
 
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         binding = FragmentTablaCocaBinding.inflate(inflater, container, false)
-        cocaViewModel.obtenerCocaTabla()
+
         binding.btnAgregarProductoCoca.setColorFilter(
             ContextCompat.getColor(
-                requireContext(),
-                R.color.white
+                requireContext(), R.color.white
             )
         )
-        cocaViewModel.cocaViewModel.observe(viewLifecycleOwner) { lists ->
-            mostrarTabla(lists)
-        }
+
 
         return binding.root
     }
@@ -61,6 +56,11 @@ class TablaCocaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch { cocaViewModel.obtenerCocaTabla() }
+        cocaViewModel.cocaViewModel.observe(viewLifecycleOwner) { lists ->
+            mostrarTabla(lists)
+        }
 
         binding.btnAgregarProductoCoca.setOnClickListener {
             Navigation.findNavController(binding.root)
@@ -134,32 +134,24 @@ class TablaCocaFragment : Fragment() {
 
         } else if (precioEliminar.isNotEmpty() || idEliminar.isEmpty()) {
             Snackbar.make(
-                requireView(),
-                "Solo debes introducir el id para eliminar",
-                Snackbar.LENGTH_LONG
-            )
-                .show()
+                requireView(), "Solo debes introducir el id para eliminar", Snackbar.LENGTH_LONG
+            ).show()
 
         } else {
-            AlertDialog.Builder(requireContext())
-                .setTitle("ALERTA PRODUCTO")
+            AlertDialog.Builder(requireContext()).setTitle("ALERTA PRODUCTO")
                 .setMessage("¿Estas seguro que deseas eliminarlo?")
                 .setPositiveButton("Aceptar") { dialog, _ ->
                     val id = binding.tvIdEditarCoca.text.toString().toInt()
                     cocaViewModel.eliminarProducto(id)
                     Toast.makeText(
-                        requireContext(),
-                        "Datos eliminado exitosamente!!",
-                        Toast.LENGTH_SHORT
+                        requireContext(), "Datos eliminado exitosamente!!", Toast.LENGTH_SHORT
                     ).show()
                     binding.tvIdEditarCoca.setText("")
                     dialog.dismiss()
 
-                }
-                .setNegativeButton("Cancelar") { dialog, _ ->
+                }.setNegativeButton("Cancelar") { dialog, _ ->
                     dialog.dismiss()
-                }
-                .show()
+                }.show()
         }
 
     }
@@ -190,11 +182,8 @@ class TablaCocaFragment : Fragment() {
                     cocaViewModel.editarCocaTabla(idInt, precioDouble)
                     limpiarCampos()
                     Toast.makeText(
-                        requireContext(),
-                        "Datos editado exitosamente!!",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                        requireContext(), "Datos editado exitosamente!!", Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -223,8 +212,8 @@ class TablaCocaFragment : Fragment() {
 
     @SuppressLint("InflateParams")
     private fun actualizarTabla(idProdcuto: Int, producto: String, precio: Double) {
-        val tableRow = LayoutInflater.from(requireContext())
-            .inflate(R.layout.tabla_row_item, null) as TableRow
+        val tableRow =
+            LayoutInflater.from(requireContext()).inflate(R.layout.tabla_row_item, null) as TableRow
 
         val idView = tableRow.findViewById<TextView>(R.id.tvIdR)
         idView.text = idProdcuto.toString()

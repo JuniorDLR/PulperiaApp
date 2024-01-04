@@ -38,6 +38,10 @@ class AdapterAmoroso(
         fun bind(diag: VentaAmorosoDetalle) {
             val cliente = diag.cliente
             val id = diag.id
+
+            if (diag.estadoPago) {
+                binding.tvEstado.setImageResource(R.drawable.pago_realizado)
+            }
             binding.tvCliente.text = cliente
             binding.itemAmoroso.setOnClickListener {
                 mostrarDialogoClienteDetalle(cliente, id)
@@ -54,7 +58,7 @@ class AdapterAmoroso(
 
     override fun getItemCount(): Int = filterable.size
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val cliente = filterable.keys.elementAt(position)
         val detallesCliente = filterable[cliente]

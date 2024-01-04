@@ -2,6 +2,7 @@ package com.example.pulperiaapp.ui.view.venta.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 
 import android.view.ViewGroup
@@ -31,7 +32,9 @@ class AdapterVenta(
     Filterable {
     var listaVenta: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
     var filterList: Map<String, List<VentaPrixCocaDetalle>> = emptyMap()
-    var ventaContext: String = "individual"
+
+    private var currentTabPosition: Int = 0
+
     private val viewBinderHelper: ViewBinder = ViewBinder()
 
 
@@ -93,14 +96,13 @@ class AdapterVenta(
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setListCajilla(newList: Map<String, List<VentaPrixCocaDetalle>>) {
         listaVenta = newList
         filterList = newList
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     fun setListIndividual(newList: List<VentaPrixCocaDetalle>) {
         filterList = newList.associate { it.id.toString() to listOf(it) }
         notifyDataSetChanged()
@@ -108,32 +110,35 @@ class AdapterVenta(
 
 
     override fun getFilter(): Filter {
+
         return object : Filter() {
             override fun performFiltering(query: CharSequence?): FilterResults {
                 val productoQuery = query?.toString()?.trim() ?: ""
                 filterList = if (productoQuery.isEmpty()) {
                     listaVenta
                 } else {
-                    if (ventaContext == "individual") {
-                        listaVenta.filter { (_, ventas) ->
-                            ventas.any { it.producto.contains(productoQuery, ignoreCase = true) }
+                    if (currentTabPosition == 0) {
+
+                        filterList.filter { (_, ventas) ->
+                            ventas.any { it.fechaVenta.contains(productoQuery, ignoreCase = true) }
 
                         }
                     } else {
+
                         listaVenta.filter { (_, ventas) ->
                             ventas.any { it.fechaVenta.contains(productoQuery, ignoreCase = true) }
                         }
                     }
-
-
                 }
+
+
                 val result = FilterResults()
                 result.values = filterList
                 result.count = filterList.size
                 return result
             }
 
-            @SuppressLint("NotifyDataSetChanged")
+
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
             }
@@ -142,17 +147,16 @@ class AdapterVenta(
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun verificacion(contexto: String) {
-        ventaContext = contexto
-        notifyDataSetChanged()
+    fun verificacion(contexto: Int) {
+        currentTabPosition = contexto
+
     }
 
     fun removeItem(position: Int) {
         filterList = filterList.toMutableMap().apply {
             remove(keys.elementAt(position))
         }
-        notifyItemRemoved(position)
+        notifyDataSetChanged()
     }
 
 

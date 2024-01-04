@@ -53,6 +53,9 @@
             app:destination="@id/editarVentasFragment"
             app:popUpTo="@id/ventasFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ventasFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/creditoFragment"
@@ -69,13 +72,16 @@
             app:destination="@id/editarCreditoFragment"
             app:popUpTo="@id/creditoFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_creditoFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/amorosoFragment"
         android:name="com.example.pulperiaapp.ui.view.credito.view.AmorosoFragment"
         android:label="fragment_amoroso"
-        tools:layout="@layout/fragment_amoroso" >
+        tools:layout="@layout/fragment_amoroso">
         <action
             android:id="@+id/action_amorosoFragment_to_creditoFragment"
             app:destination="@id/creditoFragment" />
@@ -84,7 +90,7 @@
         android:id="@+id/inventarioFragment"
         android:name="com.example.pulperiaapp.ui.view.inventario.view.InventarioFragment"
         android:label="fragment_inventario"
-        tools:layout="@layout/fragment_inventario" >
+        tools:layout="@layout/fragment_inventario">
         <action
             android:id="@+id/action_inventarioFragment_to_inventarioDatosFragment"
             app:destination="@id/inventarioDatosFragment" />
@@ -93,7 +99,7 @@
         android:id="@+id/ventasProductoFragment"
         android:name="com.example.pulperiaapp.ui.view.venta.view.VentasProductoFragment"
         android:label="fragment_ventas_producto"
-        tools:layout="@layout/fragment_ventas_producto" >
+        tools:layout="@layout/fragment_ventas_producto">
         <action
             android:id="@+id/action_ventasProductoFragment_to_ventasFragment"
             app:destination="@id/ventasFragment" />
@@ -126,7 +132,7 @@
         android:id="@+id/agregarCocaFragment"
         android:name="com.example.pulperiaapp.ui.view.coca.view.AgregarCocaFragment"
         android:label="fragment_agregar_coca"
-        tools:layout="@layout/fragment_agregar_coca" >
+        tools:layout="@layout/fragment_agregar_coca">
         <action
             android:id="@+id/action_agregarCocaFragment_to_TablaCocaFragment"
             app:destination="@id/TablaCocaFragment" />
@@ -135,7 +141,7 @@
         android:id="@+id/agregarPrixFragment"
         android:name="com.example.pulperiaapp.ui.view.prix.view.AgregarPrixFragment"
         android:label="fragment_agregar_prix"
-        tools:layout="@layout/fragment_agregar_prix" >
+        tools:layout="@layout/fragment_agregar_prix">
         <action
             android:id="@+id/action_agregarPrixFragment_to_tablaPrixFragment"
             app:destination="@id/tablaPrixFragment" />
@@ -144,7 +150,7 @@
         android:id="@+id/registrarClienteFragment"
         android:name="com.example.pulperiaapp.ui.view.cliente.RegistrarClienteFragment"
         android:label="fragment_registrar_cliente"
-        tools:layout="@layout/fragment_registrar_cliente" >
+        tools:layout="@layout/fragment_registrar_cliente">
 
     </fragment>
     <fragment
@@ -163,7 +169,7 @@
         android:id="@+id/agregandoBigFragment"
         android:name="com.example.pulperiaapp.ui.view.bigcola.view.AgregandoBigFragment"
         android:label="fragment_agregando_big"
-        tools:layout="@layout/fragment_agregando_big" >
+        tools:layout="@layout/fragment_agregando_big">
         <action
             android:id="@+id/action_agregandoBigFragment_to_tablaBigColaFragment"
             app:destination="@id/tablaBigColaFragment" />
@@ -172,7 +178,7 @@
         android:id="@+id/seguridadFragment"
         android:name="com.example.pulperiaapp.ui.view.principal.SeguridadFragment"
         android:label="fragment_seguridad"
-        tools:layout="@layout/fragment_seguridad" >
+        tools:layout="@layout/fragment_seguridad">
         <action
             android:id="@+id/action_seguridadFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -193,6 +199,9 @@
             app:destination="@id/editarInventarioFragment"
             app:popUpTo="@id/inventarioDatosFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_inventarioDatosFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/editarVentasFragment"
@@ -211,9 +220,16 @@
         <argument
             android:name="isMultiple"
             app:argType="boolean" />
+        <argument
+            android:name="esFilter"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_editarVentasFragment_to_ventasFragment"
             app:destination="@id/ventasFragment" />
+        <action
+            android:id="@+id/action_editarVentasFragment_to_filtrarDatosFragment"
+            app:destination="@id/filtrarDatosFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/editarCreditoFragment"
@@ -250,5 +266,8 @@
         <action
             android:id="@+id/action_filtrarDatosFragment_to_editarVentasFragment"
             app:destination="@id/editarVentasFragment" />
+        <action
+            android:id="@+id/action_filtrarDatosFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

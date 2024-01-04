@@ -47,13 +47,11 @@ class InventarioDatosFragment : Fragment() {
     private lateinit var adapter: InventarioAdapter
     private lateinit var recyclerView: RecyclerView
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentInventarioDatosBinding.inflate(inflater, container, false)
-
-
-
 
 
         binding.btnAgregarInventario.setColorFilter(
@@ -194,6 +192,7 @@ class InventarioDatosFragment : Fragment() {
 
     }
 
+
     private fun cerrarSesion() {
         val alert = AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
@@ -201,8 +200,7 @@ class InventarioDatosFragment : Fragment() {
             .setPositiveButton("Aceptar") { dialog, _ ->
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
-                val navController = Navigation.findNavController(binding.root)
-                navController.popBackStack()
+                findNavController().navigate(R.id.action_inventarioDatosFragment_to_loginFragment)
                 dialog.dismiss()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->

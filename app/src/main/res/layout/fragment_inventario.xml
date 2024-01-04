@@ -145,12 +145,14 @@
 
                 <Button
                     android:id="@+id/btnAgregarTabla"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="?attr/colorPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     android:text="@string/agregar_a_la_tabla"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -269,22 +271,26 @@
 
                 <Button
                     android:id="@+id/btnTomarFoto"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="?attr/colorPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     android:text="@string/agregar_foto"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/btnGuardar"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:background="?attr/colorPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     android:text="@string/guardar"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
             </LinearLayout>
 

@@ -68,31 +68,30 @@
 
         <LinearLayout
             android:id="@+id/SwitchVisible"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switchIndividual"
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-
-                android:text="@string/ventas_por_individual" />
+                android:text="@string/ventas_por_individual"
+                android:textSize="15sp" />
 
             <Space
-                android:layout_width="50dp"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switchCajilla"
-                android:layout_width="0dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/venta_por_cajilla" />
+                android:text="@string/venta_por_cajilla"
+                android:textSize="15sp" />
 
 
         </LinearLayout>
@@ -101,10 +100,14 @@
         <!-- Botón para aplicar los filtros -->
         <Button
             android:id="@+id/btnAplicarFiltros"
-            android:layout_width="wrap_content"
+            style="@style/Widget.Material3.MaterialTimePicker.Button"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="@string/aplicar_filtros"
+            android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
 

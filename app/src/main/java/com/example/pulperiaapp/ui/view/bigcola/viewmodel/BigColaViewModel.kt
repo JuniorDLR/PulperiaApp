@@ -41,11 +41,18 @@ class BigColaViewModel @Inject constructor(private val useBig: UseCaseBigCola) :
     }
 
 
-    fun obtenerBigcola() {
-        viewModelScope.launch {
-            useBig.obtenerBigCola()
+    suspend fun obtenerBigcola(): List<TablaBig> {
+
+        return try {
+            val lista = useBig.obtenerBigCola()
             actualizar()
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+
         }
+
     }
 
     private fun actualizar(list: List<TablaBig>? = null) {

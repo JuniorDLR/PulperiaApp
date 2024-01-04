@@ -1,7 +1,9 @@
 package com.example.pulperiaapp.ui.view.credito.viewmodel
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -12,14 +14,17 @@ import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.Serializable
 import javax.inject.Inject
 
 @HiltViewModel
-class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAmoroso) :
+class CreditoViewModel @Inject constructor(
+    private val useCaseAmoroso: UseCaseAmoroso
+) :
     ViewModel() {
-
     private val _groupedAmorosoModel = MutableLiveData<Map<String, List<VentaAmorosoDetalle>>>()
     val groupedAmorosoModel: LiveData<Map<String, List<VentaAmorosoDetalle>>> = _groupedAmorosoModel
+
 
     fun insertarCredito(creditoEntity: MutableList<CreditoEntity>) {
         viewModelScope.launch {
@@ -67,9 +72,9 @@ class CreditoViewModel @Inject constructor(private val useCaseAmoroso: UseCaseAm
 
     }
 
-    suspend fun obtenerFilterPago(): List<VentaAmorosoDetalle> {
-       return try {
-            val lista = useCaseAmoroso.obtenerFilterPago()
+    suspend fun obtenerFilterPago(fechaFilter: String): List<VentaAmorosoDetalle> {
+        return try {
+            val lista = useCaseAmoroso.obtenerFilterPago(fechaFilter)
             val groupClient = lista.groupBy { it.cliente }
             _groupedAmorosoModel.postValue(groupClient)
 

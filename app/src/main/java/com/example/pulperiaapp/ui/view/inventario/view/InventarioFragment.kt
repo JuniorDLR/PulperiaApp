@@ -16,12 +16,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
@@ -363,7 +365,7 @@ class InventarioFragment : Fragment() {
                 val cantidadInt = cantidad.toInt()
                 val cantidadCajillaInt = cantidadCajilla.toInt()
 
-                Log.e("Edicion", "Entrando a modo edicion $productoSeleccionado")
+
                 productoIngresado[key]?.find { it.id == productoSeleccionado }?.apply {
                     this.nombreProducto = nombreProducto
                     this.tamano = tamano
@@ -404,6 +406,13 @@ class InventarioFragment : Fragment() {
             }
 
         }
+        ocultarTeclado()
+    }
+
+    private fun ocultarTeclado() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
     }
 
 
