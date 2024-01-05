@@ -230,9 +230,12 @@ class EditarVentasFragment : Fragment() {
             if (venta.id == 0) {
                 // Es una nueva venta, insertarla
                 ventaModel.insertarVenta(venta)
-            } else if (venta.cantidad > 0) {
+                Log.e("detalle", "Insertando venta: $venta")
+            } else {
                 // La cantidad es mayor que 0, editar la venta existente
                 ventaModel.editarVenta(venta)
+                Log.e("detalle", "Actualizando venta: $venta")
+
             }
 
         }
@@ -241,7 +244,11 @@ class EditarVentasFragment : Fragment() {
 
     private fun guardarVentaEditada() {
         val idEditar: Int = args.idProducto
-
+        val esRespaldoEditar = if (esRespaldo) respaldo else productoEditar
+        Log.e(
+            "detalle",
+            "Guardando ventas editadas. idEditar: $idEditar, esRespaldoEditar: $esRespaldoEditar"
+        )
         if (productoEditar.isEmpty()) {
             Snackbar.make(
                 requireView(),
@@ -249,6 +256,8 @@ class EditarVentasFragment : Fragment() {
                 Snackbar.LENGTH_LONG
             ).show()
         } else {
+
+
             productoEditar[idEditar]?.forEach { info ->
                 val id = info.id
                 val producto = info.producto
@@ -272,11 +281,10 @@ class EditarVentasFragment : Fragment() {
                     ventaPorCajilla = esVentaPorCajilla,
                     cantidad = cantidad
                 )
-
-                if (cantidad > 1) {
+                if (cantidad > 0) {
                     insertarOVenta(venta)
                 } else {
-                    ventaModel.eliminarVenta(venta.id)
+                    ventaModel.eliminarVenta(id)
                 }
 
             }
@@ -348,7 +356,7 @@ class EditarVentasFragment : Fragment() {
 
             }
         } else {
-            productoEditar[idEditar]?.forEach { lista ->
+            productoEditar[idEditar]?.filter { it.cantidad > 0 }?.forEach { lista ->
                 val idProdcuto = lista.id
                 val producto = lista.producto
                 val cantidad = lista.cantidad
@@ -391,23 +399,21 @@ class EditarVentasFragment : Fragment() {
         precioView.text = precioFormateado
 
         productoView.setOnClickListener {
-
-
             if (args.isMultiple) {
                 Snackbar.make(
                     requireView(),
-                    "No puedes editar, estas en modo espectador",
+                    "No puedes editar, estás en modo espectador",
                     Snackbar.LENGTH_LONG
                 ).show()
-
             } else {
                 if (cantidad >= 1) {
                     val nuevaCantidad = cantidad - 1
-                    val newPrecio = nuevaCantidad * total / cantidad
-                    val detalleExistent = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistent?.let {
+                    val nuevoPrecio = nuevaCantidad * total / cantidad
+
+                    val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
+                    detalleExistente?.let {
                         it.cantidad = nuevaCantidad
-                        it.totalVenta = newPrecio
+                        it.totalVenta = nuevoPrecio
                     }
 
                     visualizarTabla(false)
@@ -415,23 +421,25 @@ class EditarVentasFragment : Fragment() {
                     val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
                     detalleExistente?.let {
                         productoEditar[idEditar]?.remove(it)
-
                     }
+
                     visualizarTabla(false)
-
-
                 }
             }
         }
+
         cantidadView.setOnClickListener {
             if (args.isMultiple) {
                 showSnackbar("No puedes editar, estás en modo espectador")
             } else if (!binding.swVentaPorCajillaEditar.isChecked) {
-                handleCantidadViewClick(cantidad, total, cantidadView, idEditar, idProdcuto)
+                showQuantityDialog(cantidad, total, cantidadView, idEditar, idProdcuto)
             } else if (!listener) {
-                showAlertDialog("ADVERTENCIA", "Si quieres editar la cantidad o agregar uno nuevo, debes restablecer el precio primero")
+                showAlertDialog(
+                    "ADVERTENCIA",
+                    "Si quieres editar la cantidad o agregar uno nuevo, debes restablecer el precio primero"
+                )
             } else {
-                handleCantidadViewClick(cantidad, total, cantidadView, idEditar, idProdcuto)
+                showQuantityDialog(cantidad, total, cantidadView, idEditar, idProdcuto)
             }
         }
 
@@ -440,22 +448,6 @@ class EditarVentasFragment : Fragment() {
 
     }
 
-    private fun handleCantidadViewClick(cantidad: Int, total: Double, cantidadView: TextView, idEditar: Int, idProdcuto: Int) {
-        if (cantidad >= 1) {
-            showQuantityDialog(cantidad, total, cantidadView, idEditar, idProdcuto)
-        } else {
-            removeDetalle(idEditar, idProdcuto)
-            binding.tvTotalAmountEditar.text = 0.0.toString()
-            visualizarTabla(false)
-        }
-    }
-
-    private fun removeDetalle(idEditar: Int, idProdcuto: Int) {
-        val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-        detalleExistente?.let {
-            productoEditar[idEditar]?.remove(it)
-        }
-    }
 
     private fun showSnackbar(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
@@ -470,6 +462,7 @@ class EditarVentasFragment : Fragment() {
             }
         alert.show()
     }
+
     private fun showQuantityDialog(
         cantidad: Int,
         total: Double,
@@ -493,24 +486,19 @@ class EditarVentasFragment : Fragment() {
 
 
             if (nuevaCantidad == 0) {
-
                 val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
                 detalleExistente?.let {
                     productoEditar[idEditar]?.remove(it)
                 }
                 visualizarTabla(false)
-
             } else {
-
                 val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
                 detalleExistente?.let {
                     it.cantidad = nuevaCantidad
                     it.totalVenta = nuevoPrecio
                 }
                 visualizarTabla(false)
-
             }
-
 
             dialog.dismiss()
         }

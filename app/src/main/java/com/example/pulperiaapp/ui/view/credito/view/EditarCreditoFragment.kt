@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -88,7 +89,7 @@ class EditarCreditoFragment : Fragment() {
                 if (cantidad > 0) {
                     creditoModel.editarCredito(id, producto, cantidad, precio, fechaFormateada)
                 } else {
-
+                    Log.e("Eliminar", "entrnado a eliminacion  $id")
                     creditoModel.eliminarCredito(id)
                 }
             }
@@ -195,7 +196,7 @@ class EditarCreditoFragment : Fragment() {
 
 
         productoView.setOnClickListener {
-            if (cantidad >= 1) {
+            if (cantidad >1) {
                 val nuevaCantidad = cantidad - 1
                 val nuevoPrecio = nuevaCantidad * precio / cantidad
 
@@ -211,7 +212,6 @@ class EditarCreditoFragment : Fragment() {
                 detalleExistente?.let {
                     productoRecuperado[pro]?.remove(it)
 
-
                 }
                 binding.tvTotalAmount.text = 0.0.toString()
                 actualizarTabla()
@@ -219,24 +219,9 @@ class EditarCreditoFragment : Fragment() {
         }
 
         cantidadView.setOnClickListener {
-            /*
-            *
-            *     if (cantidad >= 1) {
-                    val nuevaCantidad = cantidad + 1
-                    val nuevoPrecio = nuevaCantidad * precio / cantidad
-                    val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
-                    detalleExistente?.let {
-                        it.cantidad = nuevaCantidad
-                        it.precioTotal = nuevoPrecio
-                    }
 
-                    actualizarTabla()
-                }
 
-            *
-            * */
-
-            showQuantityDialog(cantidadView, precio, cantidad, idCliente)
+            showQuantityDialog(cantidadView, precio, cantidad, idCliente, pro)
         }
 
 
@@ -247,9 +232,9 @@ class EditarCreditoFragment : Fragment() {
     private fun showQuantityDialog(
         cantidadView: TextView,
         precio: Double,
-
         cantidad: Int,
-        idCliente: Int
+        idCliente: Int,
+        pro: String
     ) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Modificar cantidad")
@@ -259,11 +244,12 @@ class EditarCreditoFragment : Fragment() {
 
         builder.setView(input)
         builder.setPositiveButton("Aceptar") { dialog, _ ->
-            val cliente = args.cliente
+
             val nuevaCantidad = input.text.toString().toInt()
             val nuevoPrecio = nuevaCantidad * precio / cantidad
 
-            productoRecuperado[cliente]?.find { it.id == idCliente }?.apply {
+
+            productoRecuperado[pro]?.find { it.id == idCliente }?.apply {
                 this.cantidad = nuevaCantidad
                 this.precioTotal = nuevoPrecio
 
