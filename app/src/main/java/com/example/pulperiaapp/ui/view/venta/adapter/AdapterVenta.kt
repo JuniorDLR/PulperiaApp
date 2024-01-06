@@ -87,7 +87,7 @@ class AdapterVenta(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diagKey = filterList.values.elementAt(position)
         if (diagKey.isNotEmpty()) {
-            val venta = diagKey[0]  // Asegúrate de tener la referencia correcta al elemento
+            val venta = diagKey[0]
             holder.bind(venta)
             viewBinderHelper.setOpenOnlyOne(true)
             viewBinderHelper.bind(holder.swipeLayout, venta.id.toString())

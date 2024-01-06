@@ -194,33 +194,7 @@ class EditarCreditoFragment : Fragment() {
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
         precioView.text = precio.toString()
 
-
-        productoView.setOnClickListener {
-            if (cantidad >1) {
-                val nuevaCantidad = cantidad - 1
-                val nuevoPrecio = nuevaCantidad * precio / cantidad
-
-                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
-                detalleExistente?.let {
-                    it.cantidad = nuevaCantidad
-                    it.precioTotal = nuevoPrecio
-                }
-
-                actualizarTabla()
-            } else {
-                val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
-                detalleExistente?.let {
-                    productoRecuperado[pro]?.remove(it)
-
-                }
-                binding.tvTotalAmount.text = 0.0.toString()
-                actualizarTabla()
-            }
-        }
-
         cantidadView.setOnClickListener {
-
-
             showQuantityDialog(cantidadView, precio, cantidad, idCliente, pro)
         }
 
@@ -247,12 +221,21 @@ class EditarCreditoFragment : Fragment() {
 
             val nuevaCantidad = input.text.toString().toInt()
             val nuevoPrecio = nuevaCantidad * precio / cantidad
-
-
             productoRecuperado[pro]?.find { it.id == idCliente }?.apply {
                 this.cantidad = nuevaCantidad
                 this.precioTotal = nuevoPrecio
 
+            }
+            actualizarTabla()
+            dialog.dismiss()
+        }
+
+        builder.setNeutralButton("ELIMINAR") { dialog, _ ->
+
+            val detalleExistente = productoRecuperado[pro]?.find { it.id == idCliente }
+            detalleExistente?.let {
+                detalleExistente.cantidad = 0
+                detalleExistente.precioTotal = 0.0
             }
 
             actualizarTabla()

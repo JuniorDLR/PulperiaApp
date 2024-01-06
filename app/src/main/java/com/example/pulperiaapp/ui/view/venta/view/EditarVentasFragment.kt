@@ -71,6 +71,8 @@ class EditarVentasFragment : Fragment() {
 
         val isMultiple = args.isMultiple
 
+
+
         if (isMultiple) {
             binding.toolbarVentas.title = "Modo espectador - Ventas"
             binding.ChipGroup.isVisible = false
@@ -147,7 +149,22 @@ class EditarVentasFragment : Fragment() {
 
 
         })
+
+        binding.swVentaPorCajillaEditar.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Error")
+                .setMessage("No puedes cambiar el estado  de ventas por cajilla, solo puedes agregar o editar")
+                .setPositiveButton("OK", null)
+                .show()
+
+
+            binding.swVentaPorCajillaEditar.isChecked = true
+
+        }
+
+
     }
+
 
     private suspend fun obtenerPrecio() {
         val productoCompleto = ventaModel.obtenerTodosLosProductos()
@@ -224,52 +241,19 @@ class EditarVentasFragment : Fragment() {
         }
     }
 
-    private fun insertarOVenta(venta: VentaPrixCoca) {
-
-        lifecycleScope.launch {
-            if (venta.id == 0) {
-                // Es una nueva venta, insertarla
-                ventaModel.insertarVenta(venta)
-                Log.e("detalle", "Insertando venta: $venta")
-            } else {
-                // La cantidad es mayor que 0, editar la venta existente
-                ventaModel.editarVenta(venta)
-                Log.e("detalle", "Actualizando venta: $venta")
-
-            }
-
-        }
-    }
-
 
     private fun guardarVentaEditada() {
-        val idEditar: Int = args.idProducto
-        val esRespaldoEditar = if (esRespaldo) respaldo else productoEditar
-        Log.e(
-            "detalle",
-            "Guardando ventas editadas. idEditar: $idEditar, esRespaldoEditar: $esRespaldoEditar"
-        )
-        if (productoEditar.isEmpty()) {
-            Snackbar.make(
-                requireView(),
-                "No hay datos en la tabla",
-                Snackbar.LENGTH_LONG
-            ).show()
-        } else {
-
-
-            productoEditar[idEditar]?.forEach { info ->
-                val id = info.id
-                val producto = info.producto
-                val cantidad = info.cantidad
-                val precio = info.totalVenta
+        productoEditar.forEach { (_, detalles) ->
+            detalles.forEach { detalle ->
+                val id = detalle.id
+                val producto = detalle.producto
+                val cantidad = detalle.cantidad
+                val precio = detalle.totalVenta
                 val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
-                // Obtener la fecha actual dentro del bucle para cada venta
                 val fecha = args.idFecha
                 val fechaFormateada =
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-
 
                 // Edición, usar ID existente
                 val venta = VentaPrixCoca(
@@ -281,21 +265,32 @@ class EditarVentasFragment : Fragment() {
                     ventaPorCajilla = esVentaPorCajilla,
                     cantidad = cantidad
                 )
+
                 if (cantidad > 0) {
                     insertarOVenta(venta)
                 } else {
                     ventaModel.eliminarVenta(id)
+
                 }
 
             }
-            Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
-                .show()
-            val action =
-                EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
-            Navigation.findNavController(binding.root).navigate(action)
+
         }
 
+        Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
+            .show()
+        val action =
+            EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
+        Navigation.findNavController(binding.root).navigate(action)
 
+    }
+
+    private fun insertarOVenta(venta: VentaPrixCoca) {
+        lifecycleScope.launch {
+            if (venta.id == 0) ventaModel.insertarVenta(venta) else ventaModel.editarVenta(
+                venta
+            )
+        }
     }
 
 
@@ -312,13 +307,12 @@ class EditarVentasFragment : Fragment() {
             ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
                 detalleList?.let {
                     it.forEach { j ->
-
                         if ((j.id == idEditar && !j.ventaPorCajilla) || (j.ventaPorCajilla)) {
                             guardarDatoRecuperado(idEditar, j)
                         }
                     }
 
-                    visualizarTabla(esRespaldo)
+                    visualizarTabla(false)
                 }
             }
         }
@@ -330,7 +324,12 @@ class EditarVentasFragment : Fragment() {
         val existingList = productoEditar[idEditar]?.toMutableList() ?: mutableListOf()
 
         if (esIndividual) {
-            existingList.clear() // Si es individual, borramos la lista existente
+            existingList.clear()
+            binding.swVentaPorCajillaEditar.isEnabled = false
+            binding.tvPrecioPersonalizado.isEnabled = false
+            binding.inputPrecio.isEnabled = false
+            binding.btnRestablecer.isEnabled = false
+            // Si es individual, borramos la lista existente
         }
         existingList.add(detalleList)
         productoEditar[idEditar] = existingList
@@ -366,7 +365,6 @@ class EditarVentasFragment : Fragment() {
                 if (esCajilla) binding.swVentaPorCajillaEditar.isChecked = true
 
                 agregarFila(producto, cantidad, total, idEditar, idProdcuto)
-
             }
         }
         val precioFormateado = String.format(Locale.getDefault(), "%.2f", totalView)
@@ -398,45 +396,19 @@ class EditarVentasFragment : Fragment() {
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
         precioView.text = precioFormateado
 
-        productoView.setOnClickListener {
-            if (args.isMultiple) {
-                Snackbar.make(
-                    requireView(),
-                    "No puedes editar, estás en modo espectador",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            } else {
-                if (cantidad >= 1) {
-                    val nuevaCantidad = cantidad - 1
-                    val nuevoPrecio = nuevaCantidad * total / cantidad
 
-                    val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        it.cantidad = nuevaCantidad
-                        it.totalVenta = nuevoPrecio
-                    }
-
-                    visualizarTabla(false)
-                } else {
-                    val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                    detalleExistente?.let {
-                        productoEditar[idEditar]?.remove(it)
-                    }
-
-                    visualizarTabla(false)
-                }
-            }
-        }
 
         cantidadView.setOnClickListener {
             if (args.isMultiple) {
                 showSnackbar("No puedes editar, estás en modo espectador")
             } else if (!binding.swVentaPorCajillaEditar.isChecked) {
+
+
                 showQuantityDialog(cantidad, total, cantidadView, idEditar, idProdcuto)
             } else if (!listener) {
                 showAlertDialog(
                     "ADVERTENCIA",
-                    "Si quieres editar la cantidad o agregar uno nuevo, debes restablecer el precio primero"
+                    "Si quieres editar la cantidad o agregar un nuevo producto, debes restablecer el precio primero"
                 )
             } else {
                 showQuantityDialog(cantidad, total, cantidadView, idEditar, idProdcuto)
@@ -480,36 +452,35 @@ class EditarVentasFragment : Fragment() {
         builder.setView(input)
 
         builder.setPositiveButton("Aceptar") { dialog, _ ->
-
             val nuevaCantidad = input.text.toString().toInt()
             val nuevoPrecio = nuevaCantidad * total / cantidad
 
-
-            if (nuevaCantidad == 0) {
-                val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                detalleExistente?.let {
-                    productoEditar[idEditar]?.remove(it)
-                }
-                visualizarTabla(false)
-            } else {
-                val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
-                detalleExistente?.let {
-                    it.cantidad = nuevaCantidad
-                    it.totalVenta = nuevoPrecio
-                }
-                visualizarTabla(false)
+            val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
+            detalleExistente?.let {
+                it.cantidad = nuevaCantidad
+                it.totalVenta = nuevoPrecio
             }
-
+            visualizarTabla(false)
             dialog.dismiss()
         }
 
         builder.setNegativeButton("Cancelar") { dialog, _ ->
             dialog.cancel()
+        }
+
+
+        builder.setNeutralButton("ELIMINAR") { dialog, _ ->
+            val detalleExistente = productoEditar[idEditar]?.find { it.id == idProdcuto }
+            detalleExistente?.let {
+                it.cantidad = 0
+                it.totalVenta = 0.0
+            }
+            visualizarTabla(false)
+            dialog.dismiss()
 
         }
 
         builder.show()
-
     }
 
 
@@ -541,12 +512,26 @@ class EditarVentasFragment : Fragment() {
                                 Snackbar.LENGTH_LONG
                             ).show()
                         } else {
-                            lifecycleScope.launch {
-                                val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                val precioProducto =
-                                    ventaModel.obtenerPrecioCoca(productoSeleccionado)
-                                if (precioProducto != null) {
-                                    guardarVenta(productoSeleccionado, precioProducto, esCajilla)
+
+
+                            if (!listener) {
+                                Snackbar.make(
+                                    requireView(),
+                                    "para agregar debes restablecer el precio ",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            } else {
+                                lifecycleScope.launch {
+                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+                                    val precioProducto =
+                                        ventaModel.obtenerPrecioCoca(productoSeleccionado)
+                                    if (precioProducto != null) {
+                                        guardarVenta(
+                                            productoSeleccionado,
+                                            precioProducto,
+                                            esCajilla
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -590,13 +575,23 @@ class EditarVentasFragment : Fragment() {
                                 Snackbar.LENGTH_LONG
                             ).show()
                         } else {
-                            lifecycleScope.launch {
-                                val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                val precio = ventaModel.obtenerPrecioBig(productoSeleccionado)
-                                if (precio != null) {
-                                    guardarVenta(productoSeleccionado, precio, esCajilla)
+
+                            if (!listener) {
+                                Snackbar.make(
+                                    requireView(),
+                                    "para agregar debes restablecer el precio ",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            } else {
+                                lifecycleScope.launch {
+                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+                                    val precio = ventaModel.obtenerPrecioBig(productoSeleccionado)
+                                    if (precio != null) {
+                                        guardarVenta(productoSeleccionado, precio, esCajilla)
+                                    }
                                 }
                             }
+
                         }
                     }
 
@@ -636,20 +631,33 @@ class EditarVentasFragment : Fragment() {
 
                             Snackbar.make(
                                 requireView(),
-                                "Debes de seleccionar un producto",
+                                "Debes de seleccionar un producto ",
                                 Snackbar.LENGTH_LONG
                             ).show()
 
                         } else {
-                            lifecycleScope.launch {
-                                val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                val precioProducto =
-                                    ventaModel.obtenerPrecioPrix(productoSeleccionado)
-                                if (precioProducto != null) {
-                                    guardarVenta(productoSeleccionado, precioProducto, esCajilla)
-                                }
+                            if (!listener) {
+                                Snackbar.make(
+                                    requireView(),
+                                    "para agregar debes restablecer el precio ",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            } else {
+                                lifecycleScope.launch {
+                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+                                    val precioProducto =
+                                        ventaModel.obtenerPrecioPrix(productoSeleccionado)
+                                    if (precioProducto != null) {
+                                        guardarVenta(
+                                            productoSeleccionado,
+                                            precioProducto,
+                                            esCajilla
+                                        )
+                                    }
 
+                                }
                             }
+
                         }
                     }
                 }

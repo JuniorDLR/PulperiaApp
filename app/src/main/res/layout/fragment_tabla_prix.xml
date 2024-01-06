@@ -47,8 +47,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/fondo"
-                    android:src="@drawable/baseline_add_24"
-                    android:contentDescription="@string/agregar" />
+                    android:contentDescription="@string/agregar"
+                    android:src="@drawable/baseline_add_24" />
 
             </LinearLayout>
 
@@ -112,7 +112,7 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/svTablaPrix"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:layout_marginHorizontal="10dp">
 
                 <!-- Tabla de datos -->
@@ -173,8 +173,8 @@
 
 
                 <Button
-                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:id="@+id/btnEditarProductoPrix"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -184,8 +184,7 @@
                     android:text="@string/editar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-             />
+                    android:textStyle="bold" />
 
 
                 <Button
@@ -199,8 +198,7 @@
                     android:text="@string/eliminar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                   />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

@@ -104,7 +104,6 @@ class TablaPrixFragment : Fragment() {
         val queryText = query?.lowercase(Locale.getDefault())
 
 
-
         for (i in 1 until tableLayout.childCount) {
             val row = tableLayout.getChildAt(i) as TableRow
             var isVisible = false
@@ -112,7 +111,6 @@ class TablaPrixFragment : Fragment() {
             for (j in 0 until row.childCount) {
                 val textView = row.getChildAt(j) as TextView
                 val texto = textView.text.toString().lowercase(Locale.getDefault())
-
 
                 if (texto.contains(queryText.orEmpty())) {
                     isVisible = true

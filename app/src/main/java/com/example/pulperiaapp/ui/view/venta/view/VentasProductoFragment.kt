@@ -445,20 +445,6 @@ class VentasProductoFragment : Fragment() {
         precioView.text = precioFormateado
 
 
-        productoView.setOnClickListener {
-            if (cantidad > 1) {
-                val newCantidad = cantidad - 1
-                val newPrecio = newCantidad * precio / cantidad
-                productosSeleccionados[producto] = Pair(newCantidad, newPrecio)
-                actualizarTabla(false)
-
-
-            } else {
-                productosSeleccionados.remove(producto)
-                actualizarTabla(false)
-            }
-        }
-
         cantidadView.setOnClickListener {
 
             showQuantityDialog(producto, precio, cantidadView, cantidad)
@@ -490,17 +476,8 @@ class VentasProductoFragment : Fragment() {
             val nuevaCantidad = input.text.toString().toInt()
             val nuevoPrecio = nuevaCantidad * precio / cantidad
 
-            if (nuevaCantidad == 0) {
-
-                productosSeleccionados.remove(producto)
-                actualizarTabla(false)
-
-            } else {
-
-                productosSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
-                actualizarTabla(false)
-
-            }
+            productosSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
+            actualizarTabla(false)
 
             dialog.dismiss()
         }
@@ -508,6 +485,11 @@ class VentasProductoFragment : Fragment() {
         builder.setNegativeButton("Cancelar") { dialog, _ ->
             dialog.cancel()
 
+        }
+        builder.setNeutralButton("ELIMINAR") { dialog, _ ->
+            productosSeleccionados.remove(producto)
+            actualizarTabla(false)
+            dialog.dismiss()
         }
 
         builder.show()
