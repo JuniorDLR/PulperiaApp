@@ -23,6 +23,8 @@ import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentEditarCreditoBinding
 import com.example.pulperiaapp.domain.amoroso.DetalleAmoroso
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
+import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
+import com.twilio.rest.monitor.v1.Alert
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -36,10 +38,11 @@ class EditarCreditoFragment : Fragment() {
     private val args: EditarCreditoFragmentArgs by navArgs()
     private lateinit var binding: FragmentEditarCreditoBinding
     private val creditoModel: CreditoViewModel by viewModels()
+    private val venta: VentaViewModel by viewModels()
     private lateinit var tableLayout: TableLayout
     private lateinit var tableRow: TableRow
     private val productoRecuperado = mutableMapOf<String, MutableList<DetalleAmoroso>>()
-
+    private var productoEcontrado: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -195,7 +198,8 @@ class EditarCreditoFragment : Fragment() {
         precioView.text = precio.toString()
 
         cantidadView.setOnClickListener {
-            showQuantityDialog(cantidadView, precio, cantidad, idCliente, pro)
+
+            showQuantityDialog(cantidadView, precio, cantidad, idCliente, pro, producto)
         }
 
 
@@ -208,7 +212,8 @@ class EditarCreditoFragment : Fragment() {
         precio: Double,
         cantidad: Int,
         idCliente: Int,
-        pro: String
+        pro: String,
+        producto: String
     ) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Modificar cantidad")
@@ -218,16 +223,32 @@ class EditarCreditoFragment : Fragment() {
 
         builder.setView(input)
         builder.setPositiveButton("Aceptar") { dialog, _ ->
-
-            val nuevaCantidad = input.text.toString().toInt()
-            val nuevoPrecio = nuevaCantidad * precio / cantidad
-            productoRecuperado[pro]?.find { it.id == idCliente }?.apply {
-                this.cantidad = nuevaCantidad
-                this.precioTotal = nuevoPrecio
-
+            lifecycleScope.launch {
+                productoEcontrado = verificarProdcuto(producto)
             }
-            actualizarTabla()
+
+            if (productoEcontrado.isEmpty()) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("ERROR")
+                    .setMessage("Este producto no esta registrado. Puede haber sido eliminado.")
+                    .setPositiveButton("Continuar") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+
+            } else {
+                val nuevaCantidad = input.text.toString().toInt()
+                val nuevoPrecio = nuevaCantidad * precio / cantidad
+                productoRecuperado[pro]?.find { it.id == idCliente }?.apply {
+                    this.cantidad = nuevaCantidad
+                    this.precioTotal = nuevoPrecio
+
+                }
+
+                actualizarTabla()
+            }
+
             dialog.dismiss()
+
         }
 
         builder.setNeutralButton("ELIMINAR") { dialog, _ ->
@@ -250,5 +271,19 @@ class EditarCreditoFragment : Fragment() {
 
     }
 
+    suspend fun verificarProdcuto(producto: String): String {
+        return try {
 
+            val lista = venta.obtenerTodosLosProductos()
+            for (e in lista) {
+                if (e == producto) {
+                    return e
+                }
+            }
+            ""
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
 }

@@ -16,7 +16,7 @@ import com.example.pulperiaapp.domain.inventario.InventarioModel
 
 class InventarioAdapter
     (
-    private val onClickDelete: (String) -> Unit,
+    private val onClickDelete: (String,String) -> Unit,
     private val onClickUpdate: (String) -> Unit,
 
 
@@ -40,11 +40,13 @@ class InventarioAdapter
                 onClickUpdate(lista.fechaEntrega)
             }
             binding.btnDel.setOnClickListener {
-                onClickDelete(lista.fechaEntrega)
+                lista.idFotos?.let { it1 -> onClickDelete(lista.fechaEntrega, it1) }
             }
 
 
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

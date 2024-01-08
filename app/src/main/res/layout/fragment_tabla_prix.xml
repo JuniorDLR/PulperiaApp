@@ -128,6 +128,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvIdEditarPrixInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
@@ -147,6 +148,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvPrecioEditarPrixInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
@@ -159,6 +161,35 @@
                     android:inputType="numberDecimal"
                     android:textColor="@color/black"
                     tools:text="320.0">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swModoEdicion"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="10dp"
+                android:text="Desactivar modo edicion producto"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvEditarNombreProductoInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvEditarNombreProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Modificando nombre producto"
+                    android:inputType="text"
+                    android:textColor="@color/black">
 
                 </com.google.android.material.textfield.TextInputEditText>
 

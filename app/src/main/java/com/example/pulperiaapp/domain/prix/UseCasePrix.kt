@@ -4,21 +4,23 @@ import com.example.pulperiaapp.data.repository.TablaPrixRepsitory
 import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import javax.inject.Inject
 
-class UseCasePrix @Inject constructor(private val tablaPrixRepsitory: TablaPrixRepsitory) {
+class UseCasePrix @Inject constructor(private val tablaPrixRepository: TablaPrixRepsitory) {
 
     suspend fun insertarPrixTabla(PrixEntity: PrecioPrixEntity) {
-        tablaPrixRepsitory.insertarPrixTabla(PrixEntity)
+        tablaPrixRepository.insertarPrixTabla(PrixEntity)
 
     }
 
     suspend fun obtenerPrixTabla(): List<TablaPrix> {
 
-        return tablaPrixRepsitory.obtenerPrixTabla()
+        return tablaPrixRepository.obtenerPrixTabla()
     }
 
     suspend fun editarPrixTabla(id: Int, precio: Double) =
-        tablaPrixRepsitory.editarPrixTabla(id, precio)
+        tablaPrixRepository.editarPrixTabla(id, precio)
 
-    suspend fun eliminarPrixTabla(id: Int) = tablaPrixRepsitory.eliminarPrixTabla(id)
-    suspend fun obtenerPrecioId(precioId: Int):Double = tablaPrixRepsitory.obtenerPrecioId(precioId)
+    suspend fun eliminarPrixTabla(id: Int) = tablaPrixRepository.eliminarPrixTabla(id)
+    suspend fun obtenerPrecioId(precioId: Int):Double = tablaPrixRepository.obtenerPrecioId(precioId)
+
+
 }

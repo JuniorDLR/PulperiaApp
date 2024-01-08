@@ -215,12 +215,11 @@
 
             </TableLayout>
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/svTablaInventario"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginHorizontal="10dp"
-                tools:ignore="NestedScrolling">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
 
 
                 <TableLayout
@@ -231,7 +230,7 @@
 
                 </TableLayout>
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <TextView
                 android:id="@+id/tvPrecioPagar"
@@ -240,8 +239,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-
                 android:text="@string/precio_total_0_00"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="20sp" />
@@ -253,7 +250,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/_0_3"
                 android:textSize="20sp" />
 

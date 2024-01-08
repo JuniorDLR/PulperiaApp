@@ -29,6 +29,7 @@ import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
+import com.example.pulperiaapp.data.database.entitie.InventarioFotoEntity
 import com.example.pulperiaapp.databinding.FragmentInventarioBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageAdapter
@@ -45,6 +46,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 
 @AndroidEntryPoint
@@ -264,19 +266,21 @@ class InventarioFragment : Fragment() {
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
         if (productoIngresado.isNotEmpty()) {
-            for ((index, entry) in productoIngresado.entries.withIndex()) {
-                val (_, lista) = entry
-                for (producto in lista) {
+
+            val idFoto = UUID.randomUUID().toString()
+            val listaInventarioFotos = listOf(InventarioFotoEntity(0, idFoto, ruta1, ruta2, ruta3))
+            inventarioModel.insertarFoto(listaInventarioFotos)
+
+            for (entry in productoIngresado) {
+                val (_, listaFotos) = entry
+
+                // Insertar el producto en tbl_inventario
+                for (producto in listaFotos) {
                     val nombre = producto.nombreProducto
                     val tamano = producto.tamano
                     val cantidadCajilla = producto.cantidadCajilla
                     val cantidad = producto.cantidad
                     val importe = producto.importe
-
-
-                    val lastRecordRuta1 = if (index == productoIngresado.size - 1) ruta1 else null
-                    val lastRecordRuta2 = if (index == productoIngresado.size - 1) ruta2 else null
-                    val lastRecordRuta3 = if (index == productoIngresado.size - 1) ruta3 else null
 
                     val inventario = InventarioEntity(
                         id = 0,
@@ -286,9 +290,7 @@ class InventarioFragment : Fragment() {
                         cantidadCajilla = cantidadCajilla,
                         cantidad = cantidad,
                         precio = importe,
-                        ruta1 = lastRecordRuta1,
-                        ruta2 = lastRecordRuta2,
-                        ruta3 = lastRecordRuta3
+                        idFotos = idFoto
                     )
 
                     inventarioModel.insertarInventario(inventario)
@@ -305,6 +307,7 @@ class InventarioFragment : Fragment() {
             Toast.makeText(requireContext(), "Los campos están vacíos", Toast.LENGTH_LONG).show()
         }
     }
+
 
     private fun agregarTabla() {
         val nombreProducto = binding.tvNombreProducto.text.toString()
@@ -378,7 +381,7 @@ class InventarioFragment : Fragment() {
                 esEdicion = false
 
             } else {
-
+                val idFotos = UUID.randomUUID().toString()
                 val nuevoId = ultimoId++
                 val precioDouble = precioUnitario.toDouble()
                 val cantidadInt = cantidad.toInt()
@@ -393,7 +396,8 @@ class InventarioFragment : Fragment() {
                     null,
                     cantidadCajillaInt,
                     cantidadInt,
-                    precioDouble
+                    precioDouble,
+                    idFotos
                 )
 
                 val listaInventario: MutableList<InventarioModel> =

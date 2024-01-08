@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.PagerAdapter
 import com.example.pulperiaapp.R
 
@@ -29,7 +30,7 @@ class ImageAdapter(
 
         val imagen = image[position]
         imageView.setImageBitmap(imagen)
-
+        delete.isVisible = image.size != 3
         delete.setOnClickListener {
             onClickDelete(position)
         }
@@ -50,7 +51,6 @@ class ImageAdapter(
     }
 
 
-
     fun addImage(image: Bitmap) {
         // Si se eliminó una imagen, inserta la nueva imagen en esa posición
         if (deletePosition != -1) {
@@ -62,7 +62,6 @@ class ImageAdapter(
         notifyDataSetChanged()
         imageCounterListener.onImageAdd(this.image.size)
     }
-
 
 
     override fun getItemPosition(`object`: Any): Int {

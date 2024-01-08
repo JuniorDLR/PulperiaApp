@@ -6,19 +6,18 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity("tbl_inventario")
+@Entity(tableName = "tbl_inventario")
 data class InventarioEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo("id") val id: Int = 0,
-    @ColumnInfo("nombreProducto") val nombreProducto: String,
-    @ColumnInfo("tamano") val tamano: String,
-    @ColumnInfo("fechaEntrega") val fechaEntrega: String,
-    @ColumnInfo("fechaEditada") var fechaEditada: String? = null,
-    @ColumnInfo("cantidadCajilla") val cantidadCajilla: Int,
-    @ColumnInfo("cantidad") val cantidad: Int,
-    @ColumnInfo("importe") val precio: Double,
-    @ColumnInfo("imagen1") var ruta1: String? = null,
-    @ColumnInfo("imagen2") var ruta2: String? = null,
-    @ColumnInfo("imagen3") var ruta3: String? = null
+    @ColumnInfo(name = "id") val id: Int = 0,
+    @ColumnInfo(name = "nombreProducto") val nombreProducto: String,
+    @ColumnInfo(name = "tamano") val tamano: String,
+    @ColumnInfo(name = "fechaEntrega") val fechaEntrega: String,
+    @ColumnInfo(name = "fechaEditada") var fechaEditada: String? = null,
+    @ColumnInfo(name = "cantidadCajilla") val cantidadCajilla: Int,
+    @ColumnInfo(name = "cantidad") val cantidad: Int,
+    @ColumnInfo(name = "importe") val precio: Double,
+    @ColumnInfo(name = "idFotos") val idFotos: String? = null
 )
+
 

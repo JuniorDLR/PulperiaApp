@@ -92,6 +92,8 @@ class CreditoViewModel @Inject constructor(
             _groupedAmorosoModel.value = ventasFiltradas.groupBy { it.cliente }
         }
     }
+
+
 }
 
 

@@ -168,12 +168,23 @@ class EditarVentasFragment : Fragment() {
 
     private suspend fun obtenerPrecio() {
         val productoCompleto = ventaModel.obtenerTodosLosProductos()
+
+
         productoEditar.forEach { (_, detalles) ->
             detalles.forEach { detalle ->
                 val tipoProducto = determinarTipoProducto(detalle.producto, productoCompleto)
                 val precioOriginal =
                     obtenerPrecioSegunSuTipo(tipoProducto, detalle.producto, productoCompleto)
                 detalle.totalVenta = precioOriginal
+
+                if (precioOriginal == 0.0) {
+
+
+                    showAlertDialog(
+                        "ERROR",
+                        "Un producto no tiene un precio registrado. Puede haber sido eliminado."
+                    )
+                }
             }
         }
 
@@ -220,6 +231,7 @@ class EditarVentasFragment : Fragment() {
 
         if (precioPersonalizado != null && binding.swVentaPorCajillaEditar.isChecked) {
             esRespaldo = true
+            listener = false
 
             val cantidadTotal = respaldo.values.sumOf { lista ->
                 lista.sumOf { it.cantidad }
@@ -237,59 +249,72 @@ class EditarVentasFragment : Fragment() {
             visualizarTabla(true)
         } else {
             respaldo.clear()
+
+            esRespaldo = false
             visualizarTabla(false)
         }
     }
 
 
     private fun guardarVentaEditada() {
-        productoEditar.forEach { (_, detalles) ->
-            detalles.forEach { detalle ->
-                val id = detalle.id
-                val producto = detalle.producto
-                val cantidad = detalle.cantidad
-                val precio = detalle.totalVenta
-                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
+        if (!esRespaldo) {
+            Snackbar.make(
+                requireView(),
+                "Los precios son los mismos, debes personalizarlo",
+                Snackbar.LENGTH_LONG
+            ).show()
 
-                val fecha = args.idFecha
-                val fechaFormateada =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        } else {
+            productoEditar.forEach { (_, detalles) ->
+                detalles.forEach { detalle ->
+                    val id = detalle.id
+                    val producto = detalle.producto
+                    val cantidad = detalle.cantidad
+                    val precio = detalle.totalVenta
+                    val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
-                // Edición, usar ID existente
-                val venta = VentaPrixCoca(
-                    id = id,
-                    producto = producto,
-                    total = precio,
-                    fecha = fecha,
-                    fechaEditada = fechaFormateada,
-                    ventaPorCajilla = esVentaPorCajilla,
-                    cantidad = cantidad
-                )
+                    val fecha = args.idFecha
+                    val fechaFormateada =
+                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
-                if (cantidad > 0) {
-                    insertarOVenta(venta)
-                } else {
-                    ventaModel.eliminarVenta(id)
+                    // Edición, usar ID existente
+                    val venta = VentaPrixCoca(
+                        id = id,
+                        producto = producto,
+                        total = precio,
+                        fecha = fecha,
+                        fechaEditada = fechaFormateada,
+                        ventaPorCajilla = esVentaPorCajilla,
+                        cantidad = cantidad
+                    )
+
+                    if (cantidad > 0) {
+                        insertarOVenta(venta)
+                    } else {
+                        ventaModel.eliminarVenta(id)
+
+                    }
 
                 }
 
             }
 
+            Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
+                .show()
+            val action =
+                EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
-
-        Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
-            .show()
-        val action =
-            EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
-        Navigation.findNavController(binding.root).navigate(action)
 
     }
 
     private fun insertarOVenta(venta: VentaPrixCoca) {
         lifecycleScope.launch {
-            if (venta.id == 0) ventaModel.insertarVenta(venta) else ventaModel.editarVenta(
-                venta
-            )
+            if (venta.id == 0) {
+                ventaModel.insertarVenta(venta)
+            } else {
+                ventaModel.editarVenta(venta)
+            }
         }
     }
 
@@ -432,6 +457,7 @@ class EditarVentasFragment : Fragment() {
             .setPositiveButton("Continuar") { dialog, _ ->
                 dialog.dismiss()
             }
+
         alert.show()
     }
 
@@ -461,6 +487,7 @@ class EditarVentasFragment : Fragment() {
                 it.totalVenta = nuevoPrecio
             }
             visualizarTabla(false)
+
             dialog.dismiss()
         }
 
@@ -681,8 +708,7 @@ class EditarVentasFragment : Fragment() {
             val listaDetalles = productoEditar[cliente]
 
             if (listaDetalles != null) {
-                val detalleExistente =
-                    listaDetalles.find { it.producto == productoSeleccionado }
+                val detalleExistente = listaDetalles.find { it.producto == productoSeleccionado }
                 if (detalleExistente != null) {
                     val nuevaCantidad = detalleExistente.cantidad + cantidadInicial
                     val nuevoPrecio = nuevaCantidad * precioProducto
@@ -748,7 +774,7 @@ class EditarVentasFragment : Fragment() {
                 )
                 productoEditar[cliente] = nuevaLista
             }
-            visualizarTabla(esRespaldo)
+            visualizarTabla(false)
         }
     }
 

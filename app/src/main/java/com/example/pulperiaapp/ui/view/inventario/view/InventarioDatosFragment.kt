@@ -70,7 +70,7 @@ class InventarioDatosFragment : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
 
         adapter = InventarioAdapter(
-            onClickDelete = { fecha -> eliminarItem(fecha) },
+            onClickDelete = { fecha,idFoto -> eliminarItem(fecha,idFoto) },
             onClickUpdate = { idFecha -> updateItem(idFecha) }
         )
         recyclerView.adapter = adapter
@@ -112,23 +112,26 @@ class InventarioDatosFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun eliminarItem(fecha: String) {
+    private fun eliminarItem(fecha: String, idFoto: String) {
         AlertDialog.Builder(requireContext())
             .setTitle("ADVERTENCIA")
             .setMessage("¿Estás seguro que deseas eliminarlo?")
             .setPositiveButton("Sí") { dialog, _ ->
                 lifecycleScope.launch {
                     try {
-                        // Obtén la lista completa de inventarios
+
+
                         val inventariosCompletos = inventarioModel.obtenerDetalleInventario(fecha)
 
                         // Filtra la lista para obtener solo los inventarios con la misma fecha
                         val inventariosAEliminar =
-                            inventariosCompletos.filter { it.fechaEntrega == fecha }
+                            inventariosCompletos.filter { it.fechaEntrega == fecha && it.idFotos == idFoto }
 
                         // Lógica de eliminación, podrías usar un bucle para eliminar uno por uno
                         for (inventario in inventariosAEliminar) {
                             inventarioModel.eliminarInventario(inventario.id)
+                            inventario.idFotos?.let { inventarioModel.eliminarFoto(it) }
+
                         }
 
                         // Notificar al adaptador que los datos han cambiado
@@ -151,12 +154,11 @@ class InventarioDatosFragment : Fragment() {
             .show()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()
 
-        inventarioModel.obtenerInventario()
+      lifecycleScope.launch {   inventarioModel.obtenerInventario() }
         inventarioModel.inventarioModel.observe(viewLifecycleOwner) { lista ->
             adapter.setList(lista)
         }

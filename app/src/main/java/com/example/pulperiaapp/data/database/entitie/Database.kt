@@ -13,8 +13,9 @@ import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 
 
 @Database(
-    entities = [ClienteEntity::class, PrecioCocaEntity::class, CreditoEntity::class, InventarioEntity::class, PrecioPrixEntity::class, VentaPrixCoca::class, PrecioBigCola::class],
-    version = 1, exportSchema = false
+    entities = [ClienteEntity::class, PrecioCocaEntity::class, CreditoEntity::class, InventarioEntity::class, PrecioPrixEntity::class, VentaPrixCoca::class, PrecioBigCola::class, InventarioFotoEntity::class],
+    version = 1,
+    exportSchema = false
 )
 abstract class Database : RoomDatabase() {
 

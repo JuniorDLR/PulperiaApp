@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pulperiaapp.data.database.entitie.InventarioEntity
+import com.example.pulperiaapp.data.database.entitie.InventarioFotoEntity
 import com.example.pulperiaapp.domain.inventario.InventarioModel
 import com.example.pulperiaapp.domain.inventario.UseCaseInventario
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,8 +26,17 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
     fun insertarInventario(inventarioEntity: InventarioEntity) {
         viewModelScope.launch {
             useCaseInventario.insertarInventario(inventarioEntity)
+
             actualizarDatos()
 
+        }
+    }
+
+    suspend fun obtenerFoto(): List<InventarioFotoEntity> = useCaseInventario.obtenerFoto()
+    fun insertarFoto(fotos: List<InventarioFotoEntity>) {
+        viewModelScope.launch {
+            useCaseInventario.insertarFotos(fotos)
+            actualizarDatos()
         }
     }
 
@@ -38,11 +48,18 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
 
     }
 
-    fun obtenerInventario() {
-        viewModelScope.launch {
-            useCaseInventario.obtenerInventario()
+    suspend fun obtenerInventario(): List<InventarioModel> {
+
+        return try {
+            val lista = useCaseInventario.obtenerInventario()
             actualizarDatos()
+            lista
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+
         }
+
     }
 
     private fun actualizarDatos(lista: List<InventarioModel>? = null) {
@@ -52,9 +69,11 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
         }
     }
 
-    suspend fun obtenerDetalleInventario(idInventario: String): List<InventarioModel> {
+    suspend fun obtenerDetalleInventario(
+        idInventario: String,
+    ): List<InventarioModel> {
         return try {
-            val lista = useCaseInventario.obtenerDetalleInventario(idInventario)
+            val lista = useCaseInventario.obtenerInventarioConFotos(idInventario)
             _groupInventario.postValue(lista)
             lista
         } catch (e: Exception) {
@@ -68,6 +87,13 @@ class InventarioViewModel @Inject constructor(private val useCaseInventario: Use
     fun eliminarInventario(id: Int) {
         viewModelScope.launch {
             useCaseInventario.eliminarInventario(id)
+            actualizarDatos()
+        }
+    }
+
+    fun eliminarFoto(idFotos: String) {
+        viewModelScope.launch {
+            useCaseInventario.eliminarFoto(idFotos)
             actualizarDatos()
         }
     }
