@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.ui.view.inventario.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -189,7 +190,6 @@ class EditarInventarioFragment : Fragment() {
 
     private fun editarTabla() {
         val idInventario = args.idInventario
-
         lifecycleScope.launch {
             if (esNuevo) {
                 val nuevaLista = mutableListOf(
@@ -205,7 +205,7 @@ class EditarInventarioFragment : Fragment() {
                         null
                     )
                 )
-                inventarioRecuperado[idInventario] = nuevaLista
+                inventarioRecuperado[idInventario]?.addAll(nuevaLista)
                 updateTable()
             } else {
                 val emptyFields = mutableListOf<TextInputEditText>()
@@ -247,6 +247,7 @@ class EditarInventarioFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateTable() {
         tableLayout.removeAllViews()
         val idCliente = args.idInventario
@@ -262,6 +263,7 @@ class EditarInventarioFragment : Fragment() {
         updateImageCount(imageAdapter.count)
     }
 
+    @SuppressLint("InflateParams")
     private fun addRowToTable(inventario: InventarioModel) {
         val tableRow = LayoutInflater.from(requireContext())
             .inflate(R.layout.table_row_inventario, null) as TableRow
