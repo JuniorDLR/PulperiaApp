@@ -314,12 +314,12 @@ class EditarInventarioFragment : Fragment() {
 
 
     private fun actualizarConteo(imageCount: Int) {
+        Log.d("ConteoImagenes", "Valor de imageCount: $imageCount")
         val count = "$imageCount/$MAX"
         binding.contadorImage.text = count
 
         binding.btnTomarFotoEditar.visibility = if (imageCount < MAX) View.VISIBLE else View.GONE
         imageToken = imageCount
-
     }
 
 
