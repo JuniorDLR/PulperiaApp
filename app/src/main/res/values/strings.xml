@@ -76,4 +76,7 @@
     <string name="_2023_12_12">2023-12-12</string>
     <string name="_30">30</string>
     <string name="_20_05_21">20-05-21</string>
+    <string name="requisitos_de_contraseña">Requisitos de Contraseña:\n\n1. Al menos 8 caracteres de longitud.\n2. Al menos una letra mayúscula.\n3. Al menos un número.\n4. Puede contener caracteres especiales como @, #, $, %.</string>
+    <string name="_505_89972365">+505 89972365</string>
+
 </resources>

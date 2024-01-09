@@ -270,4 +270,9 @@
             android:id="@+id/action_filtrarDatosFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/usuarioFragment"
+        android:name="com.example.pulperiaapp.ui.view.usuario.UsuarioFragment"
+        android:label="fragment_usuario"
+        tools:layout="@layout/fragment_usuario" />
 </navigation>

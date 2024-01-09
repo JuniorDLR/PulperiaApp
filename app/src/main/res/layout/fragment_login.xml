@@ -94,6 +94,8 @@
                 android:textSize="25sp" />
 
 
+
+
             <TextView
                 android:id="@+id/tvRestablecer"
                 android:layout_width="match_parent"
@@ -104,6 +106,9 @@
                 android:text="@string/olvidastes_la_contrase_a"
                 android:textAlignment="center"
                 android:textSize="18sp" />
+
+
+
 
 
         </LinearLayout>

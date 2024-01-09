@@ -46,6 +46,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class EditarInventarioFragment : Fragment() {
 
+
     private lateinit var binding: FragmentEditarInventarioBinding
     private val inventarioModel: InventarioViewModel by viewModels()
     private val args: EditarInventarioFragmentArgs by navArgs()
@@ -94,7 +95,6 @@ class EditarInventarioFragment : Fragment() {
                     it.forEach { j ->
                         guardarDatosRecuperados(j, idInventario)
                     }
-
                     updateTable()
                 }
             }
@@ -105,8 +105,6 @@ class EditarInventarioFragment : Fragment() {
         if (inventario.cantidad > 0) {
             inventarioRecuperado.getOrPut(idFecha) { mutableListOf() }.add(inventario)
         }
-
-
     }
 
     private fun initUI() {
@@ -124,6 +122,7 @@ class EditarInventarioFragment : Fragment() {
         binding.btnTablaEditar.setOnClickListener { editarTabla() }
         binding.btnTomarFotoEditar.setOnClickListener { openGallery() }
         binding.btnGuardar.setOnClickListener { guardarInventarioEditado() }
+
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             Navigation.findNavController(binding.root)
@@ -176,9 +175,11 @@ class EditarInventarioFragment : Fragment() {
             fechaEditada,
             cantidadCajilla,
             cantidad,
-            importe, idFotos
+            importe,
+            idFotos
         )
     }
+
 
     private suspend fun insertOrUpdateInventory(entity: InventarioEntity) {
         if (entity.id == 0) {
@@ -192,21 +193,41 @@ class EditarInventarioFragment : Fragment() {
         val idInventario = args.idInventario
         lifecycleScope.launch {
             if (esNuevo) {
-                val nuevaLista = mutableListOf(
-                    InventarioModel(
-                        0,
-                        binding.tvNombreProductoEditar.text.toString(),
-                        binding.tvTamanoEnvaseEditar.text.toString(),
-                        idInventario,
-                        null,
-                        binding.tvCantidadPorCajillaEditar.text.toString().toInt(),
-                        binding.tvCantidadCajillasEditar.text.toString().toInt(),
-                        binding.tvPrecioUnitarioEditar.text.toString().toDouble(),
-                        null
+                val existeProducto = inventarioRecuperado[idInventario]?.any {
+                    it.nombreProducto.contains(binding.tvNombreProductoEditar.text.toString()) &&
+                            it.tamano.contains(binding.tvTamanoEnvaseEditar.text.toString()) &&
+                            it.cantidadCajilla == binding.tvCantidadPorCajillaEditar.text.toString()
+                        .toInt() &&
+                            it.cantidad == binding.tvCantidadCajillasEditar.text.toString()
+                        .toInt() &&
+                            it.importe == binding.tvPrecioUnitarioEditar.text.toString().toDouble()
+                }
+
+                if (existeProducto == true) {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("ERROR")
+                        .setMessage("Este producto ya existe en la tabla")
+                        .setPositiveButton("Continuar") { dialog, _ ->
+                            dialog.dismiss()
+                        }.show()
+                } else {
+                    val nuevaLista = mutableListOf(
+                        InventarioModel(
+                            0,
+                            binding.tvNombreProductoEditar.text.toString(),
+                            binding.tvTamanoEnvaseEditar.text.toString(),
+                            idInventario,
+                            null,
+                            binding.tvCantidadPorCajillaEditar.text.toString().toInt(),
+                            binding.tvCantidadCajillasEditar.text.toString().toInt(),
+                            binding.tvPrecioUnitarioEditar.text.toString().toDouble(),
+                            null
+                        )
                     )
-                )
-                inventarioRecuperado[idInventario]?.addAll(nuevaLista)
-                updateTable()
+                    inventarioRecuperado[idInventario]?.addAll(nuevaLista)
+                    updateTable()
+                    clearTextFields()
+                }
             } else {
                 val emptyFields = mutableListOf<TextInputEditText>()
 
@@ -229,7 +250,9 @@ class EditarInventarioFragment : Fragment() {
                 }
 
                 if (emptyFields.isNotEmpty()) {
+
                     emptyFields[0].requestFocus()
+
                 } else {
                     inventarioRecuperado[idInventario]?.find { it.id == productoSeleccionado }
                         ?.apply {
@@ -294,8 +317,7 @@ class EditarInventarioFragment : Fragment() {
                     0 -> editarProducto(inventario)
                     1 -> eliminarProducto()
                 }
-            }
-            .show()
+            }.show()
     }
 
     private fun editarProducto(inventario: InventarioModel) {

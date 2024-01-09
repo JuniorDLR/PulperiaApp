@@ -9,11 +9,12 @@ import com.example.pulperiaapp.data.database.dao.CocaDao
 import com.example.pulperiaapp.data.database.dao.CreditoDao
 import com.example.pulperiaapp.data.database.dao.InventarioDao
 import com.example.pulperiaapp.data.database.dao.PrixDao
+import com.example.pulperiaapp.data.database.dao.UsuarioDao
 import com.example.pulperiaapp.data.database.dao.VentaCocaPrix
 
 
 @Database(
-    entities = [ClienteEntity::class, PrecioCocaEntity::class, CreditoEntity::class, InventarioEntity::class, PrecioPrixEntity::class, VentaPrixCoca::class, PrecioBigCola::class, InventarioFotoEntity::class],
+    entities = [ClienteEntity::class, PrecioCocaEntity::class, CreditoEntity::class, InventarioEntity::class, PrecioPrixEntity::class, VentaPrixCoca::class, PrecioBigCola::class, InventarioFotoEntity::class, UsuarioEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -32,4 +33,5 @@ abstract class Database : RoomDatabase() {
     abstract fun venta(): VentaCocaPrix
 
     abstract fun getBigColca(): BigDao
+    abstract fun getUsuario(): UsuarioDao
 }

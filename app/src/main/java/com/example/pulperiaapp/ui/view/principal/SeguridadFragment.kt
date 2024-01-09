@@ -32,9 +32,7 @@ class SeguridadFragment : Fragment() {
     ): View {
         binding = FragmentSeguridadBinding.inflate(inflater, container, false)
 
-        binding.btnEnviarCodigo.setOnClickListener {
-            seguridad()
-        }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_seguridadFragment_to_loginFragment)
@@ -46,7 +44,7 @@ class SeguridadFragment : Fragment() {
 
     private fun seguridad() {
         val client = OkHttpClient()
-        val numero = binding.tvNumero.text.toString()
+        val numero = binding.tvPhone.text.toString()
         val codigo = (10000..90000).random()
         val mensaje = "Codigo de verificacion por JunaxerDev: $codigo"
 
