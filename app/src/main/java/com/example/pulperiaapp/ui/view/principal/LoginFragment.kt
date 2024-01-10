@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
         }
         binding.tvRestablecer.setOnClickListener {
             if (!resgistroCheck) {
-                val action = LoginFragmentDirections.actionLoginFragmentToUsuarioFragment()
+                val action = LoginFragmentDirections.actionLoginFragmentToUsuarioFragment(esPw = false)
                 findNavController().navigate(action)
 
             } else {

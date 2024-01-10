@@ -14,4 +14,6 @@ class UsuarioRepositorio @Inject constructor(private val usuarioDao: UsuarioDao)
         return response.map { it.toDomain() }
 
     }
+
+    suspend fun editarUsuario(pw:String,idUsuario:Int) = usuarioDao.editarUsuario(pw,idUsuario)
 }

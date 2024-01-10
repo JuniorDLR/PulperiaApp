@@ -9,6 +9,7 @@ class UsuarioUseCase @Inject constructor(private val usuarioRepositorio: Usuario
     suspend fun agregarUsuario(usuarioEntity: UsuarioEntity) =
         usuarioRepositorio.agregarUsuario(usuarioEntity)
 
-   suspend fun obtenerUsuario():List<UsuarioModel> = usuarioRepositorio.obtenerUsuario()
+    suspend fun obtenerUsuario(): List<UsuarioModel> = usuarioRepositorio.obtenerUsuario()
+    suspend fun editarUsuario(pw: String,idUsuario:Int) = usuarioRepositorio.editarUsuario(pw,idUsuario)
 
 }

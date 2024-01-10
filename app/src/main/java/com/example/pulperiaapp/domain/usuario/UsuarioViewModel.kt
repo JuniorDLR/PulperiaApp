@@ -11,11 +11,11 @@ import javax.inject.Inject
 class UsuarioViewModel @Inject constructor(private val useCase: UsuarioUseCase) : ViewModel() {
 
 
-     fun agregarUsuario(usuarioEntity: UsuarioEntity){
-         viewModelScope.launch {
-             useCase.agregarUsuario(usuarioEntity)
-         }
-     }
+    fun agregarUsuario(usuarioEntity: UsuarioEntity) {
+        viewModelScope.launch {
+            useCase.agregarUsuario(usuarioEntity)
+        }
+    }
 
     suspend fun obtenerUsuario(): List<UsuarioModel> {
         return try {
@@ -25,6 +25,12 @@ class UsuarioViewModel @Inject constructor(private val useCase: UsuarioUseCase) 
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
+        }
+    }
+
+    fun editarUsuario(pw: String, idUsuario: Int) {
+        viewModelScope.launch {
+            useCase.editarUsuario(pw, idUsuario)
         }
     }
 }

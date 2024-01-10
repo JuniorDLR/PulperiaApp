@@ -9,6 +9,7 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
@@ -27,59 +28,125 @@
         android:textSize="15sp"
         android:textStyle="bold" />
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        app:errorEnabled="true"
-        app:endIconMode="clear_text"
-
+    <LinearLayout
+        android:id="@+id/llUsario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:startIconDrawable="@drawable/baseline_person_24">
+        android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tvUsuario"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese un usuario"
-            android:inputType="text">
+            android:layout_margin="10dp"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/baseline_person_24">
 
-        </com.google.android.material.textfield.TextInputEditText>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese un usuario"
+                android:inputType="text">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputEditText>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tvErrorPW"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/tvErrorPW"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/baseline_lock_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese una contraseña"
+                android:inputType="textPassword">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btnRegistar"
+            style="@style/Widget.Material3.MaterialTimePicker.Button"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/fondo"
+            android:text="@string/registrar"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llRestablecerPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:endIconMode="password_toggle"
-        app:startIconDrawable="@drawable/baseline_lock_24">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tvPw"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese una contraseña"
-            android:inputType="textPassword">
+            android:layout_margin="10dp"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/baseline_lock_24">
 
-        </com.google.android.material.textfield.TextInputEditText>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvPw1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese una contraseña"
+                android:inputType="textPassword">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/baseline_lock_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvPw2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese de nuevo la contraseña"
+                android:inputType="textPassword">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
-        android:id="@+id/btnAgregarMoroso"
-        style="@style/Widget.Material3.MaterialTimePicker.Button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/fondo"
-        android:text="@string/registrar"
-        android:textColor="@color/white"
-        android:textSize="20sp">
-
-    </Button>
+        <Button
+            android:id="@+id/btnRestablecerPw"
+            style="@style/Widget.Material3.MaterialTimePicker.Button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/fondo"
+            android:text="Restablecer contraseña"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 
 </LinearLayout>

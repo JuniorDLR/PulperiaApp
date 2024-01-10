@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.view.principal.SeguridadFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        app:title="Restableciendo contraseña"
+        app:titleTextColor="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -67,6 +76,7 @@
                     android:layout_height="50dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:autofillHints=""
                     android:background="@drawable/round_black"
                     android:gravity="center"
                     android:inputType="number"
@@ -74,8 +84,7 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/otpET2"
@@ -84,6 +93,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:autofillHints=""
                     android:background="@drawable/round_black"
                     android:gravity="center"
                     android:inputType="number"
@@ -91,8 +101,7 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/otpET3"
@@ -101,6 +110,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:autofillHints=""
                     android:background="@drawable/round_black"
                     android:gravity="center"
                     android:inputType="number"
@@ -108,8 +118,7 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/otpET4"
@@ -118,6 +127,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:autofillHints=""
                     android:background="@drawable/round_black"
                     android:gravity="center"
                     android:inputType="number"
@@ -125,8 +135,8 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/otpET5"
                     android:layout_width="0dp"
@@ -134,6 +144,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:autofillHints=""
                     android:background="@drawable/round_black"
                     android:gravity="center"
                     android:inputType="number"
@@ -141,8 +152,7 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:autofillHints="" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -161,9 +171,9 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/round_back"
                 android:paddingStart="30dp"
-                android:layout_marginBottom="20dp"
                 android:paddingEnd="30dp"
                 android:text="@string/verificar_otp"
                 android:textColor="#FFFFFF" />
@@ -172,5 +182,4 @@
 
     </androidx.cardview.widget.CardView>
 
-
-</RelativeLayout>
+</LinearLayout>

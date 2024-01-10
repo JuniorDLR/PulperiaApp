@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.data.database.SharedUser
 import com.example.pulperiaapp.databinding.FragmentSeguridadBinding
@@ -98,6 +99,13 @@ class SeguridadFragment : Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
                     shared.eliminarCodigo()
+                    findNavController().navigate(
+                        SeguridadFragmentDirections.actionSeguridadFragmentToUsuarioFragment(
+                            esPw = true
+                        )
+                    )
+
+
                 } else {
                     Toast.makeText(
                         requireContext(), "El codigo no es igual", Toast.LENGTH_LONG
