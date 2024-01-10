@@ -13,6 +13,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.data.database.entitie.PrecioBigCola
 import com.example.pulperiaapp.databinding.FragmentAgregandoBigBinding
 import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
@@ -88,7 +89,7 @@ class AgregandoBigFragment : Fragment() {
 
                     val action =
                         AgregandoBigFragmentDirections.actionAgregandoBigFragmentToTablaBigColaFragment()
-                    Navigation.findNavController(binding.root).navigate(action)
+                    findNavController().navigate(action)
                 }
 
             }

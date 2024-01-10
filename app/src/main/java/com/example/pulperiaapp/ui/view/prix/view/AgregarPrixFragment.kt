@@ -13,6 +13,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.data.database.entitie.PrecioPrixEntity
 import com.example.pulperiaapp.databinding.FragmentAgregarPrixBinding
 import com.example.pulperiaapp.ui.view.prix.viewmodel.PrixViewModel
@@ -86,9 +87,8 @@ class AgregarPrixFragment : Fragment() {
                         "Datos agregado exitosamente!!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    val action =
-                        AgregarPrixFragmentDirections.actionAgregarPrixFragmentToTablaPrixFragment()
-                    Navigation.findNavController(binding.root).navigate(action)
+                    val action = AgregarPrixFragmentDirections.actionAgregarPrixFragmentToTablaPrixFragment()
+                    findNavController().navigate(action)
                     ocultarTeclado()
                 }
             }

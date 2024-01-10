@@ -78,5 +78,9 @@
     <string name="_20_05_21">20-05-21</string>
     <string name="requisitos_de_contraseña">Requisitos de Contraseña:\n\n1. Al menos 8 caracteres de longitud.\n2. Al menos una letra mayúscula.\n3. Al menos un número.\n4. Puede contener caracteres especiales como @, #, $, %.</string>
     <string name="_505_89972365">+505 89972365</string>
+    <string name="se_ha_enviado_un_codigo_de_verificacion_al_numero">Se ha enviado un codigo de verificacion al numero:</string>
+    <string name="otp_verificacion">OTP VERIFICACION</string>
+    <string name="resend_code">Resend code</string>
+    <string name="verificar_otp">Verificar OTP</string>
 
 </resources>

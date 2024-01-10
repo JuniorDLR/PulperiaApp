@@ -18,9 +18,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaCocaBinding
 import com.example.pulperiaapp.domain.coca.TablaCoca
+import com.example.pulperiaapp.ui.view.bigcola.view.TablaBigColaFragmentDirections
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,8 +65,10 @@ class TablaCocaFragment : Fragment() {
         }
 
         binding.btnAgregarProductoCoca.setOnClickListener {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_TablaCocaFragment_to_agregarCocaFragment)
+
+            val action =
+                TablaCocaFragmentDirections.actionTablaCocaFragmentToAgregarCocaFragment()
+            findNavController().navigate(action)
         }
         binding.btnEditarProductoCoca.setOnClickListener {
             editarProducto()

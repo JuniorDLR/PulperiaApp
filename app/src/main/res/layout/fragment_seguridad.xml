@@ -26,7 +26,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="OPT VERIFICACION"
+                android:text="@string/otp_verificacion"
                 android:textColor="#CC000000"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -37,7 +37,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="We have sent verification code to. "
+                android:text="@string/se_ha_enviado_un_codigo_de_verificacion_al_numero"
                 android:textColor="#CC000000" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="4">
+                android:weightSum="5">
 
                 <EditText
                     android:id="@+id/otpET1"
@@ -74,7 +74,8 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:autofillHints="" />
 
                 <EditText
                     android:id="@+id/otpET2"
@@ -90,7 +91,8 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:autofillHints="" />
 
                 <EditText
                     android:id="@+id/otpET3"
@@ -106,7 +108,8 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:autofillHints="" />
 
                 <EditText
                     android:id="@+id/otpET4"
@@ -122,7 +125,24 @@
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:autofillHints="" />
+                <EditText
+                    android:id="@+id/otpET5"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_black"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:autofillHints="" />
 
             </LinearLayout>
 
@@ -132,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Resend code"
+                android:text="@string/resend_code"
                 android:textColor="#99000000" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -140,12 +160,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/round_back"
                 android:paddingStart="30dp"
+                android:layout_marginBottom="20dp"
                 android:paddingEnd="30dp"
-                android:text="Verificar OTP" />
+                android:text="@string/verificar_otp"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 

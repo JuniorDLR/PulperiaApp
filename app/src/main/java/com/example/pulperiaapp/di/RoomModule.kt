@@ -1,5 +1,6 @@
 package com.example.pulperiaapp.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.pulperiaapp.data.database.entitie.Database
@@ -56,5 +57,11 @@ object RoomModule {
     @Provides
     @Singleton
     fun providerUsuario(db: Database) = db.getUsuario()
+
+    @Provides
+    @Singleton
+    fun providerAplicationContext(aplication: Application): Context {
+        return aplication.applicationContext
+    }
 
 }

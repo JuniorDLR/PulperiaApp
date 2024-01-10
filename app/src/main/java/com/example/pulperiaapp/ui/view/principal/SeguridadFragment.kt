@@ -1,6 +1,12 @@
 package com.example.pulperiaapp.ui.view.principal
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +15,9 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
+import com.example.pulperiaapp.data.database.SharedUser
 import com.example.pulperiaapp.databinding.FragmentSeguridadBinding
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,13 +30,15 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class SeguridadFragment : Fragment() {
 
+
     private lateinit var binding: FragmentSeguridadBinding
     private val ACCOUT_SID = "AC46e1a1bbd6f3469febf91b832c3ba345"
     private val AUTH_TOKEN = "716674ce9d5f9820993ba0ec7a01c6d4"
     private val TWILIO_NUMBER = "+16099576794"
+    private lateinit var countDownTimer: CountDownTimer
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSeguridadBinding.inflate(inflater, container, false)
 
@@ -42,6 +52,122 @@ class SeguridadFragment : Fragment() {
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        countDownTimer = object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val second = millisUntilFinished / 1000
+                val opcion = "Enviando codigo en: ${second}s"
+                binding.btnResend.text = opcion
+                if (second.toInt() == 0) {
+                    //seguridad()
+                }
+            }
+
+            override fun onFinish() {
+                val estadoNormal = "Tiempo agotado..."
+                binding.btnResend.text = estadoNormal
+
+
+            }
+
+        }
+        startTimer()
+        setupEditextListener()
+        saveCode(12345)
+
+        binding.btnVerificar.setOnClickListener {
+            if (todosEditTextEstanLlenos()) {
+
+                val n1 = binding.otpET1.text.toString()
+                val n2 = binding.otpET2.text.toString()
+                val n3 = binding.otpET3.text.toString()
+                val n4 = binding.otpET4.text.toString()
+                val n5 = binding.otpET5.text.toString()
+                val codigo = n1 + n2 + n3 + n4 + n5
+                val shared = SharedUser(requireContext())
+                val codigoShared = shared.mostrarCodigo()
+
+
+                if (codigoShared == codigo.toInt()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "El codigo es igual , puedes restablecer tu contraseña",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    shared.eliminarCodigo()
+                } else {
+                    Toast.makeText(
+                        requireContext(), "El codigo no es igual", Toast.LENGTH_LONG
+                    ).show()
+                }
+
+
+            } else {
+                AlertDialog.Builder(requireContext()).setTitle("ERROR DE VERIFICACION ")
+                    .setMessage("El codigo esta en proceso").setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+            }
+        }
+    }
+
+    private fun setupEditextListener() {
+
+
+        val editTextList =
+            listOf(binding.otpET1, binding.otpET2, binding.otpET3, binding.otpET4, binding.otpET5)
+
+        for ((index, editText) in editTextList.withIndex()) {
+
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    texto: CharSequence?, start: Int, before: Int, count: Int
+                ) {
+                    if (before == 1 && index > 0) {
+                        editTextList[index - 1].requestFocus()
+                    } else {
+                        binding.btnVerificar.setBackgroundResource(R.drawable.round_back)
+                    }
+
+                }
+
+                override fun onTextChanged(
+                    texto: CharSequence?, start: Int, before: Int, count: Int
+                ) {
+
+                }
+
+                @SuppressLint("ResourceType")
+                override fun afterTextChanged(p0: Editable?) {
+                    if (p0?.length == 1) {
+                        if (index < editTextList.size - 1) {
+                            editTextList[index + 1].requestFocus()
+                        } else {
+                            if (todosEditTextEstanLlenos()) {
+                                binding.btnVerificar.setBackgroundResource(R.drawable.round_red)
+
+                            }
+                        }
+                    }
+                }
+
+            })
+
+        }
+    }
+
+    private fun todosEditTextEstanLlenos(): Boolean {
+        return binding.otpET1.text.isNotEmpty() &&
+                binding.otpET2.text.isNotEmpty() &&
+                binding.otpET3.text.isNotEmpty() &&
+                binding.otpET4.text.isNotEmpty() &&
+                binding.otpET5.text.isNotEmpty()
+
+    }
+
     private fun seguridad() {
         val client = OkHttpClient()
         val numero = binding.tvPhone.text.toString()
@@ -53,8 +179,7 @@ class SeguridadFragment : Fragment() {
 
         val request = Request.Builder()
             .url("https://api.twilio.com/2010-04-01/Accounts/$ACCOUT_SID/Messages.json")
-            .post(requestBody)
-            .header("Authorization", Credentials.basic(ACCOUT_SID, AUTH_TOKEN))
+            .post(requestBody).header("Authorization", Credentials.basic(ACCOUT_SID, AUTH_TOKEN))
             .build()
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -62,6 +187,7 @@ class SeguridadFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "Codigo enviado", Toast.LENGTH_LONG).show()
+                    //saveCode(12345)
                 } else {
                     Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show()
                 }
@@ -70,4 +196,13 @@ class SeguridadFragment : Fragment() {
 
     }
 
+
+    private fun saveCode(codigo: Int) {
+        val shared = SharedUser(requireContext())
+        shared.guardarCodigo(codigo)
+    }
+
+    private fun startTimer() {
+        countDownTimer.start()
+    }
 }

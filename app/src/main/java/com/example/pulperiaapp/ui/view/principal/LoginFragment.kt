@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentLoginBinding
 import com.example.pulperiaapp.domain.usuario.UsuarioViewModel
@@ -46,9 +47,12 @@ class LoginFragment : Fragment() {
         }
         binding.tvRestablecer.setOnClickListener {
             if (!resgistroCheck) {
-                Navigation.findNavController(binding.root).navigate(R.id.usuarioFragment)
-            }else{
-                Navigation.findNavController(binding.root).navigate(R.id.seguridadFragment)
+                val action = LoginFragmentDirections.actionLoginFragmentToUsuarioFragment()
+                findNavController().navigate(action)
+
+            } else {
+                val action = LoginFragmentDirections.actionLoginFragmentToSeguridadFragment()
+                findNavController().navigate(action)
             }
         }
 
@@ -61,8 +65,9 @@ class LoginFragment : Fragment() {
             resgistroCheck = listaUsuarios.isNotEmpty()
             if (resgistroCheck) {
                 binding.tvRestablecer.isVisible = true
-            }else{
-                binding.tvRestablecer.text = "Crear cuenta de usuario"
+            } else {
+                val cuenta = "Crear cuenta de usuario"
+                binding.tvRestablecer.text = cuenta
 
             }
         }

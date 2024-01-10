@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaBigColaBinding
 import com.example.pulperiaapp.domain.bigcola.TablaBig
@@ -61,7 +62,7 @@ class TablaBigColaFragment : Fragment() {
 
             val action =
                 TablaBigColaFragmentDirections.actionTablaBigColaFragmentToAgregandoBigFragment()
-            Navigation.findNavController(binding.root).navigate(action)
+           findNavController().navigate(action)
         }
         binding.btnEditarProductoBig.setOnClickListener { editarBigCola() }
         binding.btnElimimarProductoBig.setOnClickListener { eliminarBigCola() }

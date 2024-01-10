@@ -64,7 +64,7 @@ class TablaPrixFragment : Fragment() {
         lifecycleScope.launch { prixViewModel.obtenerPrixTabla() }
         binding.btnAgregarProductoPrix.setOnClickListener {
             val action = TablaPrixFragmentDirections.actionTablaPrixFragmentToAgregarPrixFragment()
-            Navigation.findNavController(binding.root).navigate(action)
+            findNavController().navigate(action)
 
         }
 
