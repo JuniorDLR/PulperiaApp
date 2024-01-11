@@ -82,5 +82,7 @@
     <string name="otp_verificacion">OTP VERIFICACION</string>
     <string name="resend_code">Resend code</string>
     <string name="verificar_otp">Verificar OTP</string>
+    <string name="otro_metodo">Otro metodo</string>
+    <string name="huella_digital">Huella digital</string>
 
 </resources>

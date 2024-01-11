@@ -12,16 +12,15 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:layout_marginTop="10dp"
         android:contentDescription="@string/logo"
         android:src="@drawable/logoapp" />
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="20dp"
+
         android:background="@color/white"
         app:cardCornerRadius="16dp">
 
@@ -29,7 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -84,31 +83,48 @@
             <Button
                 android:id="@+id/btnIniciar"
                 style="@style/Widget.Material3.MaterialTimePicker.Button"
-                android:layout_width="170dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/fondo"
                 android:text="@string/iniciar_ses_on"
                 android:textColor="@color/letra"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="@string/otro_metodo"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-
+            <Button
+                android:id="@+id/btnHuella"
+                style="@style/Widget.Material3.MaterialTimePicker.Button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/fondo"
+                android:text="@string/huella_digital"
+                android:textColor="@color/letra"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvRestablecer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/itemView"
                 android:text="@string/olvidastes_la_contrase_a"
                 android:textAlignment="center"
-                android:textSize="18sp" />
-
-
-
+                android:textColor="@color/itemView"
+                android:textSize="20sp" />
 
 
         </LinearLayout>
