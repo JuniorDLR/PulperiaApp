@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ItemFilterBinding
 
+
 class AdapterCliente
     : RecyclerView.Adapter<AdapterCliente.ViewHolder>() {
 
@@ -44,4 +45,6 @@ class AdapterCliente
         listaCliente = lista
         notifyDataSetChanged()
     }
+
+
 }

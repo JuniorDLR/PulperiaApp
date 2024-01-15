@@ -24,9 +24,11 @@ import com.example.pulperiaapp.databinding.FragmentEditarCreditoBinding
 import com.example.pulperiaapp.domain.amoroso.DetalleAmoroso
 import com.example.pulperiaapp.ui.view.credito.viewmodel.CreditoViewModel
 import com.example.pulperiaapp.ui.view.venta.viewmodel.VentaViewModel
-import com.twilio.rest.monitor.v1.Alert
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -170,9 +172,14 @@ class EditarCreditoFragment : Fragment() {
             agregarFila(producto, cantidad, precio, cliente, map.id)
             totaRecuperado += precio
         }
-        binding.tvTotalAmount.text = totaRecuperado.toString()
+        val precioFormateado = formatearPrecio(totaRecuperado)
+        binding.tvTotalAmount.text = precioFormateado
     }
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
     @SuppressLint("InflateParams")
     private fun agregarFila(
@@ -193,9 +200,9 @@ class EditarCreditoFragment : Fragment() {
 
         val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
         cantidadView.text = cantidad.toString()
-
+        val precioFormateado = formatearPrecio(precio)
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
-        precioView.text = precio.toString()
+        precioView.text = precioFormateado
 
         cantidadView.setOnClickListener {
 
@@ -271,7 +278,7 @@ class EditarCreditoFragment : Fragment() {
 
     }
 
-    suspend fun verificarProdcuto(producto: String): String {
+    private suspend fun verificarProdcuto(producto: String): String {
         return try {
 
             val lista = venta.obtenerTodosLosProductos()

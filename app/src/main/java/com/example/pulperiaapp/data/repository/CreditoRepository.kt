@@ -26,7 +26,7 @@ class CreditoRepository @Inject constructor(private val creditoDao: CreditoDao) 
     suspend fun obtenerDetalleAmoroso(cliente: String): List<VentaAmorosoDetalle> =
         creditoDao.obtenerDetalleAmoroso(cliente)
 
-    suspend fun obtenerFilterPago(fechaFilter: String):List<VentaAmorosoDetalle> =creditoDao.obtenerFilterPago(fechaFilter)
+    suspend fun obtenerFilterPago(fechaInicio: String,fechaFin:String):List<VentaAmorosoDetalle> =creditoDao.obtenerFilterPago(fechaInicio,fechaFin)
 
 
     suspend fun obtenerCredito(): List<VentaAmorosoDetalle> {

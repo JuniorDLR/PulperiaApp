@@ -6,7 +6,8 @@
     <string name="producto">PRODUCTO</string>
     <string name="precio">PRECIO</string>
     <string name="eliminar">Eliminar</string>
-    <string name="editar">Editar</string>
+    <string name="editar">Editar inventario</string>
+    <string name="editarTabla">Editar producto</string>
     <string name="ingrese_un_id">Ingrese un id</string>
     <string name="ingrese_un_precio">Ingrese un precio</string>
     <string name="agregarprix">agregarPrix</string>
@@ -51,7 +52,7 @@
     <string name="big_cola">Big cola</string>
     <string name="agregar_foto">Agregar foto</string>
     <string name="_0_3">0/3</string>
-    <string name="precio_total_0_00">Precio Total: $0.00</string>
+    <string name="precio_total_0_00">Precio Total: C$0</string>
     <string name="cajilla">CAJILLA</string>
     <string name="tama_o">TAMAÑO</string>
     <string name="agregar_a_la_tabla">Agregar datos</string>
@@ -72,7 +73,7 @@
     <string name="ventas_por_individual">Ventas por individual</string>
     <string name="aplicar_filtros">Aplicar Filtros</string>
     <string name="total_0_00">Total: $0.00</string>
-    <string name="inventario1">Inventario1</string>
+    <string name="inventario1">Inventario!</string>
     <string name="_2023_12_12">2023-12-12</string>
     <string name="_30">30</string>
     <string name="_20_05_21">20-05-21</string>
@@ -80,9 +81,10 @@
     <string name="_505_89972365">+505 89972365</string>
     <string name="se_ha_enviado_un_codigo_de_verificacion_al_numero">Se ha enviado un codigo de verificacion al numero:</string>
     <string name="otp_verificacion">OTP VERIFICACION</string>
-    <string name="resend_code">Resend code</string>
+    <string name="resend_code">Enviar codigo </string>
     <string name="verificar_otp">Verificar OTP</string>
     <string name="otro_metodo">Otro metodo</string>
     <string name="huella_digital">Huella digital</string>
+    <string name="filtrar_ganacias">Filtrar ganacias</string>
 
 </resources>

@@ -23,7 +23,8 @@
         android:padding="10dp"
         android:text="CLIENTE"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
 
     <TableRow
         android:id="@+id/trProducto"
@@ -90,7 +91,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp">
+        android:layout_marginHorizontal="15dp">
 
         <TextView
             android:id="@+id/tvTotalLabel"
@@ -121,7 +122,8 @@
         android:backgroundTint="@color/fondo"
         android:text="Editar credito"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
 
 
 </LinearLayout>

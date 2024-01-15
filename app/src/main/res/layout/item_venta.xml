@@ -16,31 +16,39 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
+        <TextView
             android:id="@+id/btnEdit"
-            android:layout_width="50dp"
+            android:layout_width="80dp"
             android:layout_height="70dp"
-            android:background="@drawable/border_black"
-            android:scaleType="fitCenter"
-            android:src="@drawable/editar_venta"
+            android:text="Editor"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="#A9A9A9"
+            android:gravity="center"
             tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
-
-
-        <ImageButton
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <TextView
             android:id="@+id/btnDel"
-            android:layout_width="50dp"
+            android:layout_width="90dp"
             android:layout_height="70dp"
-            android:background="@drawable/border_black"
-            android:scaleType="fitCenter"
-            android:src="@drawable/borrar"
-            tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+            android:text="Eliminar"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="#A9A9A9"
+            android:gravity="center"
+            tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
 
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:backgroundTint="@color/itemView">
 
 
@@ -63,7 +71,8 @@
                     android:text="Producto vendido:"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tvListProducto"
@@ -89,7 +98,8 @@
                     android:text="Total:"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tvTotal"
@@ -118,5 +128,7 @@
 
 
     </androidx.cardview.widget.CardView>
+
+
 
 </com.apachat.swipereveallayout.core.SwipeLayout>

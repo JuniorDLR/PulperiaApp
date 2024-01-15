@@ -11,7 +11,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
@@ -34,7 +32,6 @@ import com.example.pulperiaapp.databinding.FragmentInventarioBinding
 import com.example.pulperiaapp.domain.inventario.InventarioModel
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageAdapter
 import com.example.pulperiaapp.ui.view.inventario.adapter.ImageCounterListener
-
 import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +40,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.lang.Exception
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -190,6 +190,8 @@ class InventarioFragment : Fragment() {
         return binding.root
     }
 
+
+
     private fun initComponent() {
         tableLayout = binding.tlProductoInventario
         tableRow = binding.trItem
@@ -203,6 +205,9 @@ class InventarioFragment : Fragment() {
 
             override fun onImageDelete(imageCount: Int, deletedImage: Bitmap?) {
                 actualizarConteo()
+
+
+
 
             }
 
@@ -429,7 +434,8 @@ class InventarioFragment : Fragment() {
             visualizarTabla(lista)
 
         }
-        binding.tvPrecioPagar.text = "Precio Total: $precioSuperTotal"
+        val precioFormateado = formatearPrecio(precioSuperTotal)
+        binding.tvPrecioPagar.text = "Precio Total: $precioFormateado"
     }
 
 
@@ -507,7 +513,11 @@ class InventarioFragment : Fragment() {
         binding.tvPrecioUnitario.setText("")
 
     }
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 }
 
 

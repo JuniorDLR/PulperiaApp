@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
@@ -41,6 +40,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+
 @AndroidEntryPoint
 class VentasFragment : Fragment() {
 
@@ -50,7 +50,7 @@ class VentasFragment : Fragment() {
     lateinit var adapterVenta: AdapterVenta
     private lateinit var tabLayout: TabLayout
     private var esIndividual: Boolean = false
-
+    private var currentTabPosition: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -86,13 +86,12 @@ class VentasFragment : Fragment() {
         binding.etFecha.inputType = InputType.TYPE_NULL
         binding.etFecha.setOnClickListener { showDateTimePicker() }
 
-        ventasModel.obtenerTotal.observe(viewLifecycleOwner) { total ->
-            val totalComoBigDecimal = total?.let { BigDecimal.valueOf(it) }
-            val formato = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
-
-            val totalFormateado = formato.format(totalComoBigDecimal)
-            val ganancia = "Ganancia: $totalFormateado"
-            binding.tvTotalVenta.text = ganancia
+        lifecycleScope.launch {
+            ventasModel.obtenerTotal.collect { total ->
+               val precioFormateado = total?.let { formatearPrecio(it) }
+                val ganancia = "Ganancia: $precioFormateado"
+                binding.tvTotalVenta.text = ganancia
+            }
         }
 
 
@@ -114,6 +113,7 @@ class VentasFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
 
+
             }
 
         }
@@ -125,19 +125,21 @@ class VentasFragment : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    val currentTabPosition = it.position
+                    currentTabPosition = it.position
                     adapterVenta.verificacion(currentTabPosition)
                     lifecycleScope.launch {
-                        when (it.position) {
+                        when (currentTabPosition) {
 
                             0 -> {
+                                esIndividual = true
                                 try {
-                                    binding.etFecha.setText("")
+
                                     ventasModel.obtenerVentaIndividual(fechaInicio, fechaFin)
-                                    ventasModel.ventaModelIndividual.observe(viewLifecycleOwner) { lista ->
+                                    ventasModel.ventaModelIndividual.collect { lista ->
                                         adapterVenta.setListIndividual(lista)
+
                                     }
-                                    esIndividual = true
+
                                 } catch (e: Exception) {
                                     Log.e("TAG", "Error al obtener venta individual: ${e.message}")
                                 }
@@ -146,14 +148,16 @@ class VentasFragment : Fragment() {
                             }
 
                             1 -> {
-
+                                esIndividual = false
                                 try {
-                                    binding.etFecha.setText("")
+
                                     ventasModel.obtenerVentaCajilla(fechaInicio, fechaFin)
-                                    ventasModel.ventaModelCajilla.observe(viewLifecycleOwner) { lista ->
+                                    ventasModel.ventaModelCajilla.collect { lista ->
                                         adapterVenta.setListCajilla(lista)
+
                                     }
-                                    esIndividual = false
+
+
 
                                 } catch (e: Exception) {
                                     Log.e(
@@ -231,7 +235,11 @@ class VentasFragment : Fragment() {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaActual.time)
     }
 
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
     @SuppressLint("SimpleDateFormat")
     private fun obtenerFechaFin(): String {
         val fechaActual = Calendar.getInstance().apply {

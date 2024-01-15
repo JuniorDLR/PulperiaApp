@@ -14,114 +14,245 @@
         app:title="Filtrar datos"
         app:titleTextColor="@color/white" />
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFecha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFecha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/baseline_calendar_month_24"
-                android:drawablePadding="8dp"
-                android:textStyle="bold"
-                tools:text=" yyyy-MM-dd" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <RadioGroup
-            android:id="@+id/radioGroupClientes"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/checkBoxPagado"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/clientes_que_ya_han_realizado_el_pago"
-                android:textSize="16sp" />
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioButtonTodos"
-                android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFecha1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFecha1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_calendar_month_24"
+                        android:drawablePadding="8dp"
+                        android:textStyle="bold"
+                        tools:hint="Fecha inicio" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFecha2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFecha2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_calendar_month_24"
+                        android:drawablePadding="8dp"
+                        android:textStyle="bold"
+                        tools:hint="Fecha fin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/filtrar_ventas_por_fechas"
-                android:textSize="16sp" />
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radioButtonRoom"
-                android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/radioGroupClientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/checkBoxPagado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/clientes_que_ya_han_realizado_el_pago"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonTodos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filtrar_ventas_por_fechas"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonRoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mostrar_clientes_registrados"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonGanacia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filtrar_ganacias"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:id="@+id/SwitchVisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchIndividual"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ventas_por_individual"
+                        android:textSize="15sp" />
+
+                    <Space
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchCajilla"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/venta_por_cajilla"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+
+                <!-- Botón para aplicar los filtros -->
+                <Button
+                    android:id="@+id/btnAplicarFiltros"
+                    style="@style/Widget.Material3.MaterialTimePicker.Button"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="5dp"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:text="@string/aplicar_filtros"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llGanacia"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mostrar_clientes_registrados"
-                android:textSize="16sp" />
-        </RadioGroup>
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvGanancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TableRow
+                    android:id="@+id/trGanancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    tools:ignore="UselessParent">
 
 
-        <LinearLayout
-            android:id="@+id/SwitchVisible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tvProductoGanancia"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/producto"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCantidadGanacia"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/cantidad"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPrecioGanacia"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/header_shape"
+                        android:gravity="center"
+                        android:text="@string/precio"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/svGanacia"
+                    android:layout_width="match_parent"
+                    android:layout_height="205dp"
+                    android:layout_marginHorizontal="10dp">
 
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchIndividual"
-                android:layout_width="200dp"
+                    <TableLayout
+                        android:id="@+id/tlProductoGanancia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="*">
+
+                    </TableLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/rvFilterS"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ventas_por_individual"
-                android:textSize="15sp" />
+                android:layout_margin="10dp">
 
-            <Space
-                android:layout_width="15dp"
-                android:layout_height="wrap_content" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchCajilla"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:text="@string/venta_por_cajilla"
-                android:textSize="15sp" />
-
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
-
-
-        <!-- Botón para aplicar los filtros -->
-        <Button
-            android:id="@+id/btnAplicarFiltros"
-            style="@style/Widget.Material3.MaterialTimePicker.Button"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="5dp"
-            android:backgroundTint="?attr/colorPrimary"
-            android:text="@string/aplicar_filtros"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </ScrollView>
+
 
 </LinearLayout>

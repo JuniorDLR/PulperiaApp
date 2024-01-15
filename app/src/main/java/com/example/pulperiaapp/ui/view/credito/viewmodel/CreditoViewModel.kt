@@ -1,20 +1,15 @@
 package com.example.pulperiaapp.ui.view.credito.viewmodel
 
-import android.os.Bundle
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.example.pulperiaapp.data.database.entitie.CreditoEntity
-
 import com.example.pulperiaapp.domain.amoroso.UseCaseAmoroso
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import javax.inject.Inject
 
 @HiltViewModel
@@ -72,9 +67,9 @@ class CreditoViewModel @Inject constructor(
 
     }
 
-    suspend fun obtenerFilterPago(fechaFilter: String): List<VentaAmorosoDetalle> {
+    suspend fun obtenerFilterPago(fechaInicio: String,fechaFin:String): List<VentaAmorosoDetalle> {
         return try {
-            val lista = useCaseAmoroso.obtenerFilterPago(fechaFilter)
+            val lista = useCaseAmoroso.obtenerFilterPago(fechaInicio,fechaFin)
             val groupClient = lista.groupBy { it.cliente }
             _groupedAmorosoModel.postValue(groupClient)
 
@@ -85,7 +80,7 @@ class CreditoViewModel @Inject constructor(
         }
     }
 
-    fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {
+    private fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {
         viewModelScope.launch {
             val listaVentas = lista ?: useCaseAmoroso.obtenerCredito()
             val ventasFiltradas = listaVentas.filter { !it.estadoPago }

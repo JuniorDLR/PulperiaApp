@@ -33,6 +33,9 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -421,7 +424,7 @@ class VentasProductoFragment : Fragment() {
             }
         }
 
-        val precioFormateado = String.format(Locale.getDefault(), "%.2f", precioTotal)
+        val precioFormateado = formatearPrecio(precioTotal)
         binding.tvTotalAmount.text = precioFormateado
     }
 
@@ -441,7 +444,7 @@ class VentasProductoFragment : Fragment() {
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
 
 
-        val precioFormateado = String.format(Locale.getDefault(), "%.2f", precio)
+        val precioFormateado = formatearPrecio(precio)
         precioView.text = precioFormateado
 
 
@@ -496,6 +499,10 @@ class VentasProductoFragment : Fragment() {
 
 
     }
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
 }

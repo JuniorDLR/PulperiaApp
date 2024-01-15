@@ -2,14 +2,12 @@ package com.example.pulperiaapp.ui.view.credito.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -18,7 +16,6 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -32,6 +29,9 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -333,61 +333,44 @@ class AmorosoFragment : Fragment() {
 
             val cantidad = info.first
             val precio = info.second
-            val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
-            productoView.text = producto
-
-            val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
-            cantidadView.text = cantidad.toString()
-
-
-            val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
-            precioView.text = precio.toString()
-
-
-            productoView.setOnClickListener {
-                if (cantidad > 1) {
-                    val nuevaCantidad = cantidad - 1
-                    val nuevoPrecio = nuevaCantidad * precio / cantidad
-                    productoSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
-                    actualizarTabla()
-                } else {
-                    productoSeleccionados.remove(producto)
-                    actualizarTabla()
-                }
-            }
-
-            cantidadView.setOnClickListener {
-                /*
-                *
-                *
-                *
-                *
-                *    if (cantidad > 0) {
-                    val nuevaCantidad = cantidad + 1
-                    val nuevoPrecio = nuevaCantidad * precio / cantidad
-                    productoSeleccionados[producto] = Pair(nuevaCantidad, nuevoPrecio)
-                    actualizarTabla()
-
-                } else {
-                    productoSeleccionados.remove(producto)
-                    actualizarTabla()
-                }*/
-
-                showQuantityDialog(cantidadView, precio, producto, cantidad)
-            }
-
-            tableLayout.addView(tableRow)
-
-
             precioTotal += precio
+            visualizarTabla(cantidad, precio, producto)
 
         }
-        binding.tvTotalAmount.text = precioTotal.toString()
+        val fomato = formatearPrecio(precioTotal)
+        binding.tvTotalAmount.text = fomato
 
 
     }
 
+    private fun visualizarTabla(cantidad: Int, precio: Double, producto: String) {
+        val productoView = tableRow.findViewById<TextView>(R.id.tvProductoVenta)
+        productoView.text = producto
 
+        val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
+        cantidadView.text = cantidad.toString()
+
+        val fomato = formatearPrecio(precio)
+
+        val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
+        precioView.text = fomato
+
+
+
+        cantidadView.setOnClickListener {
+            showQuantityDialog(cantidadView, precio, producto, cantidad)
+        }
+
+        tableLayout.addView(tableRow)
+
+
+    }
+
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
     private fun showQuantityDialog(
         cantidadView: TextView,
@@ -415,6 +398,12 @@ class AmorosoFragment : Fragment() {
 
         builder.setNegativeButton("Cancelar") { dialog, _ ->
             dialog.cancel()
+        }
+
+        builder.setNeutralButton("Eliminar") { dialog, _ ->
+            productoSeleccionados.remove(producto)
+            actualizarTabla()
+            dialog.dismiss()
         }
         builder.show()
 

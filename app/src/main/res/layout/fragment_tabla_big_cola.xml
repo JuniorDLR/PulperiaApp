@@ -177,15 +177,16 @@
                 <Button
                     android:id="@+id/btnEditarProductoBig"
                     style="@style/Widget.Material3.MaterialTimePicker.Button"
-                    android:layout_width="140dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/fondo"
-                    android:text="@string/editar"
+                    android:text="@string/editarTabla"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                  />
 
                 <Button
                     android:id="@+id/btnElimimarProductoBig"

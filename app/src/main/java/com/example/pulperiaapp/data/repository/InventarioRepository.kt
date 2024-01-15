@@ -19,6 +19,7 @@ class InventarioRepository @Inject constructor(private val inventarioDao: Invent
     suspend fun eliminarFoto(idFotos: String) =
         inventarioDao.eliminarFoto(idFotos)
 
+
     suspend fun obtenerFoto(): List<InventarioFotoEntity> = inventarioDao.obtenerFoto()
 
     suspend fun obtenerInventarioConFotos(idInventario: String): List<InventarioModel> {

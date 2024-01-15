@@ -39,6 +39,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -120,7 +123,7 @@ class EditarInventarioFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnTablaEditar.setOnClickListener { editarTabla() }
-        binding.btnTomarFotoEditar.setOnClickListener { openGallery() }
+        //binding.btnTomarFotoEditar.setOnClickListener { openGallery() }
         binding.btnGuardar.setOnClickListener { guardarInventarioEditado() }
 
 
@@ -281,8 +284,8 @@ class EditarInventarioFragment : Fragment() {
             total += inventario.importe
             addRowToTable(inventario)
         }
-
-        binding.tvPrecioPagar.text = "Precio Total: $total"
+        val precioFormateado =formatearPrecio(total)
+            binding.tvPrecioPagar.text = "Precio Total: $precioFormateado"
         updateImageCount(imageAdapter.count)
     }
 
@@ -329,6 +332,11 @@ class EditarInventarioFragment : Fragment() {
             tvPrecioUnitarioEditar.setText(inventario.importe.toString())
         }
     }
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
     private fun eliminarProducto() {
         inventarioRecuperado[args.idInventario]?.find { it.id == productoSeleccionado }?.apply {
@@ -374,8 +382,8 @@ class EditarInventarioFragment : Fragment() {
 
                 imageAdapter.notifyDataSetChanged()
                 updateImageCount(imageAdapter.count)
-                binding.btnTomarFotoEditar.visibility =
-                    if (imageAdapter.count == MAX) View.GONE else View.VISIBLE
+                //binding.btnTomarFotoEditar.visibility =
+                //if (imageAdapter.count == MAX) View.GONE else View.VISIBLE
             }
         }
     }
@@ -445,7 +453,7 @@ class EditarInventarioFragment : Fragment() {
     private fun updateImageCount(imageCount: Int) {
         val count = "$imageCount/$MAX"
         binding.contadorImage.text = count
-        binding.btnTomarFotoEditar.visibility = if (imageCount < MAX) View.VISIBLE else View.GONE
+        //binding.btnTomarFotoEditar.visibility = if (imageCount < MAX) View.VISIBLE else View.GONE
         imageToken = imageCount
     }
 }

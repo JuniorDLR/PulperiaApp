@@ -1,14 +1,13 @@
 package com.example.pulperiaapp.ui.view.inventario.adapter
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.viewpager.widget.PagerAdapter
 import com.example.pulperiaapp.R
-
 
 class ImageAdapter(
     private val image: MutableList<Bitmap>,
@@ -30,7 +29,6 @@ class ImageAdapter(
 
         val imagen = image[position]
         imageView.setImageBitmap(imagen)
-        delete.isVisible = image.size != 3
         delete.setOnClickListener {
             onClickDelete(position)
         }
@@ -44,21 +42,17 @@ class ImageAdapter(
         if (position >= 0 && position < image.size) {
             deletePosition = position
             val deletedImage = image.removeAt(position)
+            Log.d("ImageAdapter", "Image deleted at position: $position")
             notifyDataSetChanged()
             val tamano = image.size
+            Log.d("ImageAdapter", "Updated image size: $tamano")
             imageCounterListener.onImageDelete(tamano, deletedImage)
         }
     }
 
 
     fun addImage(image: Bitmap) {
-        // Si se eliminó una imagen, inserta la nueva imagen en esa posición
-        if (deletePosition != -1) {
-            this.image.add(deletePosition, image)
-        } else {
-            this.image.add(image)
-        }
-
+        this.image.add(image)
         notifyDataSetChanged()
         imageCounterListener.onImageAdd(this.image.size)
     }

@@ -161,7 +161,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="10dp"
-                android:text="Agregar mas productos" />
+                android:text="Agregar mas productos"
+                tools:ignore="HardcodedText" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -246,7 +247,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/precio_total_0_00"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="20sp" />
@@ -258,7 +258,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/_0_3"
                 android:textSize="20sp" />
 
@@ -268,38 +267,20 @@
                 android:layout_height="250dp"
                 android:layout_margin="16dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnTomarFotoEditar"
-                    style="@style/Widget.Material3.MaterialTimePicker.Button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="?attr/colorPrimary"
-                    android:text="@string/agregar_foto"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/btnGuardar"
                     style="@style/Widget.Material3.MaterialTimePicker.Button"
-                    android:layout_width="0dp"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:layout_weight="1"
                     android:backgroundTint="?attr/colorPrimary"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/editar"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
-        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

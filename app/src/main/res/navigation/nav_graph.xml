@@ -271,7 +271,9 @@
         tools:layout="@layout/fragment_filtrar_datos">
         <action
             android:id="@+id/action_filtrarDatosFragment_to_editarVentasFragment"
-            app:destination="@id/editarVentasFragment" />
+            app:destination="@id/editarVentasFragment"
+            app:popUpTo="@id/filtrarDatosFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_filtrarDatosFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

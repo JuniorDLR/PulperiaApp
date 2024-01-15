@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
-        app:title="Restableciendo contraseña"
+        app:title="Verificando "
         app:titleTextColor="@color/white" />
 
     <androidx.cardview.widget.CardView
@@ -71,6 +71,7 @@
                 android:weightSum="5">
 
                 <EditText
+
                     android:id="@+id/otpET1"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -87,6 +88,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+
                     android:id="@+id/otpET2"
                     android:layout_width="0dp"
                     android:layout_height="50dp"

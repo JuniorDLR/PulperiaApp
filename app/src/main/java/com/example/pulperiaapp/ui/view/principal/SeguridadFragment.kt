@@ -37,6 +37,7 @@ class SeguridadFragment : Fragment() {
     private val AUTH_TOKEN = "716674ce9d5f9820993ba0ec7a01c6d4"
     private val TWILIO_NUMBER = "+16099576794"
     private lateinit var countDownTimer: CountDownTimer
+    private lateinit var sharedUser: SharedUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,6 +57,18 @@ class SeguridadFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedUser = SharedUser(requireContext())
+
+        binding.btnResend.setOnClickListener {
+            if (sharedUser.isOneDayPassed()) {
+                alertCodigo(
+                    "ADVERTENCIA",
+                    "Si usted acepta recibir el codigo,no podra recibir otro a menos que halla pasado 24 horas"
+                )
+            } else {
+                alertDialog("Debes esperar un día para poder recibir un código nuevamente")
+            }
+        }
 
         countDownTimer = object : CountDownTimer(30000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -63,8 +76,9 @@ class SeguridadFragment : Fragment() {
                 val opcion = "Enviando codigo en: ${second}s"
                 binding.btnResend.text = opcion
                 if (second.toInt() == 0) {
-                    //seguridad()
+                    seguridad()
                 }
+
             }
 
             override fun onFinish() {
@@ -75,9 +89,8 @@ class SeguridadFragment : Fragment() {
             }
 
         }
-        startTimer()
+
         setupEditextListener()
-        saveCode(12345)
 
         binding.btnVerificar.setOnClickListener {
             if (todosEditTextEstanLlenos()) {
@@ -88,38 +101,42 @@ class SeguridadFragment : Fragment() {
                 val n4 = binding.otpET4.text.toString()
                 val n5 = binding.otpET5.text.toString()
                 val codigo = n1 + n2 + n3 + n4 + n5
-                val shared = SharedUser(requireContext())
-                val codigoShared = shared.mostrarCodigo()
+                val codigoShared = sharedUser.mostrarCodigo()
 
 
                 if (codigoShared == codigo.toInt()) {
-                    Toast.makeText(
-                        requireContext(),
-                        "El codigo es igual , puedes restablecer tu contraseña",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    shared.eliminarCodigo()
+                    sharedUser.eliminarCodigo()
                     findNavController().navigate(
                         SeguridadFragmentDirections.actionSeguridadFragmentToUsuarioFragment(
                             esPw = true
                         )
                     )
 
-
                 } else {
-                    Toast.makeText(
-                        requireContext(), "El codigo no es igual", Toast.LENGTH_LONG
-                    ).show()
+                    toast("El codigo que usted ingreso no coincide")
                 }
 
 
             } else {
-                AlertDialog.Builder(requireContext()).setTitle("ERROR DE VERIFICACION ")
-                    .setMessage("El codigo esta en proceso").setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }.show()
+                alertDialog("El codigo esta en proceso")
             }
         }
+    }
+
+    private fun alertCodigo(title: String, messague: String) {
+        val alert = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(messague)
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                startTimer()
+                sharedUser.guardarUltimoEnvio()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+            }
+
+        alert.show()
     }
 
     private fun setupEditextListener() {
@@ -194,10 +211,11 @@ class SeguridadFragment : Fragment() {
             val response = client.newCall(request).execute()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Codigo enviado", Toast.LENGTH_LONG).show()
-                    //saveCode(12345)
+                    toast("Codigo enviado")
+                    saveCode(codigo)
                 } else {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show()
+                    toast("Ocurrio un error al enviar el codigo de verificacion ")
+
                 }
             }
         }
@@ -206,11 +224,22 @@ class SeguridadFragment : Fragment() {
 
 
     private fun saveCode(codigo: Int) {
-        val shared = SharedUser(requireContext())
-        shared.guardarCodigo(codigo)
+
+        sharedUser.guardarCodigo(codigo)
     }
 
     private fun startTimer() {
         countDownTimer.start()
+    }
+
+    private fun toast(messague: String) {
+        Toast.makeText(requireContext(), messague, Toast.LENGTH_LONG).show()
+    }
+
+    private fun alertDialog(messague: String) {
+        AlertDialog.Builder(requireContext()).setTitle("ERROR DE VERIFICACION ")
+            .setMessage(messague).setPositiveButton("Continuar") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 }

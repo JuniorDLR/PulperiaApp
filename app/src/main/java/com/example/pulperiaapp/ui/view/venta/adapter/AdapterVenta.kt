@@ -1,20 +1,16 @@
 package com.example.pulperiaapp.ui.view.venta.adapter
 
 
-import android.annotation.SuppressLint
-import android.util.Log
-import android.view.LayoutInflater
 
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-
 import com.apachat.swipereveallayout.core.ViewBinder
-
 import androidx.recyclerview.widget.RecyclerView
 import com.apachat.swipereveallayout.core.SwipeLayout
 //_+uqd<nK-@NK$R8GT2i&
-
 import com.example.pulperiaapp.databinding.ItemVentaBinding
 import com.example.pulperiaapp.domain.venta.VentaPrixCocaDetalle
 import java.math.BigDecimal
@@ -35,6 +31,7 @@ class AdapterVenta(
 
     private var currentTabPosition: Int = 0
 
+
     private val viewBinderHelper: ViewBinder = ViewBinder()
 
 
@@ -45,17 +42,18 @@ class AdapterVenta(
         val swipeLayout: SwipeLayout = binding.swipeLayout
         fun bind(venta: VentaPrixCocaDetalle) {
             binding.tvFecha.text = venta.fechaVenta
-            binding.tvListProducto.text =
-                if (!venta.ventaPorCajilla) "${venta.producto} - ${venta.cantidad}" else "Venta por cajilla"
+            binding.tvListProducto.text = if (!venta.ventaPorCajilla) "${venta.producto} - ${venta.cantidad}" else "Venta por cajilla"
 
+            val totalVentasCajillaPorFecha = listaVenta[venta.fechaVenta]
+                ?.filter { it.ventaPorCajilla }
+                ?.sumOf { it.totalVenta }
 
-            val bigDecimal = BigDecimal.valueOf(venta.totalVenta)
-            val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+            val precioFormateadoCajilla = totalVentasCajillaPorFecha?.let { formatearPrecio(it) }
+            val precioFormateadoIndividual = formatearPrecio(venta.totalVenta)
 
-            val bigFormateado = format.format(bigDecimal)
+            binding.tvTotal.text =
+                if (!venta.ventaPorCajilla) precioFormateadoIndividual else precioFormateadoCajilla
 
-
-            binding.tvTotal.text = bigFormateado.toString()
 
             binding.btnDel.setOnClickListener {
                 onDeleteClickListener(venta.id, bindingAdapterPosition, venta.fechaVenta)
@@ -68,6 +66,11 @@ class AdapterVenta(
 
     }
 
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -96,6 +99,7 @@ class AdapterVenta(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setListCajilla(newList: Map<String, List<VentaPrixCocaDetalle>>) {
         listaVenta = newList
         filterList = newList
@@ -103,11 +107,11 @@ class AdapterVenta(
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setListIndividual(newList: List<VentaPrixCocaDetalle>) {
         filterList = newList.associate { it.id.toString() to listOf(it) }
         notifyDataSetChanged()
     }
-
 
     override fun getFilter(): Filter {
 
@@ -139,6 +143,7 @@ class AdapterVenta(
             }
 
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
             }
@@ -152,6 +157,8 @@ class AdapterVenta(
 
     }
 
+
+    @SuppressLint("NotifyDataSetChanged")
     fun removeItem(position: Int) {
         filterList = filterList.toMutableMap().apply {
             remove(keys.elementAt(position))

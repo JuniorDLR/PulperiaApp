@@ -166,36 +166,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/swModoEdicion"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:text="Desactivar modo edicion producto"
-                android:visibility="gone" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tvEditarNombreProductoInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:visibility="gone">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvEditarNombreProducto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Modificando nombre producto"
-                    android:inputType="text"
-                    android:textColor="@color/black">
-
-                </com.google.android.material.textfield.TextInputEditText>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,13 +176,13 @@
                 <Button
                     android:id="@+id/btnEditarProductoPrix"
                     style="@style/Widget.Material3.MaterialTimePicker.Button"
-                    android:layout_width="140dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
 
                     android:backgroundTint="@color/fondo"
-                    android:text="@string/editar"
+                    android:text="@string/editarTabla"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />

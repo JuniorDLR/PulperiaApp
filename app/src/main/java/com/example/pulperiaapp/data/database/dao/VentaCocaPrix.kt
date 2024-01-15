@@ -28,13 +28,16 @@ interface VentaCocaPrix {
     suspend fun obtenerVentaCajilla(fechaInicio: String, fechaFin: String): List<VentaPrixCoca>
 
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 0 AND DATE(fechaVenta) >= DATE(:fechaInicio)")
-    suspend fun obtenerFilterIndividual(fechaInicio: String): List<VentaPrixCoca>
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 0 AND DATE(fechaVenta) >= DATE(:fechaInicio) AND DATE(fechaVenta) <=DATE(:fechaFin)")
+    suspend fun obtenerFilterIndividual(fechaInicio: String,fechaFin:String): List<VentaPrixCoca>
 
 
 
-    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 1 AND DATE(fechaVenta) >= DATE(:fechaInicio)")
-    suspend fun obtenerFilterCajilla(fechaInicio: String): List<VentaPrixCoca>
+    @Query("SELECT * FROM tbl_venta_prix_coca WHERE ventaPorCajilla = 1 AND DATE(fechaVenta) >= DATE(:fechaInicio) AND DATE(fechaVenta) <=DATE(:fechaFin)")
+    suspend fun obtenerFilterCajilla(fechaInicio: String,fechaFin:String): List<VentaPrixCoca>
+
+    @Query("SELECT SUM(totalVenta) FROM tbl_venta_prix_coca WHERE DATE(fechaVenta) >= DATE(:fechaInicio) AND DATE(fechaVenta) <=DATE(:fechaFin)")
+    suspend fun obtenerGananciasEntreFechas(fechaInicio: String,fechaFin: String):Double
 
 
     @Update

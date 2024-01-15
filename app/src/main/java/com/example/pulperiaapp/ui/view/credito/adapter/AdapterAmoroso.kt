@@ -4,7 +4,6 @@ package com.example.pulperiaapp.ui.view.credito.adapter
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,14 @@ import android.widget.ScrollView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.ItemAmorosoBinding
 import com.example.pulperiaapp.domain.amoroso.VentaAmorosoDetalle
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 
 class AdapterAmoroso(
@@ -108,7 +110,7 @@ class AdapterAmoroso(
                 TableRow.LayoutParams.WRAP_CONTENT
             )
 
-            // Agregar márgenes inferiores a cada fila
+
             layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.row_bottom_margin)
             row.layoutParams = layoutParams
 
@@ -124,8 +126,9 @@ class AdapterAmoroso(
             val fechaView = TextView(context)
             fechaView.text = info.fecha
 
+            val precioFormateado = formatearPrecio(info.precioTotal)
             val precioView = TextView(context)
-            precioView.text = info.precioTotal.toString()
+            precioView.text = precioFormateado
 
             row.addView(productoView)
             row.addView(cantidadView)
@@ -143,9 +146,9 @@ class AdapterAmoroso(
             tlProducto.addView(spaceView)
         }
 
-
+        val totalFormateado = formatearPrecio(totaPagar)
         val total = contentView.findViewById<TextView>(R.id.tvTotalAmoroso)
-        total.text = totaPagar.toString()
+        total.text = totalFormateado
 
         if (!isEspecter) {
             dialog.setPositiveButton("Realizar pago") { diag, _ ->
@@ -162,6 +165,12 @@ class AdapterAmoroso(
         dialog.setView(scrollView)
         dialog.show()
 
+    }
+
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
     }
 
     @SuppressLint("NotifyDataSetChanged")

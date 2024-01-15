@@ -34,6 +34,9 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -229,6 +232,7 @@ class EditarVentasFragment : Fragment() {
     private fun actualizarEnTiempoReal(precioPersonalizado: Double?) {
         val idEditar = args.idProducto
 
+
         if (precioPersonalizado != null && binding.swVentaPorCajillaEditar.isChecked) {
             esRespaldo = true
             listener = false
@@ -249,7 +253,6 @@ class EditarVentasFragment : Fragment() {
             visualizarTabla(true)
         } else {
             respaldo.clear()
-
             esRespaldo = false
             visualizarTabla(false)
         }
@@ -257,55 +260,62 @@ class EditarVentasFragment : Fragment() {
 
 
     private fun guardarVentaEditada() {
-        if (!esRespaldo) {
+        val ventaIndividual = args.esIndividual
+        if (listener) {
             Snackbar.make(
                 requireView(),
                 "Los precios son los mismos, debes personalizarlo",
                 Snackbar.LENGTH_LONG
             ).show()
 
+        } else if (ventaIndividual) {
+            ventaEditada()
         } else {
-            productoEditar.forEach { (_, detalles) ->
-                detalles.forEach { detalle ->
-                    val id = detalle.id
-                    val producto = detalle.producto
-                    val cantidad = detalle.cantidad
-                    val precio = detalle.totalVenta
-                    val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
+            ventaEditada()
+        }
 
-                    val fecha = args.idFecha
-                    val fechaFormateada =
-                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+    }
 
-                    // Edición, usar ID existente
-                    val venta = VentaPrixCoca(
-                        id = id,
-                        producto = producto,
-                        total = precio,
-                        fecha = fecha,
-                        fechaEditada = fechaFormateada,
-                        ventaPorCajilla = esVentaPorCajilla,
-                        cantidad = cantidad
-                    )
+    private fun ventaEditada() {
+        productoEditar.forEach { (_, detalles) ->
+            detalles.forEach { detalle ->
+                val id = detalle.id
+                val producto = detalle.producto
+                val cantidad = detalle.cantidad
+                val precio = detalle.totalVenta
+                val esVentaPorCajilla = binding.swVentaPorCajillaEditar.isChecked
 
-                    if (cantidad > 0) {
-                        insertarOVenta(venta)
-                    } else {
-                        ventaModel.eliminarVenta(id)
+                val fecha = args.idFecha
+                val fechaFormateada =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
-                    }
+                // Edición, usar ID existente
+                val venta = VentaPrixCoca(
+                    id = id,
+                    producto = producto,
+                    total = precio,
+                    fecha = fecha,
+                    fechaEditada = fechaFormateada,
+                    ventaPorCajilla = esVentaPorCajilla,
+                    cantidad = cantidad
+                )
+
+                if (cantidad > 0) {
+                    insertarOVenta(venta)
+                } else {
+                    ventaModel.eliminarVenta(id)
 
                 }
 
             }
 
-            Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
-                .show()
-            val action =
-                EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
-            Navigation.findNavController(binding.root).navigate(action)
         }
 
+        Toast.makeText(requireContext(), "Datos editados exitosamente", Toast.LENGTH_LONG)
+            .show()
+        val action =
+            EditarVentasFragmentDirections.actionEditarVentasFragmentToVentasFragment()
+        Navigation.findNavController(binding.root).navigate(action)
     }
 
     private fun insertarOVenta(venta: VentaPrixCoca) {
@@ -329,8 +339,8 @@ class EditarVentasFragment : Fragment() {
         val fechaActual: String = args.idFecha
         lifecycleScope.launch {
             ventaModel.obtenerDetalleEditarLiveData(fechaActual)
-            ventaModel.data.observe(viewLifecycleOwner) { detalleList ->
-                detalleList?.let {
+            ventaModel.data.collect { detalleList ->
+                detalleList.let {
                     it.forEach { j ->
                         if ((j.id == idEditar && !j.ventaPorCajilla) || (j.ventaPorCajilla)) {
                             guardarDatoRecuperado(idEditar, j)
@@ -354,7 +364,7 @@ class EditarVentasFragment : Fragment() {
             binding.tvPrecioPersonalizado.isEnabled = false
             binding.inputPrecio.isEnabled = false
             binding.btnRestablecer.isEnabled = false
-            // Si es individual, borramos la lista existente
+
         }
         existingList.add(detalleList)
         productoEditar[idEditar] = existingList
@@ -392,7 +402,7 @@ class EditarVentasFragment : Fragment() {
                 agregarFila(producto, cantidad, total, idEditar, idProdcuto)
             }
         }
-        val precioFormateado = String.format(Locale.getDefault(), "%.2f", totalView)
+        val precioFormateado = formatearPrecio(totalView)
         binding.tvTotalAmountEditar.text = precioFormateado
     }
 
@@ -416,7 +426,7 @@ class EditarVentasFragment : Fragment() {
         val cantidadView = tableRow.findViewById<TextView>(R.id.tvCantidadVenta)
         cantidadView.text = cantidad.toString()
 
-        val precioFormateado = String.format(Locale.getDefault(), "%.2f", total)
+        val precioFormateado = formatearPrecio(total)
 
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioVenta)
         precioView.text = precioFormateado
@@ -460,7 +470,11 @@ class EditarVentasFragment : Fragment() {
 
         alert.show()
     }
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
     private fun showQuantityDialog(
         cantidad: Int,
         total: Double,
@@ -540,26 +554,18 @@ class EditarVentasFragment : Fragment() {
                             ).show()
                         } else {
 
-
-                            if (!listener) {
+                            val esIndividual = args.esIndividual
+                            if (esIndividual) {
+                                seleccionSpinnerCoca(productoSeleccionado)
+                            } else if (!listener) {
                                 Snackbar.make(
                                     requireView(),
                                     "para agregar debes restablecer el precio ",
                                     Snackbar.LENGTH_LONG
                                 ).show()
+
                             } else {
-                                lifecycleScope.launch {
-                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                    val precioProducto =
-                                        ventaModel.obtenerPrecioCoca(productoSeleccionado)
-                                    if (precioProducto != null) {
-                                        guardarVenta(
-                                            productoSeleccionado,
-                                            precioProducto,
-                                            esCajilla
-                                        )
-                                    }
-                                }
+                                seleccionSpinnerCoca(productoSeleccionado)
                             }
                         }
                     }
@@ -603,20 +609,21 @@ class EditarVentasFragment : Fragment() {
                             ).show()
                         } else {
 
-                            if (!listener) {
+                            val esIndividual = args.esIndividual
+                            if (esIndividual) {
+                                seleccionSpinnerBig(productoSeleccionado)
+
+                            } else if (!listener) {
+
                                 Snackbar.make(
                                     requireView(),
                                     "para agregar debes restablecer el precio ",
                                     Snackbar.LENGTH_LONG
                                 ).show()
+
+
                             } else {
-                                lifecycleScope.launch {
-                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                    val precio = ventaModel.obtenerPrecioBig(productoSeleccionado)
-                                    if (precio != null) {
-                                        guardarVenta(productoSeleccionado, precio, esCajilla)
-                                    }
-                                }
+                                seleccionSpinnerBig(productoSeleccionado)
                             }
 
                         }
@@ -631,6 +638,9 @@ class EditarVentasFragment : Fragment() {
             }
         }
     }
+
+
+
 
     private fun ventaPrix() {
         lifecycleScope.launch {
@@ -663,26 +673,19 @@ class EditarVentasFragment : Fragment() {
                             ).show()
 
                         } else {
-                            if (!listener) {
+                            val esIndividual = args.esIndividual
+                            if (esIndividual) {
+                                seleccionSpinnerPrix(productoSeleccionado)
+                            } else if (!listener) {
+
                                 Snackbar.make(
                                     requireView(),
                                     "para agregar debes restablecer el precio ",
                                     Snackbar.LENGTH_LONG
                                 ).show()
-                            } else {
-                                lifecycleScope.launch {
-                                    val esCajilla = binding.swVentaPorCajillaEditar.isChecked
-                                    val precioProducto =
-                                        ventaModel.obtenerPrecioPrix(productoSeleccionado)
-                                    if (precioProducto != null) {
-                                        guardarVenta(
-                                            productoSeleccionado,
-                                            precioProducto,
-                                            esCajilla
-                                        )
-                                    }
 
-                                }
+                            } else {
+                                seleccionSpinnerPrix(productoSeleccionado)
                             }
 
                         }
@@ -698,6 +701,50 @@ class EditarVentasFragment : Fragment() {
 
     }
 
+    private fun seleccionSpinnerPrix(productoSeleccionado: String) {
+        lifecycleScope.launch {
+            val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+            val precioProducto = ventaModel.obtenerPrecioPrix(productoSeleccionado)
+            if (precioProducto != null) {
+                guardarVenta(
+                    productoSeleccionado,
+                    precioProducto,
+                    esCajilla
+                )
+            }
+
+        }
+    }
+
+    private fun seleccionSpinnerCoca(productoSeleccionado: String) {
+        lifecycleScope.launch {
+            val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+            val precioProducto = ventaModel.obtenerPrecioCoca(productoSeleccionado)
+            if (precioProducto != null) {
+                guardarVenta(
+                    productoSeleccionado,
+                    precioProducto,
+                    esCajilla
+                )
+            }
+
+        }
+    }
+
+    private fun seleccionSpinnerBig(productoSeleccionado: String) {
+        lifecycleScope.launch {
+            val esCajilla = binding.swVentaPorCajillaEditar.isChecked
+            val precioProducto = ventaModel.obtenerPrecioBig(productoSeleccionado)
+            if (precioProducto != null) {
+                guardarVenta(
+                    productoSeleccionado,
+                    precioProducto,
+                    esCajilla
+                )
+            }
+
+        }
+    }
 
     fun guardarVenta(productoSeleccionado: String, precioProducto: Double, esCajilla: Boolean) {
         val cliente = args.idProducto
