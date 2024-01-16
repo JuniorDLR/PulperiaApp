@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,22 +8,28 @@
     android:orientation="vertical"
     tools:context=".ui.view.principal.SeguridadFragment">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
         app:title="Verificando "
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:background="@color/white"
         app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="true">
-
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,9 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_margin="16dp"
                 android:text="@string/otp_verificacion"
                 android:textColor="#CC000000"
                 android:textSize="25sp"
@@ -43,9 +48,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/se_ha_enviado_un_codigo_de_verificacion_al_numero"
                 android:textColor="#CC000000" />
 
@@ -53,25 +58,24 @@
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/_505_89972365"
                 android:textColor="#CC000000"
                 android:textStyle="bold" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_margin="16dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="5"
+                app:layout_constraintTop_toBottomOf="@id/tvPhone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <EditText
-
                     android:id="@+id/otpET1"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -88,7 +92,6 @@
                     android:textStyle="bold" />
 
                 <EditText
-
                     android:id="@+id/otpET2"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -162,8 +165,8 @@
                 android:id="@+id/btnResend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/resend_code"
                 android:textColor="#99000000" />
 
@@ -172,8 +175,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/round_back"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
@@ -184,4 +187,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

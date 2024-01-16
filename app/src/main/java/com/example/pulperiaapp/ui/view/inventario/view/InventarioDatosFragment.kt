@@ -130,8 +130,6 @@ class InventarioDatosFragment : Fragment() {
                         // Lógica de eliminación, podrías usar un bucle para eliminar uno por uno
                         for (inventario in inventariosAEliminar) {
                             inventarioModel.eliminarInventario(inventario.id)
-                            inventario.idFotos?.let { inventarioModel.eliminarFoto(it) }
-
                         }
 
                         // Notificar al adaptador que los datos han cambiado

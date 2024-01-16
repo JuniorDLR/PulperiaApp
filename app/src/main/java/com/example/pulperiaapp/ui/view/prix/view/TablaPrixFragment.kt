@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaPrixBinding
 import com.example.pulperiaapp.domain.prix.TablaPrix
@@ -113,6 +112,9 @@ class TablaPrixFragment : Fragment() {
                 val texto = textView.text.toString().lowercase(Locale.getDefault())
 
                 if (texto.contains(queryText.orEmpty())) {
+
+
+
                     isVisible = true
                     break
 

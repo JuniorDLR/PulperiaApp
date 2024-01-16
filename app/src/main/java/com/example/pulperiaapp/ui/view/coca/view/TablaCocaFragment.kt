@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -22,7 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentTablaCocaBinding
 import com.example.pulperiaapp.domain.coca.TablaCoca
-import com.example.pulperiaapp.ui.view.bigcola.view.TablaBigColaFragmentDirections
+
 import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint

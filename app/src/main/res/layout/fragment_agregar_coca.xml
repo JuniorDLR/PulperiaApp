@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,9 +10,13 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/fondo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:title="Producto coca"
         app:titleTextColor="@color/white" />
 
@@ -20,7 +24,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutProducto"
         style="@style/MaterialAlertDialog.Material3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:counterEnabled="true"
@@ -30,6 +34,9 @@
         app:errorIconDrawable="@drawable/baseline_error_24"
         app:helperText="Solo se permiten 18 caracteres*"
         app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:startIconDrawable="@drawable/prix">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -45,10 +52,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiPrecio"
         style="@style/MaterialAlertDialog.Material3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutProducto"
         app:startIconDrawable="@drawable/precio">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -69,10 +80,14 @@
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
         android:backgroundTint="@color/fondo"
         android:text="@string/agregar_producto"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiPrecio" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

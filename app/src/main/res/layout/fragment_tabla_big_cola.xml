@@ -1,52 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.bigcola.view.TablaBigColaFragment">
 
-    <ScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Tabla Big cola"
+        app:titleTextColor="@color/white"
+
+        />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:ignore="UselessParent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fondo"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:title="Tabla Big cola"
-                app:titleTextColor="@color/white"
-
-                />
 
             <LinearLayout
                 android:id="@+id/LinearProductoBig"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <SearchView
+                <androidx.appcompat.widget.SearchView
                     android:id="@+id/svTablaProductoBig"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="5"
+                    android:layout_marginVertical="4dp"
+                    android:layout_weight="1"
                     android:background="@color/buscador" />
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btnAgregarProductoBig"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:backgroundTint="@color/fondo"
                     android:src="@drawable/baseline_add_24" />
 
@@ -55,10 +68,13 @@
 
             <TableLayout
                 android:id="@+id/tbBig"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:stretchColumns="*">
+                android:stretchColumns="*"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LinearProductoBig">
 
                 <TableRow
                     android:id="@+id/trBig"
@@ -113,9 +129,12 @@
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/svTablaBig"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:layout_marginHorizontal="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbBig"
                 tools:ignore="NestedScrolling">
 
                 <TableLayout
@@ -130,9 +149,13 @@
             </androidx.core.widget.NestedScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/svTablaBig">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvIdEditarBig"
@@ -149,9 +172,13 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/tiPrecio"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tiId">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvPrecioEditarBig"
@@ -168,11 +195,15 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:layout_marginVertical="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tiPrecio">
 
                 <Button
                     android:id="@+id/btnEditarProductoBig"
@@ -185,8 +216,7 @@
                     android:text="@string/editarTabla"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                  />
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btnElimimarProductoBig"
@@ -200,8 +230,8 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
