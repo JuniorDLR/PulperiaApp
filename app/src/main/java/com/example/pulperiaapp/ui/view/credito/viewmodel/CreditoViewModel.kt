@@ -80,7 +80,7 @@ class CreditoViewModel @Inject constructor(
         }
     }
 
-    private fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {
+     fun actualizarDatos(lista: List<VentaAmorosoDetalle>? = null) {
         viewModelScope.launch {
             val listaVentas = lista ?: useCaseAmoroso.obtenerCredito()
             val ventasFiltradas = listaVentas.filter { !it.estadoPago }

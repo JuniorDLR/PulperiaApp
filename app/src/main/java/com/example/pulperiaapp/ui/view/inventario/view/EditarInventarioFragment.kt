@@ -1,24 +1,19 @@
 package com.example.pulperiaapp.ui.view.inventario.view
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,16 +30,13 @@ import com.example.pulperiaapp.ui.view.inventario.viewmodel.InventarioViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 @AndroidEntryPoint
 class EditarInventarioFragment : Fragment() {
@@ -62,19 +54,6 @@ class EditarInventarioFragment : Fragment() {
     private val bitmapList = mutableListOf<Bitmap>()
     private var esNuevo: Boolean = false
     private var productoSeleccionado: Int = 0
-
-    private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.clipData?.let { clipData ->
-                    (0 until clipData.itemCount).forEach { i ->
-                        handleImageUri(clipData.getItemAt(i).uri)
-                    }
-                } ?: result.data?.data?.let { uri ->
-                    handleImageUri(uri)
-                }
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -96,6 +75,7 @@ class EditarInventarioFragment : Fragment() {
             inventarioModel.groupInventario.observe(viewLifecycleOwner) { lista ->
                 lista?.let {
                     it.forEach { j ->
+
                         guardarDatosRecuperados(j, idInventario)
                     }
                     updateTable()
@@ -110,12 +90,24 @@ class EditarInventarioFragment : Fragment() {
         }
     }
 
+
     private fun initUI() {
         tableLayout = binding.tlProductoInventario
         imageAdapter = ImageAdapter(bitmapList, object : ImageCounterListener {
             override fun onImageAdd(imageCount: Int) = updateImageCount(imageCount)
             override fun onImageDelete(imageCount: Int, deletedImage: Bitmap?) =
                 updateImageCount(imageCount)
+
+            override fun ImageDeleteListener(position: Int) {
+
+            }
+
+            override fun esEdicion( eliminar: ImageView) {
+                eliminar.visibility = View.GONE
+
+            }
+
+
         })
         viewPager = binding.vpFotoEditar
         viewPager.adapter = imageAdapter
@@ -123,9 +115,7 @@ class EditarInventarioFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnTablaEditar.setOnClickListener { editarTabla() }
-        //binding.btnTomarFotoEditar.setOnClickListener { openGallery() }
         binding.btnGuardar.setOnClickListener { guardarInventarioEditado() }
-
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             Navigation.findNavController(binding.root)
@@ -155,6 +145,7 @@ class EditarInventarioFragment : Fragment() {
         inventarioRecuperado[idInventario]?.forEach { lista ->
             val entity = lista.toInventarioEntity()
             if (entity.cantidad > 0) {
+
                 lifecycleScope.launch { insertOrUpdateInventory(entity) }
             } else {
                 inventarioModel.eliminarInventario(entity.id)
@@ -168,6 +159,7 @@ class EditarInventarioFragment : Fragment() {
     }
 
     private fun InventarioModel.toInventarioEntity(): InventarioEntity {
+
         val fechaEditada =
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         return InventarioEntity(
@@ -284,8 +276,8 @@ class EditarInventarioFragment : Fragment() {
             total += inventario.importe
             addRowToTable(inventario)
         }
-        val precioFormateado =formatearPrecio(total)
-            binding.tvPrecioPagar.text = "Precio Total: $precioFormateado"
+        val precioFormateado = formatearPrecio(total)
+        binding.tvPrecioPagar.text = "Precio Total: $precioFormateado"
         updateImageCount(imageAdapter.count)
     }
 
@@ -332,6 +324,7 @@ class EditarInventarioFragment : Fragment() {
             tvPrecioUnitarioEditar.setText(inventario.importe.toString())
         }
     }
+
     private fun formatearPrecio(precio: Double): String? {
         val bigDecimal = BigDecimal.valueOf(precio)
         val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
@@ -382,67 +375,7 @@ class EditarInventarioFragment : Fragment() {
 
                 imageAdapter.notifyDataSetChanged()
                 updateImageCount(imageAdapter.count)
-                //binding.btnTomarFotoEditar.visibility =
-                //if (imageAdapter.count == MAX) View.GONE else View.VISIBLE
             }
-        }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*"
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        }
-        galleryLauncher.launch(intent)
-    }
-
-    private fun handleImageUri(fromUri: Uri) {
-        if (imageToken < MAX) {
-            imageToken += 1
-            val bitmap = getBitmapFromUri(fromUri)
-            if (bitmap != null) {
-                val bitmapUri = bitmapList.any { it.sameAs(bitmap) }
-                if (!bitmapUri) {
-                    val ruta = saveImageToInternalStorage(bitmap)
-                    if (ruta != null) {
-                        imageAdapter.addImage(bitmap)
-                    } else {
-                        showToast("Error al guardar la imagen")
-                    }
-                } else {
-                    showToast("Esta imagen ya ha sido seleccionada")
-                }
-            } else {
-                showToast("No se puede cargar la imagen")
-            }
-        } else {
-            showToast("Ya no se puede seleccionar más fotos")
-        }
-    }
-
-    private fun saveImageToInternalStorage(bitmap: Bitmap): String? {
-        val wrapper = ContextWrapper(requireContext().applicationContext)
-        var file: File? = null
-        try {
-            val dir = wrapper.getDir("imagen", Context.MODE_PRIVATE)
-            file = File(dir, "${System.currentTimeMillis()}.jpg")
-            val stream: OutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.flush()
-            stream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return file?.absolutePath
-    }
-
-    private fun getBitmapFromUri(fromUri: Uri): Bitmap? {
-        return try {
-            val inputStream = requireContext().contentResolver.openInputStream(fromUri)
-            inputStream?.let { BitmapFactory.decodeStream(it) }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
 
@@ -453,7 +386,6 @@ class EditarInventarioFragment : Fragment() {
     private fun updateImageCount(imageCount: Int) {
         val count = "$imageCount/$MAX"
         binding.contadorImage.text = count
-        //binding.btnTomarFotoEditar.visibility = if (imageCount < MAX) View.VISIBLE else View.GONE
         imageToken = imageCount
     }
 }

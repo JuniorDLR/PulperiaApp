@@ -1,7 +1,6 @@
 package com.example.pulperiaapp.ui.view.inventario.adapter
 
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ class ImageAdapter(
     private var deletePosition: Int = -1
 
 
-    // Se utiliza para crear y agregar vistas al ViewPager.
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(container.context)
 
@@ -26,7 +24,7 @@ class ImageAdapter(
         val imageView = itemView.findViewById<ImageView>(R.id.image_view)
         val delete = itemView.findViewById<ImageView>(R.id.delete_button)
         itemView.tag = position
-
+        imageCounterListener.esEdicion(delete)
         val imagen = image[position]
         imageView.setImageBitmap(imagen)
         delete.setOnClickListener {
@@ -37,18 +35,22 @@ class ImageAdapter(
         return itemView
     }
 
-    // Dentro de la función onClickDelete en ImageAdapter
+
     private fun onClickDelete(position: Int) {
+
         if (position >= 0 && position < image.size) {
-            deletePosition = position
+
             val deletedImage = image.removeAt(position)
-            Log.d("ImageAdapter", "Image deleted at position: $position")
             notifyDataSetChanged()
             val tamano = image.size
-            Log.d("ImageAdapter", "Updated image size: $tamano")
+            deletePosition = position
+            imageCounterListener.ImageDeleteListener(position)
             imageCounterListener.onImageDelete(tamano, deletedImage)
+
         }
     }
+
+
 
 
     fun addImage(image: Bitmap) {

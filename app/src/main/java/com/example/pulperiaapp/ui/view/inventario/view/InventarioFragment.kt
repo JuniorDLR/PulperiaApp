@@ -11,11 +11,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -107,19 +109,24 @@ class InventarioFragment : Fragment() {
                 if (!bitmapImage) {
 
                     when (imageToken) {
+
                         1 -> {
                             ruta1 = saveImageToInternalStorage(bitmap)
                             imageAdapter.addImage(bitmap)
+
+
                         }
 
                         2 -> {
                             ruta2 = saveImageToInternalStorage(bitmap)
                             imageAdapter.addImage(bitmap)
+
                         }
 
                         3 -> {
                             ruta3 = saveImageToInternalStorage(bitmap)
                             imageAdapter.addImage(bitmap)
+
                         }
                     }
 
@@ -191,7 +198,6 @@ class InventarioFragment : Fragment() {
     }
 
 
-
     private fun initComponent() {
         tableLayout = binding.tlProductoInventario
         tableRow = binding.trItem
@@ -207,7 +213,23 @@ class InventarioFragment : Fragment() {
                 actualizarConteo()
 
 
+            }
 
+            override fun ImageDeleteListener(position: Int) {
+                when (position) {
+                    0 -> ruta1 = null
+                    1 -> ruta2 = null
+                    2 -> ruta3 = null
+                }
+
+                Log.e("Foto", "$ruta1 $ruta2 $ruta3")
+                imageAdapter.notifyDataSetChanged()
+            }
+
+
+
+            override fun esEdicion(eliminar: ImageView) {
+                eliminar.visibility = View.VISIBLE
 
             }
 
@@ -273,7 +295,8 @@ class InventarioFragment : Fragment() {
         if (productoIngresado.isNotEmpty()) {
 
             val idFoto = UUID.randomUUID().toString()
-            val listaInventarioFotos = listOf(InventarioFotoEntity(0, idFoto, ruta1, ruta2, ruta3))
+            val listaInventarioFotos =
+                listOf(InventarioFotoEntity(0, idFoto, ruta1 , ruta2 , ruta3))
             inventarioModel.insertarFoto(listaInventarioFotos)
 
             for (entry in productoIngresado) {
@@ -513,6 +536,7 @@ class InventarioFragment : Fragment() {
         binding.tvPrecioUnitario.setText("")
 
     }
+
     private fun formatearPrecio(precio: Double): String? {
         val bigDecimal = BigDecimal.valueOf(precio)
         val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))

@@ -12,7 +12,7 @@ data class InventarioModel(
     var cantidadCajilla: Int,
     var cantidad: Int,
     var importe: Double,
-    val idFotos: String?
+    var idFotos: String?
 )
 
 
