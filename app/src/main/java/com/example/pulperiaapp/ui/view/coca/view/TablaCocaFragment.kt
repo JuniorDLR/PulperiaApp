@@ -27,6 +27,9 @@ import com.example.pulperiaapp.ui.view.coca.viewmodel.CocaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 
@@ -224,9 +227,9 @@ class TablaCocaFragment : Fragment() {
 
         val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
         productoView.text = producto
-
+        val precioFormateado = formatearPrecio(precio)
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-        precioView.text = precio.toString()
+        precioView.text = precioFormateado
 
 
         idView.setOnClickListener {
@@ -243,5 +246,9 @@ class TablaCocaFragment : Fragment() {
         tableLayout.addView(tableRow)
     }
 
-
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 }

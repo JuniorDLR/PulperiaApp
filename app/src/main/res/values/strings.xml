@@ -51,7 +51,7 @@
     <string name="venta_por_cajilla">Venta por cajilla</string>
     <string name="big_cola">Big cola</string>
     <string name="agregar_foto">Agregar foto</string>
-    <string name="_0_3">0/3</string>
+
     <string name="precio_total_0_00">Precio Total: C$0</string>
     <string name="cajilla">CAJILLA</string>
     <string name="tama_o">TAMAÑO</string>
@@ -86,5 +86,6 @@
     <string name="otro_metodo">Otro metodo</string>
     <string name="huella_digital">Huella digital</string>
     <string name="filtrar_ganacias">Filtrar ganacias</string>
+    <string name="_0_2">0/2</string>
 
 </resources>

@@ -49,7 +49,7 @@ class EditarInventarioFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private val inventarioRecuperado = mutableMapOf<String, MutableList<InventarioModel>>()
     private lateinit var imageAdapter: ImageAdapter
-    private val MAX = 3
+    private val MAX = 2
     private var imageToken = 0
     private val bitmapList = mutableListOf<Bitmap>()
     private var esNuevo: Boolean = false
@@ -102,7 +102,8 @@ class EditarInventarioFragment : Fragment() {
 
             }
 
-            override fun esEdicion( eliminar: ImageView) {
+
+            override fun esEdicion(eliminar: ImageView) {
                 eliminar.visibility = View.GONE
 
             }
@@ -359,13 +360,6 @@ class EditarInventarioFragment : Fragment() {
                             val ruta2 = BitmapFactory.decodeFile(objeto.ruta2)
                             if (ruta2 != null && !bitmapList.contains(ruta2)) {
                                 bitmapList.add(ruta2)
-                            }
-                        }
-
-                        if (!objeto.ruta3.isNullOrEmpty()) {
-                            val ruta3 = BitmapFactory.decodeFile(objeto.ruta3)
-                            if (ruta3 != null && !bitmapList.contains(ruta3)) {
-                                bitmapList.add(ruta3)
                             }
                         }
 

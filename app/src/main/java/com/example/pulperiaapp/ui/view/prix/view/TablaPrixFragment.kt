@@ -24,6 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -114,7 +117,6 @@ class TablaPrixFragment : Fragment() {
                 if (texto.contains(queryText.orEmpty())) {
 
 
-
                     isVisible = true
                     break
 
@@ -193,9 +195,10 @@ class TablaPrixFragment : Fragment() {
         val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
         productoView.text = producto
 
-
+        val precioFormateado = formatearPrecio(precio)
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-        precioView.text = precio.toString()
+        precioView.text = precioFormateado
+
 
 
         idView.setOnClickListener {
@@ -211,6 +214,12 @@ class TablaPrixFragment : Fragment() {
 
 
         tableLayout.addView(tableRow)
+    }
+
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
     }
 
     private fun eliminarProducto() {

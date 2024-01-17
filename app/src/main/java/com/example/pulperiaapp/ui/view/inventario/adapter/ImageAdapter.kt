@@ -39,18 +39,15 @@ class ImageAdapter(
     private fun onClickDelete(position: Int) {
 
         if (position >= 0 && position < image.size) {
-
             val deletedImage = image.removeAt(position)
-            notifyDataSetChanged()
             val tamano = image.size
             deletePosition = position
-            imageCounterListener.ImageDeleteListener(position)
+            imageCounterListener.ImageDeleteListener(tamano)
             imageCounterListener.onImageDelete(tamano, deletedImage)
+            notifyDataSetChanged()
 
         }
     }
-
-
 
 
     fun addImage(image: Bitmap) {
@@ -69,10 +66,10 @@ class ImageAdapter(
         return position
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
-
+    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+        container.removeView(obj as View)
     }
+
 
     // Esta función debe devolver el número total de elementos o vistas que el ViewPager contendrá
     override fun getCount(): Int = image.size
@@ -82,5 +79,7 @@ class ImageAdapter(
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
+
+
 
 }

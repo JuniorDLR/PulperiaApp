@@ -11,5 +11,5 @@ data class InventarioFotoEntity(
     @ColumnInfo(name = "idFotos") val idFotos: String,
     @ColumnInfo("imagen1") var ruta1: String? = null,
     @ColumnInfo("imagen2") var ruta2: String? = null,
-    @ColumnInfo("imagen3") var ruta3: String? = null
+
 )

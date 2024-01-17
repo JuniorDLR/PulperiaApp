@@ -6,18 +6,21 @@ import android.content.Context
 import android.os.Bundle
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -61,7 +64,7 @@ class InventarioFragment : Fragment() {
     private val productoIngresado = mutableMapOf<String, MutableList<InventarioModel>>()
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var viewPager: ViewPager
-    private val MAX = 3
+    private val MAX = 2
     private var imageToken = 0
     private val bitmapList = mutableListOf<Bitmap>()
     private var productoSeleccionado: Int = 0
@@ -72,11 +75,11 @@ class InventarioFragment : Fragment() {
     // Variables para las rutas de las imágenes
     private var ruta1: String? = null
     private var ruta2: String? = null
-    private var ruta3: String? = null
     private var esEdicion: Boolean = false
 
     private val galleryLaucnher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            progressDialog.dismiss()
             if (result.resultCode == Activity.RESULT_OK) {
                 val intentClip: Intent? = result.data
                 if (intentClip != null) {
@@ -119,12 +122,6 @@ class InventarioFragment : Fragment() {
 
                         2 -> {
                             ruta2 = saveImageToInternalStorage(bitmap)
-                            imageAdapter.addImage(bitmap)
-
-                        }
-
-                        3 -> {
-                            ruta3 = saveImageToInternalStorage(bitmap)
                             imageAdapter.addImage(bitmap)
 
                         }
@@ -216,17 +213,13 @@ class InventarioFragment : Fragment() {
             }
 
             override fun ImageDeleteListener(position: Int) {
+
                 when (position) {
-                    0 -> ruta1 = null
-                    1 -> ruta2 = null
-                    2 -> ruta3 = null
+                    1 -> ruta1 = ""
+                    2 -> ruta2 = ""
                 }
 
-                Log.e("Foto", "$ruta1 $ruta2 $ruta3")
-                imageAdapter.notifyDataSetChanged()
             }
-
-
 
             override fun esEdicion(eliminar: ImageView) {
                 eliminar.visibility = View.VISIBLE
@@ -278,8 +271,18 @@ class InventarioFragment : Fragment() {
 
     }
 
+    private val progressDialog: Dialog by lazy {
+        val builder = AlertDialog.Builder(requireContext())
+        val progressBar = ProgressBar(requireContext())
+        builder.setView(progressBar)
+        builder.setMessage("Abriendo Galería...")
+        builder.setCancelable(false)
+        builder.create()
+    }
+
 
     private fun openGalery() {
+        progressDialog.show()
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -296,7 +299,7 @@ class InventarioFragment : Fragment() {
 
             val idFoto = UUID.randomUUID().toString()
             val listaInventarioFotos =
-                listOf(InventarioFotoEntity(0, idFoto, ruta1 , ruta2 , ruta3))
+                listOf(InventarioFotoEntity(0, idFoto, ruta1 ?: "", ruta2 ?: ""))
             inventarioModel.insertarFoto(listaInventarioFotos)
 
             for (entry in productoIngresado) {
@@ -543,5 +546,3 @@ class InventarioFragment : Fragment() {
         return format.format(bigDecimal)
     }
 }
-
-

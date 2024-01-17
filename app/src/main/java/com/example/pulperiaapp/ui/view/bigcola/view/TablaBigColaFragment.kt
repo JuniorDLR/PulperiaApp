@@ -25,6 +25,9 @@ import com.example.pulperiaapp.ui.view.bigcola.viewmodel.BigColaViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -53,7 +56,7 @@ class TablaBigColaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      lifecycleScope.launch {   bigColaViewModel.obtenerBigcola() }
+        lifecycleScope.launch { bigColaViewModel.obtenerBigcola() }
         tableLayout = binding.tlProductoBig
         bigColaViewModel.bigModdel.observe(viewLifecycleOwner) { lista ->
             mostrarTabla(lista)
@@ -62,7 +65,7 @@ class TablaBigColaFragment : Fragment() {
 
             val action =
                 TablaBigColaFragmentDirections.actionTablaBigColaFragmentToAgregandoBigFragment()
-           findNavController().navigate(action)
+            findNavController().navigate(action)
         }
         binding.btnEditarProductoBig.setOnClickListener { editarBigCola() }
         binding.btnElimimarProductoBig.setOnClickListener { eliminarBigCola() }
@@ -133,8 +136,9 @@ class TablaBigColaFragment : Fragment() {
         val productoView = tableRow.findViewById<TextView>(R.id.tvProductoR)
         productoView.text = producto
 
+        val precioFormateado = formatearPrecio(precio)
         val precioView = tableRow.findViewById<TextView>(R.id.tvPrecioR)
-        precioView.text = precio.toString()
+        precioView.text = precioFormateado
 
 
 
@@ -153,6 +157,11 @@ class TablaBigColaFragment : Fragment() {
 
     }
 
+    private fun formatearPrecio(precio: Double): String? {
+        val bigDecimal = BigDecimal.valueOf(precio)
+        val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))
+        return format.format(bigDecimal)
+    }
 
     private fun editarBigCola() {
         val id = binding.tvIdEditarBig.text.toString()
