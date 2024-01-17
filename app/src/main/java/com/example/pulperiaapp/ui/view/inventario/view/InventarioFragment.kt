@@ -215,8 +215,8 @@ class InventarioFragment : Fragment() {
             override fun ImageDeleteListener(position: Int) {
 
                 when (position) {
-                    1 -> ruta1 = ""
-                    2 -> ruta2 = ""
+                    0 -> ruta1 = ""
+                    1 -> ruta2 = ""
                 }
 
             }

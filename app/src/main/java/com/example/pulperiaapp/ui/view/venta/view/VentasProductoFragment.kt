@@ -237,8 +237,15 @@ class VentasProductoFragment : Fragment() {
                 Snackbar.LENGTH_LONG
             ).show()
 
-        } else {
+        } else if (!esRespaldo && binding.swVentaPorCajilla.isChecked) {
 
+            Snackbar.make(
+                requireView(),
+                "Debes modificar los precios",
+                Snackbar.LENGTH_LONG
+            ).show()
+
+        } else {
             val mapaEjecutar = if (esRespaldo) respaldo else productosSeleccionados
 
             for (venta in mapaEjecutar) {
@@ -266,7 +273,6 @@ class VentasProductoFragment : Fragment() {
             val action =
                 VentasProductoFragmentDirections.actionVentasProductoFragmentToVentasFragment()
             Navigation.findNavController(binding.root).navigate(action)
-
 
         }
     }
@@ -499,6 +505,7 @@ class VentasProductoFragment : Fragment() {
 
 
     }
+
     private fun formatearPrecio(precio: Double): String? {
         val bigDecimal = BigDecimal.valueOf(precio)
         val format = DecimalFormat("#,##0.##", DecimalFormatSymbols(Locale.getDefault()))

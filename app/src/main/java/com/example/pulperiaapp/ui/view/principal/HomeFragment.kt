@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.example.pulperiaapp.R
 import com.example.pulperiaapp.databinding.FragmentHomeBinding
@@ -21,7 +22,6 @@ class HomeFragment : Fragment() {
     private lateinit var toolbar: Toolbar
     private lateinit var binding: FragmentHomeBinding
     private lateinit var animationView: LottieAnimationView
-
 
 
     override fun onCreateView(
@@ -106,8 +106,8 @@ class HomeFragment : Fragment() {
             .setPositiveButton("Aceptar") { dialog, _ ->
                 (activity as MainActivity).findViewById<BottomNavigationView>(R.id.NavigationBottom).isVisible =
                     false
-                val navController = Navigation.findNavController(binding.root)
-                navController.popBackStack()
+                val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+                findNavController().navigate(action)
                 dialog.dismiss()
             }
             .setNegativeButton("Cancelar") { dialog, _ ->
